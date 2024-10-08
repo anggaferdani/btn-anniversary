@@ -44,16 +44,16 @@ class ParticipantController extends Controller
 
             $qrcode = '';
 
-            if ($participantCount >= 1 && $participantCount <= 100) {
+            if ($participantCount >= 1 && $participantCount <= 2) {
                 $qrcode = 'B' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-            } elseif ($participantCount >= 101 && $participantCount <= 200) {
-                $qrcode = 'U' . str_pad($participantCount - 100, 3, '0', STR_PAD_LEFT);
+            } elseif ($participantCount >= 3 && $participantCount <= 200) {
+                $qrcode = 'U' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
             } elseif ($participantCount >= 201 && $participantCount <= 300) {
-                $qrcode = 'M' . str_pad($participantCount - 200, 3, '0', STR_PAD_LEFT);
+                $qrcode = 'M' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
             } elseif ($participantCount >= 301 && $participantCount <= 400) {
-                $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
+                $qrcode = 'N' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
             } elseif ($participantCount >= 401) {
-                $qrcode = 'F' . str_pad($participantCount - 400, 3, '0', STR_PAD_LEFT);
+                $qrcode = 'F' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
             }
             
             $array = [
