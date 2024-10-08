@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
-            $table->string('qrcode')->unique();
+            $table->string('qrcode')->unique()->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone_number')->nullable();
