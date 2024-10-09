@@ -1,10 +1,13 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FrontController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TenantController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\ReceptionistController;
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\AttendanceParticipantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +22,6 @@ use App\Http\Controllers\PartnerController;
 
 Route::middleware(['web', 'disableBackButton'])->group(function(){
     Route::middleware(['disableRedirectToLoginPage'])->group(function(){
-        Route::get('/', [AuthenticationController::class, 'login'])->name('index');
         Route::get('login', [AuthenticationController::class, 'login'])->name('login');
         Route::post('post/login', [AuthenticationController::class, 'postLogin'])->name('post.login');
     });
@@ -27,8 +29,28 @@ Route::middleware(['web', 'disableBackButton'])->group(function(){
     Route::get('logout', [AuthenticationController::class, 'logout'])->name('logout');
 });
 
-Route::prefix('admin')->group(function(){
+Route::prefix('admin')->name('admin.')->group(function(){
     Route::middleware(['auth:web', 'disableBackButton', 'admin'])->group(function(){
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('admin', AdminController::class);
+        Route::resource('receptionist', ReceptionistController::class);
+        Route::resource('tenant', TenantController::class);
+        Route::resource('participant', ParticipantController::class);
+        Route::get('resend-email-verification/{token}', [AuthenticationController::class, 'resendEmailVerification'])->name('resend-email-verification');
+        Route::get('resend-digital-invitation/{token}', [AuthenticationController::class, 'resendDigitalInvitation'])->name('resend-digital-invitation');
+        Route::get('verify/{token}', [AuthenticationController::class, 'verify'])->name('verify');
+        Route::resource('attendance-participant', AttendanceParticipantController::class);
+    });
+});
+
+Route::prefix('receptionist')->name('receptionist.')->group(function(){
+    Route::middleware(['auth:web', 'disableBackButton', 'receptionist'])->group(function(){
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    });
+});
+
+Route::prefix('tenant')->name('tenant.')->group(function(){
+    Route::middleware(['auth:web', 'disableBackButton', 'tenant'])->group(function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     });
 });
