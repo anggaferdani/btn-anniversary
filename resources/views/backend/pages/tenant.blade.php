@@ -1,11 +1,11 @@
 @extends('backend.templates.pages')
-@section('title', 'Participant')
+@section('title', 'Tenant')
 @section('header')
 <div class="container-xl">
   <div class="row g-2 align-items-center">
     <div class="col">
       <h2 class="page-title">
-        Participant
+        Tenant
       </h2>
     </div>
     <div class="col-auto">
@@ -33,11 +33,11 @@
       <div class="card">
         <div class="card-header">
           <div class="ms-auto">
-            <form action="{{ route('admin.participant.index') }}" class="">
+            <form action="{{ route('admin.tenant.index') }}" class="">
               <div class="d-flex gap-1">
                 <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search">
                 <button type="submit" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <a href="{{ route('admin.participant.index') }}" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-times"></i></a>
+                <a href="{{ route('admin.tenant.index') }}" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-times"></i></a>
               </div>
             </form>
           </div>
@@ -47,38 +47,20 @@
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Code</th>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Phone Number</th>
-                <th>Status</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              @foreach ($participants as $participant)
+              @foreach ($tenants as $tenant)
                 <tr>
-                  <td>{{ ($participants->currentPage() - 1) * $participants->perPage() + $loop->iteration }}</td>
-                  <td>{{ $participant->qrcode }}</td>
-                  <td>{{ $participant->name }}</td>
-                  <td>{{ $participant->email }}</td>
-                  <td>{{ $participant->phone_number }}</td>
+                  <td>{{ ($tenants->currentPage() - 1) * $tenants->perPage() + $loop->iteration }}</td>
+                  <td>{{ $tenant->name }}</td>
+                  <td>{{ $tenant->email }}</td>
                   <td>
-                    @if($participant->verification == 1)
-                      <span class="badge bg-primary text-white">Verified</span>
-                    @else
-                      <span class="badge bg-danger text-white">Not Verified</span>
-                    @endif
-                  </td>
-                  <td>
-                    <div class="d-flex gap-1">
-                      @if($participant->verification == 2)
-                        <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
-                      @endif
-                      <a href="{{ route('admin.resend-digital-invitation', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Digital Invitation</span></a>
-                      <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $participant->id }}"><i class="fa-solid fa-pen"></i></button>
-                      <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $participant->id }}"><i class="fa-solid fa-trash"></i></button>
-                    </div>
+                    <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $tenant->id }}"><i class="fa-solid fa-pen"></i></button>
+                    <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $tenant->id }}"><i class="fa-solid fa-trash"></i></button>
                   </td>
                 </tr>
               @endforeach
@@ -87,8 +69,8 @@
         </div>
         <div class="card-footer d-flex align-items-center">
           <ul class="pagination m-0 ms-auto">
-            @if($participants->hasPages())
-              {{ $participants->appends(request()->query())->links('pagination::bootstrap-4') }}
+            @if($tenants->hasPages())
+              {{ $tenants->appends(request()->query())->links('pagination::bootstrap-4') }}
             @else
               <li class="page-item">No more records</li>
             @endif
@@ -102,7 +84,7 @@
 <div class="modal modal-blur fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <form action="{{ route('admin.participant.store') }}" method="POST" class="">
+      <form action="{{ route('admin.tenant.store') }}" method="POST" class="">
         @csrf
         <div class="modal-header">
           <h5 class="modal-title">Create</h5>
@@ -120,9 +102,9 @@
             @error('email')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
           <div class="mb-3">
-            <label class="form-label required">Phone Number</label>
-            <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" autocomplete="off">
-            @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
+            <label class="form-label required">Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="off">
+            @error('password')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
         <div class="modal-footer">
@@ -136,11 +118,11 @@
   </div>
 </div>
 
-@foreach ($participants as $participant)
-<div class="modal modal-blur fade" id="edit{{ $participant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+@foreach ($tenants as $tenant)
+<div class="modal modal-blur fade" id="edit{{ $tenant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <form action="{{ route('admin.participant.update', $participant->id) }}" method="POST" class="">
+      <form action="{{ route('admin.tenant.update', $tenant->id) }}" method="POST" class="">
         @csrf
         @method('PUT')
         <div class="modal-header">
@@ -150,18 +132,18 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label required">Name</label>
-            <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $participant->name }}" autocomplete="off">
+            <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $tenant->name }}" autocomplete="off">
             @error('name')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
           <div class="mb-3">
             <label class="form-label required">Email</label>
-            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ $participant->email }}" autocomplete="off">
+            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ $tenant->email }}" autocomplete="off">
             @error('email')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
           <div class="mb-3">
-            <label class="form-label required">Phone Number</label>
-            <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" value="{{ $participant->phone_number }}" autocomplete="off">
-            @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
+            <label class="form-label required">Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Password" autocomplete="off">
+            @error('password')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
         <div class="modal-footer">
@@ -176,13 +158,13 @@
 </div>
 @endforeach
 
-@foreach ($participants as $participant)
-<div class="modal modal-blur fade" id="delete{{ $participant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+@foreach ($tenants as $tenant)
+<div class="modal modal-blur fade" id="delete{{ $tenant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-danger"></div>
-      <form action="{{ route('admin.participant.destroy', $participant->id) }}" method="POST">
+      <form action="{{ route('admin.tenant.destroy', $tenant->id) }}" method="POST">
         @csrf
         @method('Delete')
         <div class="modal-body text-center py-4">

@@ -66,5 +66,7 @@ class Kernel extends HttpKernel
         'disableBackButton' => \App\Http\Middleware\DisableBackButton::class,
         'disableRedirectToLoginPage' => \App\Http\Middleware\DisableRedirectToLoginPage::class,
         'admin' => \App\Http\Middleware\Admin::class,
+        'receptionist' => \App\Http\Middleware\Receptionist::class,
+        'tenant' => \App\Http\Middleware\Tenant::class,
     ];
 }
