@@ -57,10 +57,87 @@ Route::prefix('tenant')->name('tenant.')->group(function(){
     });
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Route Front End
 // Index/Home
-Route::get('/', [IndexPageController::class, 'index']);
-Route::get('/home', [IndexPageController::class, 'index']);
+Route::get('/', [IndexPageController::class, 'index'])->name('home.index');
+Route::get('/home', [IndexPageController::class, 'index'])->name('home.index');
 
 // Registration
 Route::get('/registration', [RegistrationPageController::class, 'index'])->name('registration.index');
