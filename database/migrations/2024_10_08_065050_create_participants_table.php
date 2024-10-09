@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('verification')->default(2);
             $table->integer('attendance')->default(2);
             $table->integer('status')->default(1);
+            $table->integer('point')->default(0);
             $table->timestamps();
         });
     }
