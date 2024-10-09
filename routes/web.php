@@ -4,7 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\IndexPageController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\RegistrationPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +34,40 @@ Route::prefix('admin')->group(function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Route Front End
+// Index/Home
+Route::get('/', [IndexPageController::class, 'index']);
+Route::get('/home', [IndexPageController::class, 'index']);
+
+// Registration
+Route::get('/registration', [RegistrationPageController::class, 'index'])->name('registration.index');
+Route::post('/registration', [RegistrationPageController::class, 'store'])->name('registration.store');
+
+// Verify after regis
+Route::get('verify/{token}', [RegistrationPageController::class, 'verify'])->name('registration.verify');
+
+// Invitation
+Route::get('/invitation', [RegistrationPageController::class, 'invitation'])->name('registration.invitation');
