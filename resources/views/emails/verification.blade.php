@@ -50,6 +50,7 @@
             font-weight: bold;
             display: inline-block;
             margin-top: 20px;
+            justify-content: center;
         }
 
         .btn-verify:hover {
@@ -57,7 +58,7 @@
         }
 
         .footer-note {
-            font-size: 14px;
+            font-size: 12px;
             color: #777777;
             margin-top: 30px;
             text-align: center;
@@ -67,8 +68,8 @@
 
 <body>
     <div class="email-container text-center">
-        <!-- Ganti dengan logo BTN dari URL online -->
-        <img src="https://www.btn.co.id/-/media/Images/About/News/banner-logo-btn-861x484.png?h=484&w=861&hash=AEE63478D275D047A38D001F49FD411C" alt="Logo BTN" class="logo">
+        
+        <img src="{{ $message->embed('bumn-learning-festival.png') }}" alt="Logo BTN" class="logo">
 
         <h2 class="brand-color">Verifikasi Email Anda</h2>
         
