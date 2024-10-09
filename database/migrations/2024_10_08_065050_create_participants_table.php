@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('participants', function (Blueprint $table) {
             $table->id();
             $table->string('qrcode')->unique()->nullable();
+            $table->string('token')->unique();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('phone_number')->nullable();
             $table->integer('verification')->default(2);
             $table->integer('attendance')->default(2);
