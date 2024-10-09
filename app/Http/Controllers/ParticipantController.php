@@ -31,15 +31,16 @@ class ParticipantController extends Controller
     public function create() {}
 
     public function store(Request $request) {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'phone_number' => 'required',
-        ]);
-
+        
         DB::beginTransaction();
-
+        
         try {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required',
+                'phone_number' => 'required|min:10',
+            ]);
+
             $participantCount = Participant::lockForUpdate()->count() + 1;
 
             $qrcode = '';
@@ -55,12 +56,17 @@ class ParticipantController extends Controller
             } elseif ($participantCount >= 401) {
                 $qrcode = 'F' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
             }
+
+            $token = $this->generateUniqueToken(12);
             
             $array = [
                 'qrcode' => $qrcode,
+                'token' => $token,
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'phone_number' => $request['phone_number'],
+                'verification' => 1,
+                'attendance' => 1,
             ];
 
             Participant::create($array);
@@ -80,14 +86,14 @@ class ParticipantController extends Controller
 
     public function update(Request $request, $id) {
         $participant = Participant::find($id);
-
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'phone_number' => 'required',
-        ]);
-
+        
         try {
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required',
+                'phone_number' => 'required|min:10',
+            ]);
+
             $array = [
                 'name' => $request['name'],
                 'email' => $request['email'],
@@ -118,5 +124,13 @@ class ParticipantController extends Controller
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
         }
+    }
+
+    private function generateUniqueToken($length = 12) {
+        do {
+            $token = bin2hex(random_bytes($length / 2));
+        } while (Participant::where('token', $token)->exists());
+    
+        return $token;
     }
 }
