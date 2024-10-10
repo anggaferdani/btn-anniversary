@@ -4,12 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IndexPageController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\ReceptionistController;
 use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\IndexPageController;
-use App\Http\Controllers\AttendanceParticipantController;
+use App\Http\Controllers\UserParticipantController;
 use App\Http\Controllers\RegistrationPageController;
+use App\Http\Controllers\AttendanceParticipantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,20 +41,29 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::resource('participant', ParticipantController::class);
         Route::get('resend-email-verification/{token}', [AuthenticationController::class, 'resendEmailVerification'])->name('resend-email-verification');
         Route::get('resend-digital-invitation/{token}', [AuthenticationController::class, 'resendDigitalInvitation'])->name('resend-digital-invitation');
-        Route::get('verify/{token}', [AuthenticationController::class, 'verify'])->name('verify');
         Route::resource('attendance-participant', AttendanceParticipantController::class);
+        Route::get('history', [UserParticipantController::class, 'history'])->name('history');
     });
 });
 
 Route::prefix('receptionist')->name('receptionist.')->group(function(){
     Route::middleware(['auth:web', 'disableBackButton', 'receptionist'])->group(function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('scan', [ParticipantController::class, 'scan'])->name('scan');
+        Route::get('attendance/{qrcode}', [ParticipantController::class, 'attendance'])->name('attendance');
+        Route::resource('participant', ParticipantController::class);
+        Route::get('resend-email-verification/{token}', [AuthenticationController::class, 'resendEmailVerification'])->name('resend-email-verification');
+        Route::get('resend-digital-invitation/{token}', [AuthenticationController::class, 'resendDigitalInvitation'])->name('resend-digital-invitation');
+        Route::resource('attendance-participant', AttendanceParticipantController::class);
     });
 });
 
 Route::prefix('tenant')->name('tenant.')->group(function(){
     Route::middleware(['auth:web', 'disableBackButton', 'tenant'])->group(function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('scan', [UserParticipantController::class, 'scan'])->name('scan');
+        Route::get('point/{qrcode}', [UserParticipantController::class, 'point'])->name('point');
+        Route::get('history', [UserParticipantController::class, 'history'])->name('history');
     });
 });
 

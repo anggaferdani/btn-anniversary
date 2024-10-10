@@ -17,7 +17,7 @@
       @endif
       @if(Session::get('error'))
         <div class="alert alert-important alert-danger" role="alert">
-          {{ Session::get('success') }}
+          {{ Session::get('error') }}
         </div>
       @endif
       <form action="{{ route('post.login') }}" method="post">

@@ -10,7 +10,9 @@
     </div>
     <div class="col-auto">
       <div class="btn-list">
-        <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Create</a>
+        @if(auth()->user()->role == 1)
+          <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Create</a>
+        @endif
       </div>
     </div>
   </div>
@@ -33,11 +35,19 @@
       <div class="card">
         <div class="card-header">
           <div class="ms-auto">
-            <form action="{{ route('admin.participant.index') }}" class="">
+            @if(auth()->user()->role == 1)
+              <form action="{{ route('admin.participant.index') }}" class="">
+            @elseif(auth()->user()->role == 2)
+              <form action="{{ route('receptionist.participant.index') }}" class="">
+            @endif
               <div class="d-flex gap-1">
                 <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search">
                 <button type="submit" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <a href="{{ route('admin.participant.index') }}" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-times"></i></a>
+                @if(auth()->user()->role == 1)
+                  <a href="{{ route('admin.participant.index') }}" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-times"></i></a>
+                @elseif(auth()->user()->role == 2)
+                  <a href="{{ route('receptionist.participant.index') }}" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-times"></i></a>
+                @endif
               </div>
             </form>
           </div>
@@ -47,7 +57,7 @@
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Code</th>
+                <th>QRCode</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
@@ -72,12 +82,19 @@
                   </td>
                   <td>
                     <div class="d-flex gap-1">
-                      @if($participant->verification == 2)
-                        <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
+                      @if(auth()->user()->role == 1)
+                        @if($participant->verification == 2)
+                          <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
+                        @endif
+                        <a href="{{ route('admin.resend-digital-invitation', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Digital Invitation</span></a>
+                        <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $participant->id }}"><i class="fa-solid fa-pen"></i></button>
+                        <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $participant->id }}"><i class="fa-solid fa-trash"></i></button>
+                      @elseif(auth()->user()->role == 2)
+                        @if($participant->verification == 2)
+                          <a href="{{ route('receptionist.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
+                        @endif
+                        <a href="{{ route('receptionist.resend-digital-invitation', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Digital Invitation</span></a>
                       @endif
-                      <a href="{{ route('admin.resend-digital-invitation', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Digital Invitation</span></a>
-                      <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $participant->id }}"><i class="fa-solid fa-pen"></i></button>
-                      <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $participant->id }}"><i class="fa-solid fa-trash"></i></button>
                     </div>
                   </td>
                 </tr>

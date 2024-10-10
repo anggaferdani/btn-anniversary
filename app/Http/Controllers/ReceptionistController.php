@@ -39,7 +39,7 @@ class ReceptionistController extends Controller
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => bcrypt($request['password']),
-                'role' => 1,
+                'role' => 2,
             ];
 
             User::create($array);
