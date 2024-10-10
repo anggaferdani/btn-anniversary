@@ -74,7 +74,7 @@ class RegistrationPageController extends Controller
         $participant = Participant::where('token', $token)->first();
     
         $pdf = Pdf::loadView('frontend.pages.registration.invitation-pdf', compact('participant'))->setOption("isRemoteEnabled", true)->setOption("defaultFont", "sans-serif");
-        
+      
         // Download PDF
         return $pdf->download($participant->qrcode . '.pdf');
     }

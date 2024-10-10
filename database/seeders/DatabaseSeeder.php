@@ -5,10 +5,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\User;
-use App\Models\Profile;
-use App\Models\Experience;
 use Illuminate\Database\Seeder;
-use App\Models\WhyTradersChooseUs;
+use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
 {
@@ -39,5 +37,22 @@ class DatabaseSeeder extends Seeder
         ];
 
         User::insert($users);
+
+        // $faker = Faker::create();
+
+        // for ($i = 1; $i <= 100; $i++) {
+        //     $qrcode = 'B' . str_pad($i, 3, '0', STR_PAD_LEFT);
+        //     $token = bin2hex(random_bytes(6));
+
+        //     Participant::create([
+        //         'qrcode' => $qrcode,
+        //         'token' => $token,
+        //         'name' => $faker->name,
+        //         'email' => $faker->unique()->safeEmail,
+        //         'phone_number' => $faker->phoneNumber,
+        //         'verification' => 1,
+        //         'attendance' => 2,
+        //     ]);
+        // }
     }
 }
