@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TenantController;
+use App\Http\Controllers\InstansiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexPageController;
 use App\Http\Controllers\ParticipantController;
@@ -35,6 +36,7 @@ Route::middleware(['web', 'disableBackButton'])->group(function(){
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::middleware(['auth:web', 'disableBackButton', 'admin'])->group(function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('instansi', InstansiController::class);
         Route::resource('admin', AdminController::class);
         Route::resource('receptionist', ReceptionistController::class);
         Route::resource('tenant', TenantController::class);
