@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('qrcode')->unique()->nullable();
             $table->string('token')->unique();
             $table->string('name');
+            $table->unsignedInteger('instansi_id');
+            $table->string('jabatan')->nullable();
             $table->string('email');
             $table->string('phone_number')->nullable();
             $table->integer('verification')->default(2);
