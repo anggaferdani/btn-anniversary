@@ -95,8 +95,11 @@ class RegistrationPageController extends Controller
                 mkdir($publicPath, 0755, true);
             }
 
-            $participant->update('image', $fileName);
-    
+            $participant->update([
+                'image' => $fileName,
+            ]);
+            
+                    
             // Save the image
             file_put_contents($filePath, $imageData);
     
