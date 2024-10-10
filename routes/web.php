@@ -160,6 +160,6 @@ Route::post('/registration/store/online', [RegistrationPageController::class, 's
 Route::get('verify/{token}', [RegistrationPageController::class, 'verify'])->name('registration.verify');
 Route::post('verify/sendmail/{token}', [RegistrationPageController::class, 'sendmailQRCode'])->name('registration.sendmail');
 
-Route::get('registration/download-pdf/{token}', [RegistrationPageController::class, 'downloadPdf'])->name('registration.downloadPdf');
-Route::post('registration/sendmail/{token}', [RegistrationPageController::class, 'sendmailQRCode'])->name('registration.sendmail');
+// Route::get('registration/download-pdf/{token}', [RegistrationPageController::class, 'downloadPdf'])->name('registration.downloadPdf');
+// Route::post('registration/sendmail/{token}', [RegistrationPageController::class, 'sendmailQRCode'])->name('registration.sendmail');
 Route::post('registration/send-image/{token}', [RegistrationPageController::class, 'sendImage'])->name('registration.sendImage');

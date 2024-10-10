@@ -44,14 +44,14 @@
     
 
     <div style="display: flex; justify-content: center; text-align: center; gap: 10px; margin: 1rem;">
-        <!-- Button to Download PDF -->
+        {{-- <!-- Button to Download PDF -->
         <a href="{{ route('registration.downloadPdf', $participant->token) }}" id="downloadPdfBtn" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Download Kartu sebagai PDF</a>
     
         <!-- Button to Send Email -->
         <form action="{{ route('registration.sendmail', $participant->token) }}" method="POST" style="margin: 0;">
             @csrf
             <button type="submit" style="padding: 10px 20px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer;">Kirim QR Code via Email</button>
-        </form>
+        </form> --}}
     
         <!-- Button to Download Kartu as Image -->
         <a href="#" id="downloadBtn" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Download Kartu Sebagai Image</a>

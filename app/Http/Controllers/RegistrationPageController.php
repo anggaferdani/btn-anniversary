@@ -87,13 +87,15 @@ class RegistrationPageController extends Controller
     
             // Define the public path for saving the image
             $publicPath = public_path('images');
-            $fileName = 'qrcode_' . $participant->qrcode . '_card.jpg';
+            $fileName = $participant->qrcode . '.jpg';
             $filePath = $publicPath . '/' . $fileName;
     
             // Create directory if it doesn't exist
             if (!file_exists($publicPath)) {
                 mkdir($publicPath, 0755, true);
             }
+
+            $participant->update('image', $fileName);
     
             // Save the image
             file_put_contents($filePath, $imageData);
@@ -128,14 +130,14 @@ class RegistrationPageController extends Controller
         return view('frontend.pages.registration.invitation', compact('participant'));
     }
     
-    public function downloadPdf($token) {
-        $participant = Participant::where('token', $token)->first();
+    // public function downloadPdf($token) {
+    //     $participant = Participant::where('token', $token)->first();
     
-        $pdf = Pdf::loadView('frontend.pages.registration.invitation-pdf', compact('participant'))->setOption("isRemoteEnabled", true)->setOption("defaultFont", "sans-serif");
+    //     $pdf = Pdf::loadView('frontend.pages.registration.invitation-pdf', compact('participant'))->setOption("isRemoteEnabled", true)->setOption("defaultFont", "sans-serif");
       
-        // Download PDF
-        return $pdf->download($participant->qrcode . '.pdf');
-    }
+    //     // Download PDF
+    //     return $pdf->download($participant->qrcode . '.pdf');
+    // }
 
     // public function downloadPdf($token) {
     //     // Ambil participant berdasarkan token
@@ -166,43 +168,43 @@ class RegistrationPageController extends Controller
     // }
 
     
-    public function sendmailQRCode($token, Request $request) {
-        $participant = Participant::where('token', $token)->first();
+    // public function sendmailQRCode($token, Request $request) {
+    //     $participant = Participant::where('token', $token)->first();
         
-        if (!$participant) {
-            return redirect()->back()->with('error', 'Participant not found.');
-        }
+    //     if (!$participant) {
+    //         return redirect()->back()->with('error', 'Participant not found.');
+    //     }
     
-        // Generate PDF
-        $pdf = Pdf::loadView('frontend.pages.registration.invitation-pdf', compact('participant'))
-                  ->setOption("isRemoteEnabled", true);
+    //     // Generate PDF
+    //     $pdf = Pdf::loadView('frontend.pages.registration.invitation-pdf', compact('participant'))
+    //               ->setOption("isRemoteEnabled", true);
     
-        // Data yang akan dikirim ke email
-        $mail = [
-            'to' => $participant->email,
-            'from_email' => 'example@gmail.com',
-            'from_name' => 'BTN Anniversary',
-            'subject' => 'QR Code',
-            'name' => $participant->name,
-        ];
+    //     // Data yang akan dikirim ke email
+    //     $mail = [
+    //         'to' => $participant->email,
+    //         'from_email' => 'example@gmail.com',
+    //         'from_name' => 'BTN Anniversary',
+    //         'subject' => 'QR Code',
+    //         'name' => $participant->name,
+    //     ];
     
-        try {
-            Mail::send('emails.invitation', $mail, function($message) use ($mail, $pdf) {
-                $message->to($mail['to'])
-                        ->from($mail['from_email'], $mail['from_name'])
-                        ->subject($mail['subject'])
-                        ->attachData($pdf->output(), 'qrcode.pdf', [
-                            'mime' => 'application/pdf',
-                        ]); // Attach the PDF file
-            });
+    //     try {
+    //         Mail::send('emails.invitation', $mail, function($message) use ($mail, $pdf) {
+    //             $message->to($mail['to'])
+    //                     ->from($mail['from_email'], $mail['from_name'])
+    //                     ->subject($mail['subject'])
+    //                     ->attachData($pdf->output(), 'qrcode.pdf', [
+    //                         'mime' => 'application/pdf',
+    //                     ]); // Attach the PDF file
+    //         });
     
-            // Email berhasil dikirim
-            return redirect()->back()->with('success', 'PDF QR Code berhasil dikirim ke email ' . $mail['to']);
-        } catch (\Exception $e) {
-            // Tampilkan pesan error jika email gagal dikirim
-            return redirect()->back()->with('error', 'Gagal mengirim email: ' . $e->getMessage());
-        }
-    }
+    //         // Email berhasil dikirim
+    //         return redirect()->back()->with('success', 'PDF QR Code berhasil dikirim ke email ' . $mail['to']);
+    //     } catch (\Exception $e) {
+    //         // Tampilkan pesan error jika email gagal dikirim
+    //         return redirect()->back()->with('error', 'Gagal mengirim email: ' . $e->getMessage());
+    //     }
+    // }
     
     
     /**
