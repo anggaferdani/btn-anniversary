@@ -5,7 +5,7 @@
     <div class="text-center mb-4">
         <div class="d-flex align-items-center justify-content-center mb-4">
             <!-- Gambar di sebelah kiri -->
-            <a href="{{ route('registration.index') }}" class="navbar-brand navbar-brand-autodark me-3">
+            <a href="{{ route('index') }}" class="navbar-brand navbar-brand-autodark me-3">
                 <img src="{{ asset('bumn-learning-festival.png') }}" width="200" alt="btn">
             </a>
         </div>
@@ -42,7 +42,7 @@
             </div>
             <div class="mb-3">
                 <label class="form-label required">Nomor telepon</label>
-                <input type="text" class="form-control" name="phone_number" placeholder="08xxxxxxxxxx" value="{{ old('phone_number') }}" required />
+                <input type="number" class="form-control" name="phone_number" placeholder="08xxxxxxxxxx" value="{{ old('phone_number') }}" required />
                 @error('phone_number')
                     <div class="text-danger">{{ $message }}</div> <!-- Display error message for phone number -->
                 @enderror
