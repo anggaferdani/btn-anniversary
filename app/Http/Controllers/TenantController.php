@@ -39,7 +39,7 @@ class TenantController extends Controller
                 'name' => $request['name'],
                 'email' => $request['email'],
                 'password' => bcrypt($request['password']),
-                'role' => 1,
+                'role' => 3,
             ];
 
             User::create($array);

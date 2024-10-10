@@ -8,6 +8,38 @@ use Illuminate\Support\Facades\DB;
 
 class ParticipantController extends Controller
 {
+    public function scan() {
+        return view('backend.pages.receptionist.scan');
+    }
+
+    public function attendance($qrcode)
+    {
+        $participant = Participant::where('verification', 1)->where('qrcode', $qrcode)->first();
+
+        if ($participant) {
+            if ($participant->status == 2) {
+                return response()->json(['error' => 'Participant tidak aktif'], 400);
+            }
+
+            if ($participant->attendance == 1) {
+                return response()->json(['error' => 'Attendance has already been marked'], 400);
+            }
+
+            $participant->update(['attendance' => 1]);
+
+            return response()->json([
+                'success' => 'Absen kehadiran participant berhasil ditambahkan',
+                'name' => $participant->name,
+                'qrcode' => $participant->qrcode,
+                'email' => $participant->email,
+                'phone' => $participant->phone,
+                'point' => $participant->point,
+            ]);
+        }
+
+        return response()->json(['error' => 'Participant not found'], 404);
+    }
+
     public function index(Request $request) {
         $query = Participant::where('status', 1);
 
@@ -41,20 +73,26 @@ class ParticipantController extends Controller
                 'phone_number' => 'required|min:10',
             ]);
 
-            $participantCount = Participant::lockForUpdate()->count() + 1;
+            $participantCount = Participant::whereNotNull('qrcode')->lockForUpdate()->count();
 
-            $qrcode = '';
-
-            if ($participantCount >= 1 && $participantCount <= 2) {
-                $qrcode = 'B' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-            } elseif ($participantCount >= 3 && $participantCount <= 200) {
-                $qrcode = 'U' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-            } elseif ($participantCount >= 201 && $participantCount <= 300) {
-                $qrcode = 'M' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-            } elseif ($participantCount >= 301 && $participantCount <= 400) {
-                $qrcode = 'N' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-            } elseif ($participantCount >= 401) {
-                $qrcode = 'F' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
+            if ($participantCount === 0) {
+                $qrcode = 'B001';
+            } elseif ($participantCount === 1) {
+                $qrcode = 'B002';
+            } else {
+                $participantCount++;
+    
+                if ($participantCount <= 100) {
+                    $qrcode = 'B' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
+                } elseif ($participantCount > 100 && $participantCount <= 200) {
+                    $qrcode = 'U' . str_pad($participantCount - 100, 3, '0', STR_PAD_LEFT);
+                } elseif ($participantCount > 200 && $participantCount <= 300) {
+                    $qrcode = 'M' . str_pad($participantCount - 200, 3, '0', STR_PAD_LEFT);
+                } elseif ($participantCount > 300 && $participantCount <= 400) {
+                    $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
+                } elseif ($participantCount > 400) {
+                    $qrcode = 'F' . str_pad($participantCount - 400, 3, '0', STR_PAD_LEFT);
+                }
             }
 
             $token = $this->generateUniqueToken(12);
@@ -66,7 +104,7 @@ class ParticipantController extends Controller
                 'email' => $request['email'],
                 'phone_number' => $request['phone_number'],
                 'verification' => 1,
-                'attendance' => 1,
+                'attendance' => 2,
             ];
 
             Participant::create($array);
@@ -99,10 +137,6 @@ class ParticipantController extends Controller
                 'email' => $request['email'],
                 'phone_number' => $request['phone_number'],
             ];
-
-            if($request['password']){
-                $array['password'] = bcrypt($request['password']);
-            }
 
             $participant->update($array);
     

@@ -1,11 +1,11 @@
 @extends('backend.templates.pages')
-@section('title', 'Attendance Participant')
+@section('title', 'History Tenant Visitor')
 @section('header')
 <div class="container-xl">
   <div class="row g-2 align-items-center">
     <div class="col">
       <h2 class="page-title">
-        Attendance Participant
+        History
       </h2>
     </div>
     <div class="col-auto">
@@ -33,11 +33,19 @@
       <div class="card">
         <div class="card-header">
           <div class="ms-auto">
-            <form action="{{ route('admin.attendance-participant.index') }}" class="">
+              @if (auth()->user()->role == 1)
+                <form action="{{ route('admin.history') }}" class="">
+              @else
+                <form action="{{ route('tenant.history') }}" class="">
+              @endif
               <div class="d-flex gap-1">
                 <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search">
                 <button type="submit" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-magnifying-glass"></i></button>
-                <a href="{{ route('admin.attendance-participant.index') }}" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-times"></i></a>
+                @if (auth()->user()->role == 1)
+                  <a href="{{ route('admin.history') }}" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-times"></i></a>
+                @else
+                  <a href="{{ route('tenant.history') }}" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-times"></i></a>
+                @endif
               </div>
             </form>
           </div>
@@ -47,34 +55,36 @@
             <thead>
               <tr>
                 <th>No.</th>
-                <th>Code</th>
-                <th>Name</th>
+                <th>QRCode</th>
+                @if (auth()->user()->role == 1)
+                  <th>Tenant</th>
+                @endif
+                <th>Participant</th>
                 <th>Email</th>
                 <th>Phone Number</th>
-                <th>Point</th>
-                <th>Status</th>
+                <th>Point Earned</th>
+                <th>Points Left</th>
+                <th>Created At</th>
                 {{-- <th>Action</th> --}}
               </tr>
             </thead>
             <tbody>
-              @foreach ($attendanceParticipants as $attendanceParticipant)
+              @foreach ($userParticipants as $userParticipant)
                 <tr>
-                  <td>{{ ($attendanceParticipants->currentPage() - 1) * $attendanceParticipants->perPage() + $loop->iteration }}</td>
-                  <td>{{ $attendanceParticipant->qrcode }}</td>
-                  <td>{{ $attendanceParticipant->name }}</td>
-                  <td>{{ $attendanceParticipant->email }}</td>
-                  <td>{{ $attendanceParticipant->phone_number }}</td>
-                  <td>{{ $attendanceParticipant->point }}</td>
-                  <td>
-                    @if($attendanceParticipant->verification == 1)
-                      <span class="badge bg-primary text-white">Verified</span>
-                    @else
-                      <span class="badge bg-danger text-white">Not Verified</span>
-                    @endif
-                  </td>
+                  <td>{{ ($userParticipants->currentPage() - 1) * $userParticipants->perPage() + $loop->iteration }}</td>
+                  <td>{{ $userParticipant->participant->qrcode }}</td>
+                  @if (auth()->user()->role == 1)
+                    <td>{{ $userParticipant->user->name }}</td>
+                  @endif
+                  <td>{{ $userParticipant->participant->name }}</td>
+                  <td>{{ $userParticipant->participant->email }}</td>
+                  <td>{{ $userParticipant->participant->phone_number }}</td>
+                  <td>+1</td>
+                  <td>{{ $userParticipant->participant->point }}</td>
+                  <td>{{ $userParticipant->created_at }}</td>
                   {{-- <td>
-                    <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $attendanceParticipant->id }}"><i class="fa-solid fa-pen"></i></button>
-                    <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $attendanceParticipant->id }}"><i class="fa-solid fa-trash"></i></button>
+                    <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $userParticipant->id }}"><i class="fa-solid fa-pen"></i></button>
+                    <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $userParticipant->id }}"><i class="fa-solid fa-trash"></i></button>
                   </td> --}}
                 </tr>
               @endforeach
@@ -83,8 +93,8 @@
         </div>
         <div class="card-footer d-flex align-items-center">
           <ul class="pagination m-0 ms-auto">
-            @if($attendanceParticipants->hasPages())
-              {{ $attendanceParticipants->appends(request()->query())->links('pagination::bootstrap-4') }}
+            @if($userParticipants->hasPages())
+              {{ $userParticipants->appends(request()->query())->links('pagination::bootstrap-4') }}
             @else
               <li class="page-item">No more records</li>
             @endif
@@ -132,11 +142,11 @@
   </div>
 </div>
 
-@foreach ($attendanceParticipants as $attendanceParticipant)
-<div class="modal modal-blur fade" id="edit{{ $attendanceParticipant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+@foreach ($userParticipants as $userParticipant)
+<div class="modal modal-blur fade" id="edit{{ $userParticipant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <form action="{{ route('admin.attendance-participant.update', $attendanceParticipant->id) }}" method="POST" class="">
+      <form action="{{ route('admin.attendance-participant.update', $userParticipant->id) }}" method="POST" class="">
         @csrf
         @method('PUT')
         <div class="modal-header">
@@ -146,17 +156,17 @@
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label required">Name</label>
-            <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $attendanceParticipant->name }}" autocomplete="off">
+            <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $userParticipant->name }}" autocomplete="off">
             @error('name')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
           <div class="mb-3">
             <label class="form-label required">Email</label>
-            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ $attendanceParticipant->email }}" autocomplete="off">
+            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ $userParticipant->email }}" autocomplete="off">
             @error('email')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
           <div class="mb-3">
             <label class="form-label required">Phone Number</label>
-            <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" value="{{ $attendanceParticipant->phone_number }}" autocomplete="off">
+            <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" value="{{ $userParticipant->phone_number }}" autocomplete="off">
             @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
@@ -172,13 +182,13 @@
 </div>
 @endforeach
 
-@foreach ($attendanceParticipants as $attendanceParticipant)
-<div class="modal modal-blur fade" id="delete{{ $attendanceParticipant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+@foreach ($userParticipants as $userParticipant)
+<div class="modal modal-blur fade" id="delete{{ $userParticipant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-danger"></div>
-      <form action="{{ route('admin.attendance-participant.destroy', $attendanceParticipant->id) }}" method="POST">
+      <form action="{{ route('admin.attendance-participant.destroy', $userParticipant->id) }}" method="POST">
         @csrf
         @method('Delete')
         <div class="modal-body text-center py-4">
