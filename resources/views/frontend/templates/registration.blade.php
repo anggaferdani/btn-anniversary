@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>@yield('title')</title>
-    <!-- CSS files -->
 
     <link rel="icon" type="image/x-icon" href="{{ asset('btn.png') }}">
     <link href="{{ asset('tabler/dist/css/tabler.min.css?1692870487') }}" rel="stylesheet"/>
@@ -25,7 +24,6 @@
   </head>
   <body  class=" d-flex flex-column">
     <script src="{{ asset('tabler/dist/js/demo-theme.min.js?1692870487') }}"></script>
-    @include('frontend.templates.subtemplates.navbar')
     <div class="page page-center">
         @yield('content')
     </div>

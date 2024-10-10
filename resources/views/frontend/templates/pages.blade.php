@@ -1,51 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>@yield('title')</title>
-    <!-- CSS files -->
 
-    <link rel="icon" type="image/x-icon" href="{{ asset('btn.png') }}">
-    <link href="{{ asset('tabler/dist/css/tabler.min.css?1692870487') }}" rel="stylesheet"/>
-    <link href="{{ asset('tabler/dist/css/tabler-flags.min.css?1692870487') }}" rel="stylesheet"/>
-    <link href="{{ asset('tabler/dist/css/tabler-payments.min.css?1692870487') }}" rel="stylesheet"/>
-    <link href="{{ asset('tabler/dist/css/tabler-vendors.min.css?1692870487') }}" rel="stylesheet"/>
-    <link href="{{ asset('tabler/dist/css/demo.min.css?1692870487') }}" rel="stylesheet"/>
-    <style>
-      @import url('https://rsms.me/inter/inter.css');
-      :root {
-      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-      }
-      body {
-      	font-feature-settings: "cv03", "cv04", "cv11";
-      }
-    </style>
-  </head>
-  <body  class=" d-flex flex-column">
-    <script src="{{ asset('tabler/dist/js/demo-theme.min.js?1692870487') }}"></script>
+<head>
+    <title>BTN Anniversary | @yield('title')</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/open-iconic-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/animate.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/magnific-popup.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/aos.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/ionicons.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/bootstrap-datepicker.css') }}">
+    <link rel="stylesheet" href="{{ asset('eventtalak/css/jquery.timepicker.css') }}">
+
+
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/icomoon.css') }}">
+    <link rel="stylesheet" href="{{ asset('eventtalk/css/style.css') }}">
+</head>
+
+<body>
+
     @include('frontend.templates.subtemplates.navbar')
-    <div class="page page-center">
-        @yield('content')
-    </div>
-    <!-- Libs JS -->
-    <!-- Tabler Core -->
-    <script src="{{ asset('tabler/dist/js/tabler.min.js?1692870487') }}" defer></script>
-    <script src="{{ asset('tabler/dist/js/demo.min.js?1692870487') }}" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+    
+    @yield('content')
+    
+    @include('frontend.templates.subtemplates.footer')
 
-    <script type="text/javascript">
-      $(document).ready( function () {
-        $('form').on('submit', function() {
-          $.LoadingOverlay("show");
-      
-          setTimeout(function(){
-              $.LoadingOverlay("hide");
-          }, 100000);
-        });
-      });
+
+    <!-- loader -->
+    <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+                stroke="#F96D00" /></svg></div>
+
+
+    <script src="{{ asset('eventtalk/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/jquery-migrate-3.0.1.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/popper.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/jquery.easing.1.3.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/jquery.stellar.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/aos.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/jquery.animateNumber.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/jquery.timepicker.min.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/scrollax.min.js') }}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false">
     </script>
-  </body>
+    <script src="{{ asset('eventtalk/js/google-map.js') }}"></script>
+    <script src="{{ asset('eventtalk/js/main.js') }}"></script>
+
+</body>
+
 </html>

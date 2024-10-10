@@ -145,6 +145,7 @@ Route::post('/registration', [RegistrationPageController::class, 'store'])->name
 
 // Verify after regis
 Route::get('verify/{token}', [RegistrationPageController::class, 'verify'])->name('registration.verify');
+Route::post('verify/sendmail/{token}', [RegistrationPageController::class, 'sendmailQRCode'])->name('registration.sendmail');
 
-// Invitation
-Route::get('/invitation', [RegistrationPageController::class, 'invitation'])->name('registration.invitation');
+Route::get('registration/download-pdf/{token}', [RegistrationPageController::class, 'downloadPdf'])->name('registration.downloadPdf');
+Route::post('registration/sendmail/{token}', [RegistrationPageController::class, 'sendmailQRCode'])->name('registration.sendmail');
