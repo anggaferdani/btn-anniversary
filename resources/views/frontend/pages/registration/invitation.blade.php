@@ -46,16 +46,24 @@
     <div style="display: flex; justify-content: center; text-align: center; gap: 10px; margin: 1rem;">
         <!-- Button to Download PDF -->
         <a href="{{ route('registration.downloadPdf', $participant->token) }}" id="downloadPdfBtn" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Download Kartu sebagai PDF</a>
-
+    
         <!-- Button to Send Email -->
         <form action="{{ route('registration.sendmail', $participant->token) }}" method="POST" style="margin: 0;">
             @csrf
             <button type="submit" style="padding: 10px 20px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer;">Kirim QR Code via Email</button>
         </form>
-
+    
+        <!-- Button to Download Kartu as Image -->
         <a href="#" id="downloadBtn" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Download Kartu Sebagai Image</a>
-
+    
+        <!-- Button to Send Image via Email -->
+        <form id="sendImageForm" action="{{ route('registration.sendImage', $participant->token) }}" method="POST" style="margin: 0;">
+            @csrf
+            <input type="hidden" name="imageData" id="imageData">
+            <button type="submit" id="sendImageBtn" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Kirim Foto via Email</button>
+        </form>
     </div>
+    
     <!-- Libs JS -->
     <script src="tabler/dist/js/tabler.min.js" defer></script>
     <script src="tabler/dist/js/demo.min.js" defer></script>
@@ -78,41 +86,87 @@
                 img.onerror = reject;
             });
         }
+
+        document.getElementById('sendImageBtn').addEventListener('click', async function (e) {
+            e.preventDefault(); // Prevent the form from submitting immediately
+            const qrCodeUrl = document.getElementById('qrCodeImg').src;
+            
+            try {
+                const qrCodeDataUrl = await downloadQRCode(qrCodeUrl);
+                const card = document.getElementById('card');
+                
+                const cardCanvas = await html2canvas(card);
+                const combinedCanvas = document.createElement('canvas');
+                combinedCanvas.width = cardCanvas.width;
+                combinedCanvas.height = cardCanvas.height;
+
+                const combinedCtx = combinedCanvas.getContext('2d');
+                combinedCtx.drawImage(cardCanvas, 0, 0);
+
+                const qrCodeImg = new Image();
+                qrCodeImg.src = qrCodeDataUrl;
+
+                qrCodeImg.onload = () => {
+                    const qrCodeWidth = 200; 
+                    const qrCodeHeight = 200; 
+                    const qrCodePositionX = cardCanvas.width - qrCodeWidth - 10; 
+                    const qrCodePositionY = cardCanvas.height - qrCodeHeight - 10; 
+
+                    combinedCtx.drawImage(qrCodeImg, qrCodePositionX, qrCodePositionY, qrCodeWidth, qrCodeHeight);
+                    
+                    // Get image data URL
+                    const imageDataUrl = combinedCanvas.toDataURL('image/jpeg', 0.9);
+                    document.getElementById('imageData').value = imageDataUrl; // Set hidden input value
+                    
+                    // Submit the form to send email with image
+                    document.getElementById('sendImageForm').submit();
+                };
+            } catch (err) {
+                console.error('Error capturing card:', err);
+            }
+        });
+
     
-        // Function to download the card as an image
+        // Function to download the card as an image and save it to the server
         async function downloadCard() {
             const qrCodeUrl = document.getElementById('qrCodeImg').src;
             try {
                 const qrCodeDataUrl = await downloadQRCode(qrCodeUrl);
                 const card = document.getElementById('card');
-    
+
                 // Create a new canvas to combine the card and QR code
                 const cardCanvas = await html2canvas(card);
                 const combinedCanvas = document.createElement('canvas');
                 combinedCanvas.width = cardCanvas.width;
                 combinedCanvas.height = cardCanvas.height;
-    
+
                 const combinedCtx = combinedCanvas.getContext('2d');
                 combinedCtx.drawImage(cardCanvas, 0, 0);
-    
+
                 const qrCodeImg = new Image();
                 qrCodeImg.src = qrCodeDataUrl;
-    
-                qrCodeImg.onload = () => {
+
+                qrCodeImg.onload = async () => {
                     // Calculate the position for the QR code
-                    const qrCodeWidth = 200; // Set the new width for the QR code
-                    const qrCodeHeight = 200; // Set the new height for the QR code
-                    const qrCodePositionX = cardCanvas.width - qrCodeWidth - 10; // Adjust for the new width
-                    const qrCodePositionY = cardCanvas.height - qrCodeHeight - 10; // Adjust for the new height
-    
-                    combinedCtx.drawImage(qrCodeImg, qrCodePositionX, qrCodePositionY, qrCodeWidth, qrCodeHeight); // Draw QR code with the new size
-    
+                    const qrCodeWidth = 200; 
+                    const qrCodeHeight = 200; 
+                    const qrCodePositionX = cardCanvas.width - qrCodeWidth - 10; 
+                    const qrCodePositionY = cardCanvas.height - qrCodeHeight - 10; 
+
+                    combinedCtx.drawImage(qrCodeImg, qrCodePositionX, qrCodePositionY, qrCodeWidth, qrCodeHeight);
+
+                    const imageDataUrl = combinedCanvas.toDataURL('image/jpeg', 0.9);
+
+                    // Download the image
                     const link = document.createElement('a');
-                    link.download = 'kartu_bumn_learning_festival.jpg'; // Change file extension to .jpg
-                    link.href = combinedCanvas.toDataURL('image/jpeg', 0.9); // Use 'image/jpeg' for JPG format, and set quality
+                    link.download = '{{ $participant->qrcode }}.jpg';
+                    link.href = imageDataUrl;
                     document.body.appendChild(link);
                     link.click();
                     document.body.removeChild(link);
+
+                    // Send image data to the server
+                    await saveImageToServer(imageDataUrl);
                 };
             } catch (err) {
                 console.error('Error capturing card:', err);

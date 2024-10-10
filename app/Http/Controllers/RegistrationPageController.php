@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Instansi;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Participant;
@@ -21,7 +22,8 @@ class RegistrationPageController extends Controller
      */
     public function index()
     {
-        return view('frontend.pages.registration.registration');
+        $instansis = Instansi::where('status', 1)->get();
+        return view('frontend.pages.registration.registration', compact('instansis'));
     }
 
     /**
@@ -68,6 +70,62 @@ class RegistrationPageController extends Controller
 
             return view('frontend.pages.registration.invitation', compact('participant'));
         }
+    }
+
+    public function sendImage(Request $request, $token) {
+        $participant = Participant::where('token', $token)->first();
+        
+        if (!$participant) {
+            return response()->json(['error' => 'Participant not found.'], 404);
+        }
+    
+        // Decode the image data
+        $imageData = $request->input('imageData');
+        if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
+            $imageData = substr($imageData, strpos($imageData, ',') + 1);
+            $imageData = base64_decode($imageData);
+    
+            // Define the public path for saving the image
+            $publicPath = public_path('images');
+            $fileName = 'qrcode_' . $participant->qrcode . '_card.jpg';
+            $filePath = $publicPath . '/' . $fileName;
+    
+            // Create directory if it doesn't exist
+            if (!file_exists($publicPath)) {
+                mkdir($publicPath, 0755, true);
+            }
+    
+            // Save the image
+            file_put_contents($filePath, $imageData);
+    
+            // Prepare email data
+            $mail = [
+                'to' => $participant->email,
+                'from_email' => 'example@gmail.com',
+                'from_name' => 'BTN Anniversary',
+                'subject' => 'Kartu QR Code',
+                'name' => $participant->name,
+            ];
+    
+            try {
+                Mail::send('emails.invitation', $mail, function($message) use ($mail, $filePath) {
+                    $message->to($mail['to'])
+                            ->from($mail['from_email'], $mail['from_name'])
+                            ->subject($mail['subject'])
+                            ->attach($filePath); // Attach the saved image
+                });
+    
+                // Set a flash message to indicate success
+                session()->flash('success', 'Image sent successfully to ' . $mail['to']);
+            } catch (\Exception $e) {
+                session()->flash('error', 'Failed to send email: ' . $e->getMessage());
+            }
+        } else {
+            session()->flash('error', 'Invalid image data.');
+        }
+    
+        // Redirect to the invitation view
+        return view('frontend.pages.registration.invitation', compact('participant'));
     }
     
     public function downloadPdf($token) {
@@ -155,6 +213,8 @@ class RegistrationPageController extends Controller
             'name' => 'required',
             'email' => 'required|email',
             'phone_number' => 'required',
+            'instansi_id' => 'required',
+            'jabatan' => 'required',
         ]);
 
         $participantCheck = Participant::where('email', $request->email)->whereNotNull('qrcode')->first();
@@ -194,6 +254,8 @@ class RegistrationPageController extends Controller
                     'name' => $request['name'],
                     'email' => $request['email'],
                     'phone_number' => $request['phone_number'],
+                    'instansi_id' => $request['instansi_id'],
+                    'jabatan' => $request['jabatan'],
                 ];
 
                 $participant = Participant::create($array);

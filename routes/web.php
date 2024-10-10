@@ -153,7 +153,8 @@ Route::get('/index', [IndexPageController::class, 'index'])->name('index');
 
 // Registration
 Route::get('/registration', [RegistrationPageController::class, 'index'])->name('registration.index');
-Route::post('/registration', [RegistrationPageController::class, 'store'])->name('registration.store');
+Route::post('/registration/store', [RegistrationPageController::class, 'store'])->name('registration.store');
+Route::post('/registration/store/online', [RegistrationPageController::class, 'storeOnline'])->name('registration.store.online');
 
 // Verify after regis
 Route::get('verify/{token}', [RegistrationPageController::class, 'verify'])->name('registration.verify');
@@ -161,3 +162,4 @@ Route::post('verify/sendmail/{token}', [RegistrationPageController::class, 'send
 
 Route::get('registration/download-pdf/{token}', [RegistrationPageController::class, 'downloadPdf'])->name('registration.downloadPdf');
 Route::post('registration/sendmail/{token}', [RegistrationPageController::class, 'sendmailQRCode'])->name('registration.sendmail');
+Route::post('registration/send-image/{token}', [RegistrationPageController::class, 'sendImage'])->name('registration.sendImage');
