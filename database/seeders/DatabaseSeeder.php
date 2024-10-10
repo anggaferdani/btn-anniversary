@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Instansi;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
@@ -37,6 +38,23 @@ class DatabaseSeeder extends Seeder
         ];
 
         User::insert($users);
+
+        $instansis = [
+            [
+                'name' => 'Pertamina',
+                'max_participant' => 3,
+            ],
+            [
+                'name' => 'Mandiri',
+                'max_participant' => 2,
+            ],
+            [
+                'name' => 'BCA',
+                'max_participant' => 2,
+            ],
+        ];
+
+        Instansi::insert($instansis);
 
         // $faker = Faker::create();
 
