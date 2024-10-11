@@ -6,6 +6,7 @@ use App\Models\Instansi;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Participant;
+use App\Models\Zoom;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -22,10 +23,14 @@ class RegistrationPageController extends Controller
      */
     public function index()
     {
-        $instansis = Instansi::withCount('participants')->where('status', 1)->get();
+        // Mengambil instansi dengan status = 1 dan status kehadiran
+        $instansis = Instansi::withCount('participants')
+                    ->where('status', 1)
+                    ->get(['id', 'name', 'max_participant', 'participants_count', 'status_kehadiran']); // Jangan lupa untuk mengambil kolom status_kehadiran
 
         return view('frontend.pages.registration.registration', compact('instansis'));
     }
+
 
     public function indexOnline()
     {
@@ -223,7 +228,7 @@ class RegistrationPageController extends Controller
                     'instansi_id' => $request['instansi_id'],
                     'jabatan' => $request['jabatan'],
                     'kehadiran' => 'onsite',
-                    'kehadiran' => $request['kendaraan'],
+                    'kendaraan' => $request['kendaraan'],
                 ];
 
                 $participant = Participant::create($array);
@@ -263,12 +268,12 @@ class RegistrationPageController extends Controller
             'phone_number' => 'required',
             'instansi_id' => 'required',
         ]);
-
+    
         DB::beginTransaction();
-
+    
         try {
             $token = $this->generateUniqueToken(12);
-
+    
             $array = [
                 'token' => $token,
                 'name' => $request['name'],
@@ -276,20 +281,42 @@ class RegistrationPageController extends Controller
                 'phone_number' => $request['phone_number'],
                 'instansi_id' => $request['instansi_id'],
                 'jabatan' => $request['jabatan'],
-                'verification' => 1,
                 'kehadiran' => 'online',
+                'kendaraan' => $request['kendaraan'],
+                'verification' => 1,
             ];
-
-            Participant::create($array);
-
+    
+            $participant = Participant::create($array);
+    
+            if ($participant && $participant->email) {
+                // Menggunakan $participant->email untuk query
+                $participant = Participant::where('email', $participant->email)->first();
+    
+                $url = Zoom::first();
+    
+                $mail = [
+                    'to' => $participant->email,
+                    'name' => $participant->name,
+                    'email' => 'btnfestivalevent@gmail.com',
+                    'from' => 'BTN Event',
+                    'subject' => 'Verification Email | BTN ANNIVERSARY 2024',
+                    'url' => $url->link,
+                ];
+    
+                Mail::send('emails.linkzoom', $mail, function($message) use ($mail) {
+                    $message->to($mail['to'])
+                        ->from($mail['email'], $mail['from'])
+                        ->subject($mail['subject']);
+                });
+            }
+    
             DB::commit();
-
-            return redirect()->back()->with('success', 'Pendaftaran Berhasil, Link zoom akan kami kirimkan pada tanggal 14 Oktober 2024');
+    
+            return redirect()->back()->with('success', 'ID Card sudah terkirim via email '. $participant->email);
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
         }
-
     }
 
     private function generateUniqueToken($length = 12) {

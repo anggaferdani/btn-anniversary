@@ -131,15 +131,15 @@
 
 
 <div class="container-fluid" style="margin-bottom: 70px; background-color: #4298C5">
-    <div class="row m-auto" style="max-width: 1170px; padding-top: 88px; padding-bottom: 87px">
-        <div class="col-md-4 d-flex align-items-center">
+    <div class="row m-auto" style="max-width: 1130px; padding-top: 88px; padding-bottom: 87px">
+        <div class="col-md-6 d-flex align-items-center">
             <div>
                 <h1 style="color:white; font-size: 40px; font-weight: 800;">Registrasi</h1>
                 <p style="color:white;font-size: 25px; font-weight: 400; max-width: 250px;">Final Event BUMN Learning Festival</p>
             </div>
         </div>
         
-        <div class="col-md-4 pb-lg-0 pb-5">
+        {{-- <div class="col-md-4 pb-lg-0 pb-5">
             <div class="position-relative card overflow-hidden" style="border-radius: 20px; height: auto; max-height: 336px; width: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s; background: url('{{ asset('assets/frontend/home/bg-card.png') }}');">
                 <img src="{{ asset('AKSEN.png')}}" alt="BUMN Learning Festival" class="position-absolute d-flex justify-content-center z-1" style="bottom: 0; right: -5%; width: 336px;">
                 <div class="p-5 z-2">
@@ -149,16 +149,16 @@
                     <a href="{{ route('registration.index.online') }}" class="btn" style="background-color: #003E64; color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Registrasi</a>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
-        <div class="col-md-4">
-            <div class="position-relative card overflow-hidden" style="border-radius: 20px; height: auto; max-height: 336px; width: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s; background: url('{{ asset('assets/frontend/home/bg-card.png') }}');">
+        <div class="col-md-6">
+            <div class="position-relative card overflow-hidden" style="border-radius: 28px; height: auto; max-height: 336px; width: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s; background: url('{{ asset('assets/frontend/home/bg-card.png') }}') no-repeat; background-size: cover;">
                 <img src="{{ asset('AKSEN.png')}}" alt="BUMN Learning Festival" class="position-absolute d-flex justify-content-center z-1" style="bottom: 0; right: -5%; width: 336px;">
                 <div class="p-5 z-2">
                     <img src="{{ asset('bumn-logo-final.png') }}" width="160px" alt="" class="pb-3">
                     <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: #0566AE;">Pendaftaran Peserta</h5>
-                    <h6 class="card-subtitle mb-3" style="font-size: 33px; font-weight: 800; color: #0566AE;">OFFLINE</h6>
-                    <a href="{{ route('registration.index') }}" class="btn" style="background-color: #0566AE; color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Registrasi</a>
+                    <h6 class="card-subtitle mb-3" style="font-size: 33px; font-weight: 800; color: #0566AE;">REGISTRASI</h6>
+                    <a href="{{ route('registration.index') }}" class="btn" style="background-color: #0566AE; color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Klik Disini</a>
                 </div>
             </div>
         </div>

@@ -71,8 +71,6 @@
 
         <h1>Selamat, {{ $name }}!</h1>
 
-        <img src="{{ $message->embed('images/'. $image) }}" alt="qrcode"
-             style="width: 100%; max-width: 100%; height: auto; overflow: hidden;">
         <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Download QR Code</a>
 
         <p>QR code Anda telah disisipkan sebagai lampiran. Harap bawa QR code ini untuk mengikuti Event.</p>

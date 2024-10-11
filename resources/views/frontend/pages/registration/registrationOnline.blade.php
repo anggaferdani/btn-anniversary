@@ -127,6 +127,30 @@
     </form>
 </div>
 
+<script>
+    function updateButtonVisibility() {
+        const select = document.getElementById('instansi_id');
+        const selectedOption = select.options[select.selectedIndex];
+        const maxParticipants = parseInt(selectedOption.getAttribute('data-max'));
+        const currentParticipants = parseInt(selectedOption.getAttribute('data-current-participants') || '0');
+
+        const submitButton = document.getElementById('submit-button');
+        const quotaMessage = document.getElementById('quota-message');
+
+        if (currentParticipants >= maxParticipants) {
+            submitButton.style.display = 'none';
+            quotaMessage.style.display = 'block'; // Tampilkan pesan kuota penuh
+        } else {
+            submitButton.style.display = 'block';
+            quotaMessage.style.display = 'none'; // Sembunyikan pesan kuota penuh
+        }
+    }
+
+    // Call the function on page load to set the initial visibility
+    window.onload = updateButtonVisibility;
+
+</script>
+
 <style>
     .form-control {
         border-radius: 4px; /* Rounded corners */

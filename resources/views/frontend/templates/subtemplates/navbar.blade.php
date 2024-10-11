@@ -8,13 +8,13 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav align-items-center">
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('registration.index.online') }}" class="text-uppercase"
                         style="color: #01436F; padding-right: 20px; font-size: 20px; text-decoration: none">Registrasi Online</a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="{{ route('registration.index') }}" class="text-uppercase"
-                        style="color: #0566AE; font-size: 20px; text-decoration: none">Registrasi Offline</a>
+                        style="color: #0566AE; font-size: 20px; text-decoration: none">Registrasi </a>
                 </li>
                 <div class="d-flex" style="height: 30px; padding-left: 30px; padding-right: 30px">
                     <div class="vr"></div>

@@ -3,7 +3,6 @@
 @section('content')
 <div class="container container-sm py-4" style="max-width: 1092px; margin: auto; position: relative;">
     <!-- Logo kiri -->
-    
 
     <!-- Konten Form Registrasi -->
     <div class="text-center mb-4">
@@ -15,20 +14,20 @@
         
         <style>
             .responsive-logo {
-                margin-top: 40%; /* Default margin for large screens */
+                margin-top: 30%; /* Default margin for large screens */
                 width: 223px;
             }
         
             @media (max-width: 768px) {
                 .responsive-logo {
                     margin-top: 20%; /* Margin-top for small screens */
-                    width: 137px;id
+                    width: 137px;
                 }
             }
         </style>
         
-        <div class="d-flex align-items-center justify-content-center mb-0" style="color: #0566AE; font-weight: 1000;">
-            <h1 class="responsive-title" style="color: #0566AE; font-weight: 800;">REGISTRASI OFFLINE</h1>
+        <div class="d-flex align-items-center justify-content-center mb-0" style="color: #0566AE;">
+            <h1 class="responsive-title" style="color: #0566AE; font-weight: 800;">REGISTRASI</h1>
 
             <style>
                 .responsive-title {
@@ -42,6 +41,11 @@
                 }
             </style>
         </div>
+    </div>
+
+    <!-- Pesan jika kuota penuh -->
+    <div id="quota-message" class="text-danger" style="display:none;">
+        Kuota pendaftaran on-site Instansi Anda telah maksimal. Anda dapat melakukan pendaftaran Online
     </div>
     
     <!-- Form Registrasi -->
@@ -82,7 +86,7 @@
             <div class="row mb-2">
                 <div class="col-md-6 col-12 mb-2">
                     <label class="form-label required" style="color:#005CA4; font-size: 18px;">Instansi</label>
-                    <select class="form-control mb-2" name="instansi_id" required id="instansi_id" onchange="updateButtonVisibility()">
+                    <select class="form-control mb-2" name="instansi_id" required id="instansi_id" onchange="updateButtonVisibility()" style="height: 50px; font-size: 16px;">
                         <option value="">Pilih Instansi</option>
                         @foreach ($instansis as $instansi)
                             <option value="{{ $instansi->id }}" 
@@ -95,15 +99,12 @@
                     @error('instansi_id')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
-
-                    <!-- Pesan jika kuota penuh -->
-                    <div id="quota-message" class="text-danger" style="display:none;">
-                        Kuota pendaftaran on-site Instansi Anda telah maksimal. Anda dapat melakukan pendaftaran Online
-                    </div>
+            
+                    
                 </div>
                 <div class="col-md-6 col-12">
                     <label class="form-label" style="color:#005CA4; font-size: 18px;">Jabatan <small class="text-muted">(optional)</small>:</label>
-                    <input type="text" class="form-control" name="jabatan" placeholder="Nama Jabatan" value="{{ old('jabatan') }}">
+                    <input type="text" class="form-control" name="jabatan" placeholder="Nama Jabatan" value="{{ old('jabatan') }}" style="height: 50px; font-size: 16px;">
                     @error('jabatan')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -118,7 +119,8 @@
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-            
+
+            <!-- Checkbox untuk kendaraan -->
             <div class="mb-2">
                 <label class="form-label" style="color:#005CA4; font-size: 18px;">
                     <input type="checkbox" id="kendaraanCheckbox" onchange="toggleSelect();" style="margin-right: 5px;">
@@ -129,12 +131,12 @@
             <div id="kendaraanSelectDiv" class="mb-2" style="display: none;">
                 <label class="form-label required" style="color:#005CA4; font-size: 18px;">Pilih jenis kendaraan</label>
                 <select name="kendaraan" class="form-control">
-                    <option value="">-- Pilih kendaraan --</option>
+                    <option value="-">-- Pilih kendaraan --</option>
                     <option value="mobil">Mobil</option>
                     <option value="motor">Motor</option>
                 </select>
             </div>
-            
+
             <script>
                 function toggleSelect() {
                     const checkbox = document.getElementById('kendaraanCheckbox');
@@ -142,7 +144,49 @@
                     selectDiv.style.display = checkbox.checked ? 'block' : 'none';
                 }
             </script>
-            
+
+            <!-- Checkbox untuk Online dan Offline -->
+            <input type="checkbox" class="btn-check" id="btn-check-online" autocomplete="off">
+            <label class="btn btn-primary" for="btn-check-online">Online</label>
+
+            <input type="checkbox" class="btn-check" id="btn-check-offline" autocomplete="off">
+            <label class="btn btn-primary" for="btn-check-offline">Offline</label>
+
+            <script>
+                function toggleCheckbox(checkboxId, otherCheckboxId) {
+                    const checkbox = document.getElementById(checkboxId);
+                    const otherCheckbox = document.getElementById(otherCheckboxId);
+
+                    if (checkbox.checked) {
+                        otherCheckbox.checked = false; // Uncheck the other checkbox
+                    }
+
+                    updateFormAction();
+                }
+
+                function updateFormAction() {
+                    const form = document.getElementById('registrationForm');
+                    const onlineCheckbox = document.getElementById('btn-check-online');
+                    const offlineCheckbox = document.getElementById('btn-check-offline');
+
+                    if (onlineCheckbox.checked) {
+                        form.action = "{{ route('registration.store.online') }}";
+                    } else if (offlineCheckbox.checked) {
+                        form.action = "{{ route('registration.store') }}";
+                    } else {
+                        form.action = "{{ route('registration.store') }}"; // Default action
+                    }
+                }
+
+                // Event listeners to toggle checkboxes
+                document.getElementById('btn-check-online').addEventListener('change', function() {
+                    toggleCheckbox('btn-check-online', 'btn-check-offline');
+                });
+                
+                document.getElementById('btn-check-offline').addEventListener('change', function() {
+                    toggleCheckbox('btn-check-offline', 'btn-check-online');
+                });
+            </script>
 
             <!-- Tombol Submit -->
             <div class="form-footer">
@@ -159,16 +203,5 @@
         padding: 12px; /* Increased padding */
         font-size: 16px; /* Increased font size */
     }
-
-    .btn {
-        padding: 12px; /* Increase button padding */
-        font-size: 16px; /* Match font size */
-        border-radius: 4px; /* Match rounded corners */
-    }
-
-    .alert {
-        margin-bottom: 20px; /* Spacing for alerts */
-    }
 </style>
-
 @endsection
