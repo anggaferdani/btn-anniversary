@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Instansi;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -9,7 +10,10 @@ use Illuminate\Support\Facades\DB;
 class ParticipantController extends Controller
 {
     public function scan() {
-        return view('backend.pages.receptionist.scan');
+        $participants = Participant::where('status', 1)->where('verification', 1)->where('attendance', 1)->get();
+        return view('backend.pages.receptionist.scan', compact(
+            'participants',
+        ));
     }
 
     public function attendance($qrcode)
@@ -42,21 +46,25 @@ class ParticipantController extends Controller
 
     public function index(Request $request) {
         $query = Participant::where('status', 1);
-
+    
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
-                $q->where('qrcode', 'like', '%' . $search . '%');
-                $q->where('name', 'like', '%' . $search . '%');
-                $q->where('email', 'like', '%' . $search . '%');
-                $q->where('phone_number', 'like', '%' . $search . '%');
+                $q->where('qrcode', 'like', '%' . $search . '%')
+                  ->orWhere('name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%')
+                  ->orWhere('phone_number', 'like', '%' . $search . '%')
+                  ->orWhere('kehadiran', 'like', '%' . $search . '%');
             });
         }
-
+    
         $participants = $query->latest()->paginate(10);
-
+    
+        $instansis = Instansi::where('status', 1)->get();
+    
         return view('backend.pages.participant', compact(
             'participants',
+            'instansis',
         ));
     }
 
@@ -71,6 +79,8 @@ class ParticipantController extends Controller
                 'name' => 'required',
                 'email' => 'required',
                 'phone_number' => 'required|min:10',
+                'instansi_id' => 'required',
+                'kehadiran' => 'required',
             ]);
 
             $participantCount = Participant::whereNotNull('qrcode')->lockForUpdate()->count();
@@ -101,8 +111,11 @@ class ParticipantController extends Controller
                 'qrcode' => $qrcode,
                 'token' => $token,
                 'name' => $request['name'],
+                'instansi_id' => $request['instansi_id'],
+                'jabatan' => $request['jabatan'],
                 'email' => $request['email'],
                 'phone_number' => $request['phone_number'],
+                'kehadiran' => $request['kehadiran'],
                 'verification' => 1,
                 'attendance' => 2,
             ];
@@ -130,12 +143,17 @@ class ParticipantController extends Controller
                 'name' => 'required',
                 'email' => 'required',
                 'phone_number' => 'required|min:10',
+                'instansi_id' => 'required',
+                'kehadiran' => 'required',
             ]);
 
             $array = [
                 'name' => $request['name'],
+                'instansi_id' => $request['instansi_id'],
+                'jabatan' => $request['jabatan'],
                 'email' => $request['email'],
                 'phone_number' => $request['phone_number'],
+                'kehadiran' => $request['kehadiran'],
             ];
 
             $participant->update($array);
@@ -166,5 +184,10 @@ class ParticipantController extends Controller
         } while (Participant::where('token', $token)->exists());
     
         return $token;
+    }
+
+    public function autocomplete(Request $request)
+    {
+        
     }
 }

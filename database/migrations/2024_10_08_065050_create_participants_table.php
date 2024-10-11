@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('verification')->default(2);
             $table->integer('attendance')->default(2);
             $table->integer('point')->default(0);
+            $table->string('kehadiran');
             $table->integer('status')->default(1);
             $table->timestamps();
         });

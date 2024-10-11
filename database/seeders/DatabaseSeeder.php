@@ -4,10 +4,11 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Instansi;
 use App\Models\User;
-use Illuminate\Database\Seeder;
+use App\Models\Zoom;
+use App\Models\Instansi;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -55,6 +56,14 @@ class DatabaseSeeder extends Seeder
         ];
 
         Instansi::insert($instansis);
+
+        $zooms = [
+            [
+                'link' => null,
+            ],
+        ];
+
+        Zoom::insert($zooms);
 
         // $faker = Faker::create();
 

@@ -61,6 +61,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
+                <th>Kehadiran</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -73,6 +74,13 @@
                   <td>{{ $participant->name }}</td>
                   <td>{{ $participant->email }}</td>
                   <td>{{ $participant->phone_number }}</td>
+                  <td>
+                    @if($participant->kehadiran == 'onsite')
+                      <span class="badge bg-success text-white">Onsite</span>
+                    @else
+                      <span class="badge bg-primary text-white">Online</span>
+                    @endif
+                  </td>
                   <td>
                     @if($participant->verification == 1)
                       <span class="badge bg-primary text-white">Verified</span>
@@ -132,6 +140,21 @@
             @error('name')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
           <div class="mb-3">
+            <label class="form-label required">Instansi</label>
+            <select class="form-select" name="instansi_id">
+              <option disabled selected value="">Pilih</option>
+              @foreach($instansis as $instansi)
+                  <option value="{{ $instansi->id }}">{{ $instansi->name }}</option>
+              @endforeach
+            </select>
+            @error('instansi_id')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Jabatan</label>
+            <input type="text" class="form-control" name="jabatan" placeholder="Jabatan" autocomplete="off">
+            @error('jabatan')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
             <label class="form-label required">Email</label>
             <input type="email" class="form-control" name="email" placeholder="Email" autocomplete="off">
             @error('email')<div class="text-danger">{{ $message }}</div>@enderror
@@ -140,6 +163,15 @@
             <label class="form-label required">Phone Number</label>
             <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" autocomplete="off">
             @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Kehadiran</label>
+            <select class="form-select" name="kehadiran">
+              <option disabled selected value="">Pilih</option>
+              <option value="onsite">Onsite</option>
+              <option value="online">Online</option>
+            </select>
+            @error('kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
         <div class="modal-footer">
@@ -171,6 +203,21 @@
             @error('name')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
           <div class="mb-3">
+            <label class="form-label required">Instansi</label>
+            <select class="form-select" name="instansi_id">
+              <option disabled selected value="">Pilih</option>
+              @foreach($instansis as $instansi)
+                <option value="{{ $instansi->id }}" @if($participant->instansi_id == $instansi->id) @selected(true) @endif>{{ $instansi->name }}</option>
+              @endforeach
+            </select>
+            @error('instansi_id')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Jabatan</label>
+            <input type="text" class="form-control" name="jabatan" placeholder="Jabatan" value="{{ $participant->jabatan }}" autocomplete="off">
+            @error('jabatan')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
             <label class="form-label required">Email</label>
             <input type="email" class="form-control" name="email" placeholder="Email" value="{{ $participant->email }}" autocomplete="off">
             @error('email')<div class="text-danger">{{ $message }}</div>@enderror
@@ -179,6 +226,15 @@
             <label class="form-label required">Phone Number</label>
             <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" value="{{ $participant->phone_number }}" autocomplete="off">
             @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Kehadiran</label>
+            <select class="form-select" name="kehadiran">
+              <option disabled selected value="">Pilih</option>
+              <option value="onsite" @if($participant->kehadiran == 'onsite') @selected(true) @endif>Onsite</option>
+              <option value="online" @if($participant->kehadiran == 'online') @selected(true) @endif>Online</option>
+            </select>
+            @error('kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
         <div class="modal-footer">
