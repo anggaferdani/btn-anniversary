@@ -40,25 +40,35 @@
     @endif
 
     <div class="container my-4">
-        <div id="card" class="border rounded p-4" style="max-width: 350px; margin: auto;">
-            <div>
-                <span class="d-flex align-items-end justify-content-end">
-                    <h3 class="m-0 me-2">ID</h3>
-                    <h1 class="m-0">{{ substr($participant->qrcode, 0, 1) }} {{ substr($participant->qrcode, 1) }}</h1>
-                </span>
-                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                    <img src="{{ asset('bumn-indonesia.png') }}" alt="" width="90px">
-                    <img src="{{ asset('kementerian-badan-usaha.png') }}" alt="" width="80px">
-                    <img src="{{ asset('bumn-school.png') }}" alt="" width="30ox">
-                    <img src="{{ asset('btn.png') }}" alt="" width="30px">
-                    <img src="{{ asset('forumhuman.png') }}" alt="" width="40px">
+        <div id="card" class="border rounded" style="width: 450px; margin: auto; background-color:white">
+            <div class="position-relative">
+                <div class="position-absolute d-flex justify-content-center" style="bottom: 0%; left:0%">
+                    <img src="{{ asset('AKSEN2.png') }}" alt="BUMN Learning Festival" width="220px">
                 </div>
-                <img src="{{ asset('bumn-invitation-1.png') }}" alt="BUMN Learning Festival" class="mb-3">
-                <span class="h1 text-uppercase">{{ $participant->name }}</span><br>
-                <span class="h3 text-uppercase">{{ $participant->instansi->name }}</span>
+                <span class="d-flex align-items-end justify-content-end mb-2 pe-4 ps-4 pt-4">
+                    <h3 class="m-0 me-2" style="font-size:25px; font-weight: 800">ID</h3>
+                    <h1 class="m-0" style="font-size: 35px; font-weight:800">{{ substr($participant->qrcode, 0, 1) }} {{ substr($participant->qrcode, 1) }}</h1>
+                </span>
+                <div class="d-flex justify-content-between align-items-center gap-2 pe-4 ps-4" style="margin-bottom: 220px">
+                    <div class="d-flex gap-2">
+                        <img src="{{ asset('bumn-indonesia.png') }}" alt="" width="48px">
+                        <img src="{{ asset('btn.png') }}" alt="" width="48px">
+                    </div>
+                    <div class="d-flex gap-2">
+                        <img src="{{ asset('bumn-school.png') }}" alt="" width="48px">
+                        <img src="{{ asset('forumhuman.png') }}" alt="" width="48px">
+                    </div>
+                </div>
+                <div class="position-absolute d-flex justify-content-center" style="top: 15%; left:20%">
+                    <img src="{{ asset('logo.png') }}" alt="BUMN Learning Festival" class="mb-3" width="260px">
+                </div>
+                <div class="pe-4 ps-4">
+                    <span class="text-uppercase" style="font-weight: 1000; font-size: 30px">{{ $participant->name }}</span><br>
+                    <span class="text-uppercase" style="font-weight: 800; font-size: 25px">{{ $participant->instansi->name }}</span>
+                </div>
     
-                <div class="qr-code-container text-end mt-3">
-                    <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ $participant->qrcode }}" alt="QR Code" width="170">
+                <div class="qr-code-container text-end pe-4 ps-4 pb-4">
+                    <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ $participant->qrcode }}" alt="QR Code" width="200px" height="200px">
                 </div>
             </div>
         </div>
@@ -97,13 +107,14 @@
         }
 
         document.getElementById('sendImageBtn').addEventListener('click', async function (e) {
-            e.preventDefault(); // Prevent the form from submitting immediately
+            e.preventDefault(); // Mencegah form disubmit langsung
             const qrCodeUrl = document.getElementById('qrCodeImg').src;
             
             try {
                 const qrCodeDataUrl = await downloadQRCode(qrCodeUrl);
                 const card = document.getElementById('card');
                 
+                // Buat canvas untuk kartu
                 const cardCanvas = await html2canvas(card);
                 const combinedCanvas = document.createElement('canvas');
                 combinedCanvas.width = cardCanvas.width;
@@ -116,24 +127,26 @@
                 qrCodeImg.src = qrCodeDataUrl;
 
                 qrCodeImg.onload = () => {
-                    const qrCodeWidth = 200; 
-                    const qrCodeHeight = 200; 
-                    const qrCodePositionX = cardCanvas.width - qrCodeWidth - 10; 
-                    const qrCodePositionY = cardCanvas.height - qrCodeHeight - 10; 
+                    const qrCodeWidth = 200;  // Ukuran QR code tetap
+                    const qrCodeHeight = 200; // Ukuran QR code tetap
+                    const qrCodePositionX = cardCanvas.width - qrCodeWidth - 10; // Posisi QR code
+                    const qrCodePositionY = cardCanvas.height - qrCodeHeight - 10; // Posisi QR code
 
+                    // Menggambar QR code di canvas dengan ukuran yang benar
                     combinedCtx.drawImage(qrCodeImg, qrCodePositionX, qrCodePositionY, qrCodeWidth, qrCodeHeight);
                     
-                    // Get image data URL
+                    // Dapatkan URL gambar data
                     const imageDataUrl = combinedCanvas.toDataURL('image/jpeg', 0.9);
-                    document.getElementById('imageData').value = imageDataUrl; // Set hidden input value
+                    document.getElementById('imageData').value = imageDataUrl; // Setel nilai input tersembunyi
                     
-                    // Submit the form to send email with image
+                    // Submit form untuk mengirim email dengan gambar
                     document.getElementById('sendImageForm').submit();
                 };
             } catch (err) {
                 console.error('Error capturing card:', err);
             }
         });
+
     
         // Function to download the card as an image and save it to the server
         async function downloadCard() {

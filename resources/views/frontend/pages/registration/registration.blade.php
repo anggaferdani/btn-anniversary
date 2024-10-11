@@ -8,8 +8,11 @@
                 <img src="{{ asset('bumn-learning-festival.png') }}" width="200" alt="btn">
             </a>
         </div>
+        <div class="d-flex align-items-center justify-content-center mb-2" style="color: #003E64; font-weight: 900;">
+            <h1>REGISTRASI</h1>
+        </div>
     </div>
-    <form class="card card-md" action="{{ route('registration.store') }}" method="POST" id="registrationForm" autocomplete="off" novalidate>
+    <form class="card card-md border-0 bg-transparent border" action="{{ route('registration.store') }}" method="POST" id="registrationForm" autocomplete="off" novalidate>
         @csrf
         <div class="card-body">
 
@@ -24,68 +27,68 @@
                     {{ Session::get('error') }}
                 </div>
             @endif
-        
-            <div class="mb-3">
-                <label class="form-label required">Nama Lengkap</label>
-                <input type="text" class="form-control" name="name" placeholder="Masukkan nama lengkap anda" value="{{ old('name') }}" required>
-                @error('name')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-        
-            <div class="mb-3">
-                <label class="form-label required">Instansi</label>
-                <select class="form-control" name="instansi_id" required id="instansi_id" onchange="updateButtonVisibility()">
-                    <option value="">Pilih Instansi</option>
-                    @foreach ($instansis as $instansi)
-                        <option value="{{ $instansi->id }}" 
-                                data-max="{{ $instansi->max_participant }}" 
-                                data-current-participants="{{ $instansi->participants_count }}">
-                            {{ $instansi->name }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('instansi_id')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            
-                <!-- Pesan jika kuota penuh -->
-                <div id="quota-message" class="text-danger" style="display:none;">
-                    Kuota pendaftaran on-site Instansi Anda telah maksimal. Anda dapat melakukan pendaftaran Online
+    
+
+            <div class="row mb-3">
+                <div class="col">
+                    <label class="form-label required" style="color:#005CA4; font-size: 18px;">Nama</label>
+                    <input type="text" class="form-control" name="name" placeholder="Masukkan nama lengkap anda" height="60px" value="{{ old('name') }}" required>
+                    @error('name')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col">
+                    <label class="form-label required" style="color:#005CA4; font-size: 18px;">Nomor telepon</label>
+                    <input type="number" class="form-control" name="phone_number" placeholder="08xxxxxxxxxx" value="{{ old('phone_number') }}" required />
+                    @error('phone_number')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
-            
         
-            <div class="mb-3">
-                <label class="form-label">Jabatan <small class="text-muted">(optional)</small>:</label>
-                <input type="text" class="form-control" name="jabatan" placeholder="Nama Jabatan" value="{{ old('jabatan') }}">
-                @error('jabatan')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
+            <div class="row mb-3">
+                <div class="col">
+                    <label class="form-label required" style="color:#005CA4; font-size: 18px;">Instansi</label>
+                    <select class="form-control mb-2" name="instansi_id" required id="instansi_id" onchange="updateButtonVisibility()">
+                        <option value="">Pilih Instansi</option>
+                        @foreach ($instansis as $instansi)
+                            <option value="{{ $instansi->id }}" 
+                                    data-max="{{ $instansi->max_participant }}" 
+                                    data-current-participants="{{ $instansi->participants_count }}">
+                                {{ $instansi->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('instansi_id')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                
+                    <!-- Pesan jika kuota penuh -->
+                    <div id="quota-message" class="text-danger" style="display:none;">
+                        Kuota pendaftaran on-site Instansi Anda telah maksimal. Anda dapat melakukan pendaftaran Online
+                    </div>
+                </div>
+                <div class="col">
+                    <label class="form-label" style="color:#005CA4; font-size: 18px;">Jabatan <small class="text-muted">(optional)</small>:</label>
+                    <input type="text" class="form-control" name="jabatan" placeholder="Nama Jabatan" value="{{ old('jabatan') }}">
+                    @error('jabatan')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
             </div>
+
         
             <div class="mb-3">
-                <label class="form-label required">Email address</label>
+                <label class="form-label required" style="color:#005CA4; font-size: 18px;">Email address</label>
                 <input type="email" class="form-control" name="email" placeholder="Masukkan alamat email valid anda" value="{{ old('email') }}" required>
                 @error('email')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
         
-            <div class="mb-3">
-                <label class="form-label required">Nomor telepon</label>
-                <input type="number" class="form-control" name="phone_number" placeholder="08xxxxxxxxxx" value="{{ old('phone_number') }}" required />
-                @error('phone_number')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-        
             <div class="form-footer">
-                <button type="button" id="submit-button" class="btn btn-primary w-100 rounded-full" onclick="submitForm('registration.store')">On Site</button>
-            </div>
-        
-            <div class="form-footer">
-                <button type="button" class="btn btn-success w-100 rounded-full" onclick="submitForm('registration.store.online')">Online</button>
+                <button type="button" id="submit-button" class="btn w-100 rounded-full text-uppercase mb-2" style="background-color: #0566AE; color: white;" onclick="submitForm('registration.store')">On Site</button>
+                <button type="button" class="btn w-100 rounded-full" style="background-color: #003E64; color: white;" onclick="submitForm('registration.store.online')">Online</button>
                 {{-- {{ route('registration.store.online') }} --}}
             </div>
         </div>

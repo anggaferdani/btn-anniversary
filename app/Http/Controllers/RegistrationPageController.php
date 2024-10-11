@@ -64,10 +64,8 @@ class RegistrationPageController extends Controller
                     $qrcode = 'U' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
                 } elseif ($participantCount >= 201 && $participantCount <= 300) {
                     $qrcode = 'M' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                } elseif ($participantCount >= 301 && $participantCount <= 400) {
+                } elseif ($participantCount >= 301) {
                     $qrcode = 'N' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                } elseif ($participantCount >= 401) {
-                    $qrcode = 'F' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
                 }
             }
 
@@ -195,7 +193,7 @@ class RegistrationPageController extends Controller
                     ->from($mail['email'], $mail['from'])
                     ->subject($mail['subject']);
                 });
-                return redirect()->back()->with('success', 'notifikasi id card sudah terkirim via email' . $participant->email);
+                return redirect()->back()->with('success', 'notifikasi id card sudah terkirim via email ' . $participant->email);
             } catch (\Throwable $th) {
                 return back()->with('error', $th->getMessage());
             }
@@ -213,6 +211,7 @@ class RegistrationPageController extends Controller
                     'phone_number' => $request['phone_number'],
                     'instansi_id' => $request['instansi_id'],
                     'jabatan' => $request['jabatan'],
+                    'kehadiran' => 'onsite',
                 ];
 
                 $participant = Participant::create($array);
@@ -267,6 +266,7 @@ class RegistrationPageController extends Controller
                 'instansi_id' => $request['instansi_id'],
                 'jabatan' => $request['jabatan'],
                 'verification' => 1,
+                'kehadiran' => 'online',
             ];
 
             Participant::create($array);
