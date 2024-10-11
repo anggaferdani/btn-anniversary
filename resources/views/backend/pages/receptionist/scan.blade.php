@@ -1,36 +1,20 @@
-@extends('backend.templates.pages')
-@section('title', 'Scan')
-@section('header')
-<div class="container-xl">
-  <div class="row g-2 align-items-center">
-    <div class="col">
-      <h2 class="page-title">
-        Scan
-      </h2>
-    </div>
-    <div class="col-auto">
-      <div class="btn-list">
-        
+@extends('backend.templates.scan')
+@section('title', 'Scan Kehadiran Participant')
+@section('content')
+<div class="container-xl" style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+  <div class="row w-100">
+    <div class="col-6 m-auto">
+      <div class="text-center mb-3">
+        <img src="{{ asset('bumn-learning-festival.png') }}" class="" width="150">
+      </div>
+      <div class="text-center fs-1 fw-bold mb-3">Scan Kehadiran Participant</div>
+      <div class="d-flex justify-content-center mb-3">
+        <div id="reader" style="width: 370px;" class=""></div>
       </div>
     </div>
-  </div>
-</div>
-@endsection
-@section('content')
-<div class="container-xl">
-  <div class="row">
-    <div class="col-6 m-auto">
-      @if(Session::get('success'))
-        <div class="alert alert-important alert-success" role="alert">
-          {{ Session::get('success') }}
-        </div>
-      @endif
-      @if(Session::get('error'))
-        <div class="alert alert-important alert-danger" role="alert">
-          {{ Session::get('error') }}
-        </div>
-      @endif
-      <div id="reader" style="width: 500px;"></div>
+    <div class="col-7 m-auto">
+      <input type="text" class="form-control" placeholder="Search" id="search">
+      <div id="result"></div>
     </div>
   </div>
 </div>

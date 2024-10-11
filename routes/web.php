@@ -12,6 +12,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserParticipantController;
 use App\Http\Controllers\RegistrationPageController;
 use App\Http\Controllers\AttendanceParticipantController;
+use App\Http\Controllers\ZoomContoller;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
     Route::middleware(['auth:web', 'disableBackButton', 'admin'])->group(function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('instansi', InstansiController::class);
+        Route::resource('zoom', ZoomContoller::class);
         Route::resource('admin', AdminController::class);
         Route::resource('receptionist', ReceptionistController::class);
         Route::resource('tenant', TenantController::class);
@@ -57,6 +59,7 @@ Route::prefix('receptionist')->name('receptionist.')->group(function(){
         Route::get('resend-email-verification/{token}', [AuthenticationController::class, 'resendEmailVerification'])->name('resend-email-verification');
         Route::get('resend-digital-invitation/{token}', [AuthenticationController::class, 'resendDigitalInvitation'])->name('resend-digital-invitation');
         Route::resource('attendance-participant', AttendanceParticipantController::class);
+        Route::get('participant/autocomplete', [ParticipantController::class, 'autocomplete'])->name('participant.autocomplete');
     });
 });
 
