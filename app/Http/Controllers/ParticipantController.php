@@ -81,7 +81,9 @@ class ParticipantController extends Controller
     
         $participants = $query->latest()->paginate(10);
     
-        $instansis = Instansi::where('status', 1)->get();
+        $instansis = Instansi::where('status', 1)->withCount(['participants' => function ($q) {
+            $q->where('status', 1);
+        }])->get();
     
         return view('backend.pages.participant', compact(
             'participants',

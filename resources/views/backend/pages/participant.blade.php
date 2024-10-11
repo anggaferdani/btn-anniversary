@@ -144,7 +144,22 @@
             <select class="form-select" name="instansi_id">
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
-                  <option value="{{ $instansi->id }}">{{ $instansi->name }}</option>
+                @php
+                    $currentCount = $instansi->participants_count;
+                    $maxCount = $instansi->max_participant;
+                @endphp
+                <option value="{{ $instansi->id }}" 
+                    @if($currentCount >= $maxCount) 
+                        disabled 
+                    @endif
+                >
+                    {{ $instansi->name }} 
+                    @if($currentCount >= $maxCount) 
+                        ({{ $currentCount }}/{{ $maxCount }})
+                    @else
+                        ({{ $currentCount }}/{{ $maxCount }})
+                    @endif
+                </option>
               @endforeach
             </select>
             @error('instansi_id')<div class="text-danger">{{ $message }}</div>@enderror
@@ -216,8 +231,23 @@
             <select class="form-select" name="instansi_id">
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
-                <option value="{{ $instansi->id }}" @if($participant->instansi_id == $instansi->id) @selected(true) @endif>{{ $instansi->name }}</option>
-              @endforeach
+                @php
+                    $currentCount = $instansi->participants_count;
+                    $maxCount = $instansi->max_participant;
+                    $isParticipant = $participant->instansi_id == $instansi->id;
+                @endphp
+                <option value="{{ $instansi->id }}" 
+                    @if($currentCount >= $maxCount && !$isParticipant) 
+                        disabled 
+                    @endif
+                    @if($isParticipant) 
+                        selected 
+                    @endif
+                >
+                    {{ $instansi->name }} 
+                    ({{ $currentCount }}/{{ $maxCount }})
+                </option>
+            @endforeach
             </select>
             @error('instansi_id')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
