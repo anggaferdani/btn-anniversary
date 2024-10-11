@@ -61,8 +61,8 @@
             @endif
 
             <!-- Nama dan Nomor Telepon -->
-            <div class="row mb-3">
-                <div class="col-md-6 col-12 mb-3">
+            <div class="row mb-2">
+                <div class="col-md-6 col-12 mb-2">
                     <label class="form-label required" style="color:#005CA4; font-size: 18px;">Nama</label>
                     <input type="text" class="form-control" name="name" placeholder="Masukkan nama lengkap anda" value="{{ old('name') }}" required>
                     @error('name')
@@ -79,8 +79,8 @@
             </div>
 
             <!-- Instansi dan Jabatan -->
-            <div class="row mb-3">
-                <div class="col-md-6 col-12 mb-3">
+            <div class="row mb-2">
+                <div class="col-md-6 col-12 mb-2">
                     <label class="form-label required" style="color:#005CA4; font-size: 18px;">Instansi</label>
                     <select class="form-control mb-2" name="instansi_id" required id="instansi_id" onchange="updateButtonVisibility()">
                         <option value="">Pilih Instansi</option>
@@ -111,13 +111,38 @@
             </div>
 
             <!-- Email -->
-            <div class="mb-3">
+            <div class="mb-2">
                 <label class="form-label required" style="color:#005CA4; font-size: 18px;">Email address</label>
                 <input type="email" class="form-control" name="email" placeholder="Masukkan alamat email valid anda" value="{{ old('email') }}" required>
                 @error('email')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
+            
+            <div class="mb-2">
+                <label class="form-label" style="color:#005CA4; font-size: 18px;">
+                    <input type="checkbox" id="kendaraanCheckbox" onchange="toggleSelect();" style="margin-right: 5px;">
+                    Apakah Anda membawa kendaraan?
+                </label>
+            </div>
+            
+            <div id="kendaraanSelectDiv" class="mb-2" style="display: none;">
+                <label class="form-label required" style="color:#005CA4; font-size: 18px;">Pilih jenis kendaraan</label>
+                <select name="kendaraan" class="form-control">
+                    <option value="">-- Pilih kendaraan --</option>
+                    <option value="mobil">Mobil</option>
+                    <option value="motor">Motor</option>
+                </select>
+            </div>
+            
+            <script>
+                function toggleSelect() {
+                    const checkbox = document.getElementById('kendaraanCheckbox');
+                    const selectDiv = document.getElementById('kendaraanSelectDiv');
+                    selectDiv.style.display = checkbox.checked ? 'block' : 'none';
+                }
+            </script>
+            
 
             <!-- Tombol Submit -->
             <div class="form-footer">

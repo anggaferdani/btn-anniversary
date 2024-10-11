@@ -223,6 +223,7 @@ class RegistrationPageController extends Controller
                     'instansi_id' => $request['instansi_id'],
                     'jabatan' => $request['jabatan'],
                     'kehadiran' => 'onsite',
+                    'kehadiran' => $request['kendaraan'],
                 ];
 
                 $participant = Participant::create($array);
