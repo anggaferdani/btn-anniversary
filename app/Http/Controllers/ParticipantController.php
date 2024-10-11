@@ -81,7 +81,9 @@ class ParticipantController extends Controller
     
         $participants = $query->latest()->paginate(10);
     
-        $instansis = Instansi::where('status', 1)->get();
+        $instansis = Instansi::where('status', 1)->withCount(['participants' => function ($q) {
+            $q->where('status', 1);
+        }])->get();
     
         return view('backend.pages.participant', compact(
             'participants',
@@ -137,6 +139,7 @@ class ParticipantController extends Controller
                 'email' => $request['email'],
                 'phone_number' => $request['phone_number'],
                 'kehadiran' => $request['kehadiran'],
+                'kendaraan' => $request['kendaraan'],
                 'verification' => 1,
                 'attendance' => 2,
             ];
@@ -175,6 +178,7 @@ class ParticipantController extends Controller
                 'email' => $request['email'],
                 'phone_number' => $request['phone_number'],
                 'kehadiran' => $request['kehadiran'],
+                'kendaraan' => $request['kendaraan'],
             ];
 
             $participant->update($array);

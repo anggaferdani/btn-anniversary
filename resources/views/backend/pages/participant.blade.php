@@ -144,7 +144,22 @@
             <select class="form-select" name="instansi_id">
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
-                  <option value="{{ $instansi->id }}">{{ $instansi->name }}</option>
+                @php
+                    $currentCount = $instansi->participants_count;
+                    $maxCount = $instansi->max_participant;
+                @endphp
+                <option value="{{ $instansi->id }}" 
+                    @if($currentCount >= $maxCount) 
+                        disabled 
+                    @endif
+                >
+                    {{ $instansi->name }} 
+                    @if($currentCount >= $maxCount) 
+                        ({{ $currentCount }}/{{ $maxCount }})
+                    @else
+                        ({{ $currentCount }}/{{ $maxCount }})
+                    @endif
+                </option>
               @endforeach
             </select>
             @error('instansi_id')<div class="text-danger">{{ $message }}</div>@enderror
@@ -166,12 +181,21 @@
           </div>
           <div class="mb-3">
             <label class="form-label required">Kehadiran</label>
-            <select class="form-select" name="kehadiran">
+            <select class="form-select" name="kehadiran" id="kehadiran">
               <option disabled selected value="">Pilih</option>
               <option value="onsite">Onsite</option>
               <option value="online">Online</option>
             </select>
             @error('kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label" id="label-kendaraan">Apakah membawa kendaraan pribadi?</label>
+            <select class="form-select" name="kendaraan" id="kendaraan">
+              <option disabled selected value="">Pilih</option>
+              <option value="mobil">Mobil</option>
+              <option value="motor">Motor</option>
+            </select>
+            @error('kendaraan')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
         <div class="modal-footer">
@@ -207,8 +231,23 @@
             <select class="form-select" name="instansi_id">
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
-                <option value="{{ $instansi->id }}" @if($participant->instansi_id == $instansi->id) @selected(true) @endif>{{ $instansi->name }}</option>
-              @endforeach
+                @php
+                    $currentCount = $instansi->participants_count;
+                    $maxCount = $instansi->max_participant;
+                    $isParticipant = $participant->instansi_id == $instansi->id;
+                @endphp
+                <option value="{{ $instansi->id }}" 
+                    @if($currentCount >= $maxCount && !$isParticipant) 
+                        disabled 
+                    @endif
+                    @if($isParticipant) 
+                        selected 
+                    @endif
+                >
+                    {{ $instansi->name }} 
+                    ({{ $currentCount }}/{{ $maxCount }})
+                </option>
+            @endforeach
             </select>
             @error('instansi_id')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
@@ -229,12 +268,21 @@
           </div>
           <div class="mb-3">
             <label class="form-label required">Kehadiran</label>
-            <select class="form-select" name="kehadiran">
+            <select class="form-select" name="kehadiran" id="kehadiran{{ $participant->id }}">
               <option disabled selected value="">Pilih</option>
               <option value="onsite" @if($participant->kehadiran == 'onsite') @selected(true) @endif>Onsite</option>
               <option value="online" @if($participant->kehadiran == 'online') @selected(true) @endif>Online</option>
             </select>
             @error('kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label" id="label-kendaraan{{ $participant->id }}">Apakah membawa kendaraan pribadi?</label>
+            <select class="form-select" name="kendaraan" id="kendaraan{{ $participant->id }}">
+                <option disabled selected value="">Pilih</option>
+                <option value="mobil" @if($participant->kendaraan == 'mobil') @selected(true) @endif>Mobil</option>
+                <option value="motor" @if($participant->kendaraan == 'motor') @selected(true) @endif>Motor</option>
+            </select>
+            @error('kendaraan')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
         <div class="modal-footer">
@@ -277,3 +325,38 @@
 </div>
 @endforeach
 @endsection
+@push('scripts')
+<script>
+    document.getElementById('kehadiran').addEventListener('change', function () {
+        const kehadiran = this.value;
+        const kendaraanSelect = document.getElementById('kendaraan');
+        const kendaraanLabel = document.getElementById('label-kendaraan');
+
+        if (kehadiran === 'onsite') {
+            kendaraanSelect.setAttribute('required', 'required');
+            kendaraanLabel.classList.add('required');
+        } else {
+            kendaraanSelect.removeAttribute('required');
+            kendaraanLabel.classList.remove('required');
+            kendaraanSelect.value = "";
+        }
+    });
+
+    @foreach ($participants as $participant)
+    document.getElementById('kehadiran{{ $participant->id }}').addEventListener('change', function () {
+        const kehadiran = this.value;
+        const kendaraanSelect = document.getElementById('kendaraan{{ $participant->id }}');
+        const kendaraanLabel = document.getElementById('label-kendaraan{{ $participant->id }}');
+
+        if (kehadiran === 'onsite') {
+            kendaraanSelect.setAttribute('required', 'required');
+            kendaraanLabel.classList.add('required');
+        } else {
+            kendaraanSelect.removeAttribute('required');
+            kendaraanLabel.classList.remove('required');
+            kendaraanSelect.value = "";
+        }
+    });
+    @endforeach
+</script>
+@endpush
