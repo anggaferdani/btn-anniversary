@@ -39,7 +39,7 @@
                 <!-- Bagian ID -->
                 <span class="d-flex align-items-end justify-content-end mb-2 pe-4 ps-4 pt-4 pb-2" style="z-index: 3; position: relative;"> <!-- Tambah position relative dan z-index -->
                     <h3 class="m-0 me-2" style="font-size:25px; font-weight: 700">ID</h3>
-                    <h1 class="m-0" style="font-size: 35px; font-weight:700">B 002</h1>
+                    <h1 class="m-0" style="font-size: 35px; font-weight:700">{{ $participant->qrcode }}</h1>
                 </span>
             
                 <!-- Logo dan lainnya -->
@@ -61,8 +61,8 @@
             
                 <!-- Nama dan Instansi -->
                 <div class="pe-5 ps-5" style="z-index: 3; position: relative; padding-bottom: 60px"> <!-- position relative dan z-index -->
-                    <span class="text-uppercase" style="font-weight: 1000; font-size: 24px">tes</span><br>
-                    <span class="text-uppercase" style="font-weight: 800; font-size: 18px">PT Bank Rakyat Indonesia (Persero) Tbk</span>
+                    <span class="text-uppercase" style="font-weight: 1000; font-size: 24px">{{ $participant->name }}</span><br>
+                    <span class="text-uppercase" style="font-weight: 800; font-size: 18px">{{ $participant->instansi->name }}</span>
                 </div>
             
                 <!-- QR Code -->
@@ -90,7 +90,7 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         var qrcode = new QRCode("qrCodeImg", {
-            text: "B002",
+            text: "{{ $participant->qrcode }}",
             width: 300,
             height: 300,
         });
@@ -171,6 +171,20 @@
           }, 100000);
         });
       });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+          $('#downloadBtn').on('click', function(e) {
+            e.preventDefault(); // Mencegah aksi default dari link
+            $.LoadingOverlay("show");
+      
+            // Simulasi waktu untuk mendownload atau memproses
+            setTimeout(function () {
+              $.LoadingOverlay("hide");
+              history.back(); // Mengembalikan pengguna ke halaman sebelumnya
+            }, 3000); // Durasi loading (dalam milidetik)
+          });
+        });
     </script>
   </body>
 </html>
