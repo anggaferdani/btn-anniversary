@@ -22,8 +22,16 @@ class RegistrationPageController extends Controller
      */
     public function index()
     {
-        $instansis = Instansi::where('status', 1)->get();
+        $instansis = Instansi::withCount('participants')->where('status', 1)->get();
+    
         return view('frontend.pages.registration.registration', compact('instansis'));
+    }
+
+    public function indexOnline()
+    {
+        $instansis = Instansi::withCount('participants')->where('status', 1)->get();
+    
+        return view('frontend.pages.registration.registrationOnline', compact('instansis'));
     }
 
     /**
@@ -36,7 +44,7 @@ class RegistrationPageController extends Controller
 
     public function verify($token) 
     {
-        $participant = Participant::where('token', $token)->first();
+        $participant = Participant::with('instansi')->where('token', $token)->first();
 
         if (!empty($participant->qrcode)) {
             return view('frontend.pages.registration.invitation', compact('participant'));
@@ -95,14 +103,14 @@ class RegistrationPageController extends Controller
                 mkdir($publicPath, 0755, true);
             }
 
+            // Save the image
+            file_put_contents($filePath, $imageData);
+
             $participant->update([
                 'image' => $fileName,
             ]);
             
-                    
-            // Save the image
-            file_put_contents($filePath, $imageData);
-    
+            $url = route('registration.downloadImage', ['token' => $participant->token]);
             // Prepare email data
             $mail = [
                 'to' => $participant->email,
@@ -110,6 +118,9 @@ class RegistrationPageController extends Controller
                 'from_name' => 'BTN Anniversary',
                 'subject' => 'Kartu QR Code',
                 'name' => $participant->name,
+                'image' => $participant->image,
+                'token' => $participant->token,
+                'url' => $url,
             ];
     
             try {
@@ -133,83 +144,24 @@ class RegistrationPageController extends Controller
         return view('frontend.pages.registration.invitation', compact('participant'));
     }
     
-    // public function downloadPdf($token) {
-    //     $participant = Participant::where('token', $token)->first();
+    public function downloadImage($token) {
+        $participant = Participant::where('token', $token)->first();
     
-    //     $pdf = Pdf::loadView('frontend.pages.registration.invitation-pdf', compact('participant'))->setOption("isRemoteEnabled", true)->setOption("defaultFont", "sans-serif");
-      
-    //     // Download PDF
-    //     return $pdf->download($participant->qrcode . '.pdf');
-    // }
-
-    // public function downloadPdf($token) {
-    //     // Ambil participant berdasarkan token
-    //     $participant = Participant::where('token', $token)->first();
-
-    //     // Set opsi untuk Dompdf
-    //     $options = new Options();
-    //     $options->set('defaultFont', 'sans-serif'); // Mengatur font default
-    //     $options->set('isRemoteEnabled', true); // Mengizinkan pemuatan CSS dari URL
-
-    //     // Buat instance Dompdf
-    //     $dompdf = new Dompdf($options);
-
-    //     // Render view menjadi HTML
-    //     $html = view('frontend.pages.registration.invitation-pdf', compact('participant'))->render();
-        
-    //     // Load HTML ke Dompdf
-    //     $dompdf->loadHtml($html);
-
-    //     // Set ukuran kertas dan orientasi
-    //     $dompdf->setPaper('A4', 'portrait');
-
-    //     // Render the HTML as PDF
-    //     $dompdf->render();
-
-    //     // Output the generated PDF to Browser
-    //     return $dompdf->stream($participant->qrcode . '.pdf', ['Attachment' => true]); // Set 'Attachment' => true untuk mengunduh
-    // }
-
+        if (!$participant || !$participant->image) {
+            return response()->json(['error' => 'Image not found.'], 404);
+        }
     
-    // public function sendmailQRCode($token, Request $request) {
-    //     $participant = Participant::where('token', $token)->first();
-        
-    //     if (!$participant) {
-    //         return redirect()->back()->with('error', 'Participant not found.');
-    //     }
+        // Tentukan path gambar
+        $filePath = public_path('images/' . $participant->image);
     
-    //     // Generate PDF
-    //     $pdf = Pdf::loadView('frontend.pages.registration.invitation-pdf', compact('participant'))
-    //               ->setOption("isRemoteEnabled", true);
+        if (!file_exists($filePath)) {
+            return response()->json(['error' => 'File not found.'], 404);
+        }
     
-    //     // Data yang akan dikirim ke email
-    //     $mail = [
-    //         'to' => $participant->email,
-    //         'from_email' => 'example@gmail.com',
-    //         'from_name' => 'BTN Anniversary',
-    //         'subject' => 'QR Code',
-    //         'name' => $participant->name,
-    //     ];
-    
-    //     try {
-    //         Mail::send('emails.invitation', $mail, function($message) use ($mail, $pdf) {
-    //             $message->to($mail['to'])
-    //                     ->from($mail['from_email'], $mail['from_name'])
-    //                     ->subject($mail['subject'])
-    //                     ->attachData($pdf->output(), 'qrcode.pdf', [
-    //                         'mime' => 'application/pdf',
-    //                     ]); // Attach the PDF file
-    //         });
-    
-    //         // Email berhasil dikirim
-    //         return redirect()->back()->with('success', 'PDF QR Code berhasil dikirim ke email ' . $mail['to']);
-    //     } catch (\Exception $e) {
-    //         // Tampilkan pesan error jika email gagal dikirim
-    //         return redirect()->back()->with('error', 'Gagal mengirim email: ' . $e->getMessage());
-    //     }
-    // }
-    
-    
+        // Kembalikan file sebagai response download
+        return response()->download($filePath, $participant->image);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -243,7 +195,7 @@ class RegistrationPageController extends Controller
                     ->from($mail['email'], $mail['from'])
                     ->subject($mail['subject']);
                 });
-                return redirect()->back()->with('success', 'A verification email has been resent to ' . $participant->email . '. Please check your inbox to confirm your registration.');
+                return redirect()->back()->with('success', 'notifikasi id card sudah terkirim via email' . $participant->email);
             } catch (\Throwable $th) {
                 return back()->with('error', $th->getMessage());
             }
@@ -285,12 +237,48 @@ class RegistrationPageController extends Controller
 
                 DB::commit();
         
-                return redirect()->back()->with('success', 'A verification email has been sent to ' . $participant->email . '. Please check your inbox to confirm your registration.');
+                return redirect()->back()->with('success', 'ID Card sudah terkirim via email '. $participant->email);
             } catch (\Throwable $th) {
                 DB::rollBack();
                 return back()->with('error', $th->getMessage());
             }
         }
+    }
+
+    public function storeOnline(Request $request) {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'phone_number' => 'required',
+            'instansi_id' => 'required',
+            'jabatan' => 'required',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $token = $this->generateUniqueToken(12);
+            
+            $array = [
+                'token' => $token,
+                'name' => $request['name'],
+                'email' => $request['email'],
+                'phone_number' => $request['phone_number'],
+                'instansi_id' => $request['instansi_id'],
+                'jabatan' => $request['jabatan'],
+                'verification' => 1,
+            ];
+
+            Participant::create($array);
+
+            DB::commit();
+    
+            return redirect()->back()->with('success', 'Pendaftaran Berhasil, Link zoom akan kami kirimkan pada tanggal 14 Oktober 2024');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->with('error', $th->getMessage());
+        }
+    
     }
 
     private function generateUniqueToken($length = 12) {

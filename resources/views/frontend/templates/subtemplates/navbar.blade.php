@@ -14,6 +14,7 @@
                 <li class="nav-item"><a href="#detailacara" class="nav-link">Detail Acara</a></li>
                 <li class="nav-item"><a href="#jadwalacara" class="nav-link">Jadwal Acara</a></li>
                 <li class="nav-item cta mr-md-2"><a href="{{ route('registration.index') }}" class="nav-link">Registrasi</a></li>
+                <li class="nav-item cta mr-md-2"><a href="{{ route('registration.index.online') }}" class="nav-link">Registrasi Online</a></li>
             </ul>
         </div>
     </div>

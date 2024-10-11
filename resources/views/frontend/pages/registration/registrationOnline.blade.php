@@ -9,7 +9,7 @@
             </a>
         </div>
     </div>
-    <form class="card card-md" action="{{ route('registration.store') }}" method="POST" id="registrationForm" autocomplete="off" novalidate>
+    <form class="card card-md" action="{{ route('registration.store.online') }}" method="POST" autocomplete="off" novalidate>
         @csrf
         <div class="card-body">
 
@@ -38,9 +38,7 @@
                 <select class="form-control" name="instansi_id" required id="instansi_id" onchange="updateButtonVisibility()">
                     <option value="">Pilih Instansi</option>
                     @foreach ($instansis as $instansi)
-                        <option value="{{ $instansi->id }}" 
-                                data-max="{{ $instansi->max_participant }}" 
-                                data-current-participants="{{ $instansi->participants_count }}">
+                        <option value="{{ $instansi->id }}">
                             {{ $instansi->name }}
                         </option>
                     @endforeach
@@ -81,53 +79,10 @@
             </div>
         
             <div class="form-footer">
-                <button type="button" id="submit-button" class="btn btn-primary w-100 rounded-full" onclick="submitForm('registration.store')">On Site</button>
-            </div>
-        
-            <div class="form-footer">
-                <button type="button" class="btn btn-success w-100 rounded-full" onclick="submitForm('registration.store.online')">Online</button>
-                {{-- {{ route('registration.store.online') }} --}}
+                <button type="submit" class="btn btn-success w-100 rounded-full">Online</button>
             </div>
         </div>
     </form>
-
-    <script>
-        function updateButtonVisibility() {
-            const select = document.getElementById('instansi_id');
-            const selectedOption = select.options[select.selectedIndex];
-            const maxParticipants = parseInt(selectedOption.getAttribute('data-max'));
-            const currentParticipants = parseInt(selectedOption.getAttribute('data-current-participants') || '0');
-
-            const submitButton = document.getElementById('submit-button');
-            const quotaMessage = document.getElementById('quota-message');
-
-            if (currentParticipants >= maxParticipants) {
-                submitButton.style.display = 'none';
-                quotaMessage.style.display = 'block'; // Tampilkan pesan kuota penuh
-            } else {
-                submitButton.style.display = 'block';
-                quotaMessage.style.display = 'none'; // Sembunyikan pesan kuota penuh
-            }
-        }
-
-        // Call the function on page load to set the initial visibility
-        window.onload = updateButtonVisibility;
-
-    </script>
-
-    <script>
-        function submitForm(route) {
-            const form = document.getElementById('registrationForm');
-            if (route === 'registration.store') {
-                form.action = "{{ route('registration.store') }}";
-            } else if (route === 'registration.store.online') {
-                form.action = "{{ route('registration.store.online') }}";
-            }
-            form.submit();
-        }
-    </script>
-    
-
 </div>
 
 <style>

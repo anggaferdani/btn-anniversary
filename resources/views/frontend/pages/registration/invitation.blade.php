@@ -1,67 +1,76 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
+<!doctype html>
+<html lang="en">
+  <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Kartu QR Code | BTN Festival 2024</title>
-    <link rel="icon" type="image/x-icon" href="btn.png">
-</head>
-<body style="margin-top: 30px; padding: 0;">
+
+    <link rel="icon" type="image/x-icon" href="{{ asset('btn.png') }}">
+    <link href="{{ asset('tabler/dist/css/tabler.min.css?1692870487') }}" rel="stylesheet"/>
+    <link href="{{ asset('tabler/dist/css/tabler-flags.min.css?1692870487') }}" rel="stylesheet"/>
+    <link href="{{ asset('tabler/dist/css/tabler-payments.min.css?1692870487') }}" rel="stylesheet"/>
+    <link href="{{ asset('tabler/dist/css/tabler-vendors.min.css?1692870487') }}" rel="stylesheet"/>
+    <link href="{{ asset('tabler/dist/css/demo.min.css?1692870487') }}" rel="stylesheet"/>
+    <style>
+      @import url('https://rsms.me/inter/inter.css');
+      :root {
+      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+      }
+      body {
+      	font-feature-settings: "cv03", "cv04", "cv11";
+      }
+    </style>
+  </head>
+  <body  class=" d-flex flex-column">
+    <script src="{{ asset('tabler/dist/js/demo-theme.min.js?1692870487') }}"></script>
+    
     {{-- Notif --}}
     @if(Session::get('success'))
-        <div role="alert" style="margin: 10px; padding: 10px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ Session::get('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
     @if(Session::get('error'))
-        <div role="alert" style="margin: 10px; padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;">
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {{ Session::get('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
 
-    <div style="max-width: 390px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; position: relative;" id="card">
-        <div style="padding: 10px; justify-content: center">
-            <span style="display: flex; align-items: flex-end; justify-content: flex-end; width: 100%;">
-                <h3 style="margin: 0;">ID</h3>
-                <h1 style="margin-left: 8px; margin: 0;">{{ $participant->qrcode }}</h1>
-            </span>
-            <div style="display: flex; justify-content: center; margin-bottom: 1rem; align-items: center; gap: 10px;">
-                <img src="{{ asset('bumn-indonesia.png') }}" alt="" width="100px">
-                <img src="{{ asset('kementerian-badan-usaha.png') }}" alt="" width="90px">
-                <img src="{{ asset('bumn-school.png') }}" alt="" width="40px">
-                <img src="{{ asset('btn.png') }}" alt="" width="40px">
-                <img src="{{ asset('forumhuman.png') }}" alt="" width="50px">
-            </div>
-            <img src="{{ asset('bumn-invitation-1.png') }}" alt="BUMN Learning Festival" style="display: block; margin-left: auto; margin-right: auto; width: 100%; object-fit: contain;">
-            <h1 style="font-size: 35px; margin-top: 1rem; padding-bottom: 150px">{{ $participant->name }}</h1>
-            
-            <!-- QR Code container -->
-            <div style="position: absolute; bottom: 10px; right: 10px; margin: 10px">
-                <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ $participant->qrcode }}" alt="QR Code">
+    <div class="container my-4">
+        <div id="card" class="border rounded p-4" style="max-width: 350px; margin: auto;">
+            <div>
+                <span class="d-flex align-items-end justify-content-end">
+                    <h3 class="m-0 me-2">ID</h3>
+                    <h1 class="m-0">{{ substr($participant->qrcode, 0, 1) }} {{ substr($participant->qrcode, 1) }}</h1>
+                </span>
+                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                    <img src="{{ asset('bumn-indonesia.png') }}" alt="" width="90px">
+                    <img src="{{ asset('kementerian-badan-usaha.png') }}" alt="" width="80px">
+                    <img src="{{ asset('bumn-school.png') }}" alt="" width="30ox">
+                    <img src="{{ asset('btn.png') }}" alt="" width="30px">
+                    <img src="{{ asset('forumhuman.png') }}" alt="" width="40px">
+                </div>
+                <img src="{{ asset('bumn-invitation-1.png') }}" alt="BUMN Learning Festival" class="mb-3">
+                <span class="h1 text-uppercase">{{ $participant->name }}</span><br>
+                <span class="h3 text-uppercase">{{ $participant->instansi->name }}</span>
+    
+                <div class="qr-code-container text-end mt-3">
+                    <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data={{ $participant->qrcode }}" alt="QR Code" width="170">
+                </div>
             </div>
         </div>
-    </div>
     
-
-    <div style="display: flex; justify-content: center; text-align: center; gap: 10px; margin: 1rem;">
-        {{-- <!-- Button to Download PDF -->
-        <a href="{{ route('registration.downloadPdf', $participant->token) }}" id="downloadPdfBtn" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Download Kartu sebagai PDF</a>
-    
-        <!-- Button to Send Email -->
-        <form action="{{ route('registration.sendmail', $participant->token) }}" method="POST" style="margin: 0;">
-            @csrf
-            <button type="submit" style="padding: 10px 20px; background-color: #6c757d; color: white; border: none; border-radius: 5px; cursor: pointer;">Kirim QR Code via Email</button>
-        </form> --}}
-    
-        <!-- Button to Download Kartu as Image -->
-        <a href="#" id="downloadBtn" style="padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">Download Kartu Sebagai Image</a>
-    
-        <!-- Button to Send Image via Email -->
-        <form id="sendImageForm" action="{{ route('registration.sendImage', $participant->token) }}" method="POST" style="margin: 0;">
-            @csrf
-            <input type="hidden" name="imageData" id="imageData">
-            <button type="submit" id="sendImageBtn" style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">Kirim Foto via Email</button>
-        </form>
+        <div class="d-flex justify-content-center gap-2 text-center my-4">
+            <a href="#" id="downloadBtn" class="btn btn-primary">Download Image</a>
+            <form id="sendImageForm" action="{{ route('registration.sendImage', $participant->token) }}" method="POST" class="m-0">
+                @csrf
+                <input type="hidden" name="imageData" id="imageData">
+                <button type="submit" id="sendImageBtn" class="btn btn-success">Kirim Foto via Email</button>
+            </form>
+        </div>
     </div>
     
     <!-- Libs JS -->
@@ -125,7 +134,6 @@
                 console.error('Error capturing card:', err);
             }
         });
-
     
         // Function to download the card as an image and save it to the server
         async function downloadCard() {
@@ -178,10 +186,26 @@
             downloadCard();
         });
     </script>
-    
+
     <!-- Include html2canvas library for screenshot functionality -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
-    
-</body>
+
+    <!-- Tabler Core -->
+    <script src="{{ asset('tabler/dist/js/tabler.min.js?1692870487') }}" defer></script>
+    <script src="{{ asset('tabler/dist/js/demo.min.js?1692870487') }}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready( function () {
+        $('form').on('submit', function() {
+          $.LoadingOverlay("show");
+      
+          setTimeout(function(){
+              $.LoadingOverlay("hide");
+          }, 100000);
+        });
+      });
+    </script>
+  </body>
 </html>
