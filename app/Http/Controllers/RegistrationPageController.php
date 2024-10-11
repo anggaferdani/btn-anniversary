@@ -82,7 +82,7 @@ class RegistrationPageController extends Controller
                 } elseif ($participantCount > 300 && $participantCount <= 400) {
                     $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
                 } elseif ($participantCount > 400) {
-                    $qrcode = 'F' . str_pad($participantCount - 400, 3, '0', STR_PAD_LEFT);
+                    $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
                 }
             }
 
@@ -130,7 +130,7 @@ class RegistrationPageController extends Controller
             // Prepare email data
             $mail = [
                 'to' => $participant->email,
-                'from_email' => 'example@gmail.com',
+                'from_email' => 'btnfestivalevent@gmail.com',
                 'from_name' => 'BTN Anniversary',
                 'subject' => 'Kartu QR Code',
                 'name' => $participant->name,

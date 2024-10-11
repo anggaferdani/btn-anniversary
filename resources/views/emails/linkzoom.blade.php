@@ -71,9 +71,9 @@
 
         <h1>Selamat, {{ $name }}!</h1>
 
-        <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Download QR Code</a>
+        <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Link Zoom</a>
 
-        <p>QR code Anda telah disisipkan sebagai lampiran. Harap bawa QR code ini untuk mengikuti Event.</p>
+        <p>Link Zoom telah terkirim.</p>
 
         <div class="footer-note">
             <p>Terima kasih atas perhatian Anda. Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi tim kami.</p>
