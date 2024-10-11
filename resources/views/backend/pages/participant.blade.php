@@ -141,14 +141,14 @@
           </div>
           <div class="mb-3">
             <label class="form-label required">Instansi</label>
-            <select class="form-select" name="instansi_id">
+            <select id="instansiSelect" class="selectpicker border rounded" data-live-search="true" name="instansi_id" style="width: 100% !important;">
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
                 @php
                     $currentCount = $instansi->participants_count;
                     $maxCount = $instansi->max_participant;
                 @endphp
-                <option value="{{ $instansi->id }}" 
+                <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}" 
                     @if($currentCount >= $maxCount) 
                         disabled 
                     @endif
@@ -179,18 +179,10 @@
             <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" autocomplete="off">
             @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
-          <div class="mb-3">
-            <label class="form-label required">Kehadiran</label>
-            <select class="form-select" name="kehadiran" id="kehadiran">
-              <option disabled selected value="">Pilih</option>
-              <option value="onsite">Onsite</option>
-              <option value="online">Online</option>
-            </select>
-            @error('kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
-          </div>
-          <div class="mb-3">
-            <label class="form-label" id="label-kendaraan">Apakah membawa kendaraan pribadi?</label>
-            <select class="form-select" name="kendaraan" id="kendaraan">
+          <input type="hidden" class="form-control" id="kehadiranInput" name="kehadiran" placeholder="" value="" autocomplete="off">
+          <div id="kendaraanDiv" style="display:none;" class="mb-3">
+            <label class="form-label">Apakah membawa kendaraan pribadi?</label>
+            <select class="form-select" name="kendaraan">
               <option disabled selected value="">Pilih</option>
               <option value="mobil">Mobil</option>
               <option value="motor">Motor</option>
@@ -228,7 +220,7 @@
           </div>
           <div class="mb-3">
             <label class="form-label required">Instansi</label>
-            <select class="form-select" name="instansi_id">
+            <select id="instansiSelect{{ $participant->id }}" class="selectpicker border rounded" data-live-search="true" name="instansi_id" style="width: 100% !important;">
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
                 @php
@@ -236,7 +228,7 @@
                     $maxCount = $instansi->max_participant;
                     $isParticipant = $participant->instansi_id == $instansi->id;
                 @endphp
-                <option value="{{ $instansi->id }}" 
+                <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}"  
                     @if($currentCount >= $maxCount && !$isParticipant) 
                         disabled 
                     @endif
@@ -266,16 +258,8 @@
             <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" value="{{ $participant->phone_number }}" autocomplete="off">
             @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
-          <div class="mb-3">
-            <label class="form-label required">Kehadiran</label>
-            <select class="form-select" name="kehadiran" id="kehadiran{{ $participant->id }}">
-              <option disabled selected value="">Pilih</option>
-              <option value="onsite" @if($participant->kehadiran == 'onsite') @selected(true) @endif>Onsite</option>
-              <option value="online" @if($participant->kehadiran == 'online') @selected(true) @endif>Online</option>
-            </select>
-            @error('kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
-          </div>
-          <div class="mb-3">
+          <input type="hidden" class="form-control" id="kehadiranInput{{ $participant->id }}" name="kehadiran" placeholder="" value="" autocomplete="off">
+          <div class="mb-3" id="kendaraanDiv{{ $participant->id }}" style="display:none;">
             <label class="form-label" id="label-kendaraan{{ $participant->id }}">Apakah membawa kendaraan pribadi?</label>
             <select class="form-select" name="kendaraan" id="kendaraan{{ $participant->id }}">
                 <option disabled selected value="">Pilih</option>
@@ -327,6 +311,51 @@
 @endsection
 @push('scripts')
 <script>
+    $(document).ready(function() {
+      function handleInstansiChange(participantId) {
+        $('#instansiSelect' + participantId).on('change', function() {
+          var statusKehadiran = $(this).find(':selected').data('status-kehadiran');
+          
+          $('#kehadiranInput' + participantId).val('');
+          $('#kendaraan' + participantId).val('');
+          
+          $('#kehadiranInput' + participantId).val(statusKehadiran);
+          
+          if (statusKehadiran === 'hybrid') {
+            $('#kendaraanDiv' + participantId).show();
+          } else {
+            $('#kendaraanDiv' + participantId).hide();
+          }
+        });
+      }
+
+      @foreach ($participants as $participant)
+        handleInstansiChange({{ $participant->id }});
+
+        var initialStatusKehadiran{{ $participant->id }} = $('#instansiSelect{{ $participant->id }}').find(':selected').data('status-kehadiran');
+        if (initialStatusKehadiran{{ $participant->id }} === 'hybrid') {
+          $('#kendaraanDiv{{ $participant->id }}').show();
+        } else {
+          $('#kendaraanDiv{{ $participant->id }}').hide();
+        }
+      @endforeach
+    });
+    $(document).ready(function() {
+        $('#instansiSelect').on('change', function() {
+            var statusKehadiran = $(this).find(':selected').data('status-kehadiran');
+
+            $('#kehadiranInput').val('');
+            $('select[name="kendaraan"]').val('');
+            
+            $('#kehadiranInput').val(statusKehadiran);
+            
+            if (statusKehadiran === 'hybrid') {
+              $('#kendaraanDiv').show();
+            } else {
+              $('#kendaraanDiv').hide();
+            }
+        });
+    });
     document.getElementById('kehadiran').addEventListener('change', function () {
         const kehadiran = this.value;
         const kendaraanSelect = document.getElementById('kendaraan');

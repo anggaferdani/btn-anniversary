@@ -124,7 +124,7 @@ class ParticipantController extends Controller
                 } elseif ($participantCount > 300 && $participantCount <= 400) {
                     $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
                 } elseif ($participantCount > 400) {
-                    $qrcode = 'F' . str_pad($participantCount - 400, 3, '0', STR_PAD_LEFT);
+                    $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
                 }
             }
 
