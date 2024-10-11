@@ -23,14 +23,14 @@ class RegistrationPageController extends Controller
     public function index()
     {
         $instansis = Instansi::withCount('participants')->where('status', 1)->get();
-    
+
         return view('frontend.pages.registration.registration', compact('instansis'));
     }
 
     public function indexOnline()
     {
         $instansis = Instansi::withCount('participants')->where('status', 1)->get();
-    
+
         return view('frontend.pages.registration.registrationOnline', compact('instansis'));
     }
 
@@ -42,7 +42,7 @@ class RegistrationPageController extends Controller
         //
     }
 
-    public function verify($token) 
+    public function verify($token)
     {
         $participant = Participant::with('instansi')->where('token', $token)->first();
 
@@ -50,7 +50,7 @@ class RegistrationPageController extends Controller
             return view('frontend.pages.registration.invitation', compact('participant'));
         } else {
             $participantCount = Participant::whereNotNull('qrcode')->lockForUpdate()->count();
-        
+
             if ($participantCount === 0) {
                 $qrcode = 'B001';
             } elseif ($participantCount === 1) {
@@ -80,22 +80,23 @@ class RegistrationPageController extends Controller
 
     public function sendImage(Request $request, $token) {
         $participant = Participant::where('token', $token)->first();
-        
+
         if (!$participant) {
             return response()->json(['error' => 'Participant not found.'], 404);
         }
-    
+
         // Decode the image data
         $imageData = $request->input('imageData');
+//        dd($imageData);
         if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
             $imageData = substr($imageData, strpos($imageData, ',') + 1);
             $imageData = base64_decode($imageData);
-    
+
             // Define the public path for saving the image
             $publicPath = public_path('images');
             $fileName = $participant->qrcode . '.jpg';
             $filePath = $publicPath . '/' . $fileName;
-    
+
             // Create directory if it doesn't exist
             if (!file_exists($publicPath)) {
                 mkdir($publicPath, 0755, true);
@@ -107,7 +108,7 @@ class RegistrationPageController extends Controller
             $participant->update([
                 'image' => $fileName,
             ]);
-            
+
             $url = route('registration.downloadImage', ['token' => $participant->token]);
             // Prepare email data
             $mail = [
@@ -120,7 +121,7 @@ class RegistrationPageController extends Controller
                 'token' => $participant->token,
                 'url' => $url,
             ];
-    
+
             try {
                 Mail::send('emails.invitation', $mail, function($message) use ($mail, $filePath) {
                     $message->to($mail['to'])
@@ -128,7 +129,7 @@ class RegistrationPageController extends Controller
                             ->subject($mail['subject'])
                             ->attach($filePath); // Attach the saved image
                 });
-    
+
                 // Set a flash message to indicate success
                 session()->flash('success', 'Image sent successfully to ' . $mail['to']);
             } catch (\Exception $e) {
@@ -137,25 +138,25 @@ class RegistrationPageController extends Controller
         } else {
             session()->flash('error', 'Invalid image data.');
         }
-    
+
         // Redirect to the invitation view
         return view('frontend.pages.registration.invitation', compact('participant'));
     }
-    
+
     public function downloadImage($token) {
         $participant = Participant::where('token', $token)->first();
-    
+
         if (!$participant || !$participant->image) {
             return response()->json(['error' => 'Image not found.'], 404);
         }
-    
+
         // Tentukan path gambar
         $filePath = public_path('images/' . $participant->image);
-    
+
         if (!file_exists($filePath)) {
             return response()->json(['error' => 'File not found.'], 404);
         }
-    
+
         // Kembalikan file sebagai response download
         return response()->download($filePath, $participant->image);
     }
@@ -175,7 +176,7 @@ class RegistrationPageController extends Controller
 
         if ($participantCheck) {
             $participant = Participant::where('qrcode', $participantCheck->qrcode)->where('verification', 1)->first();
-            
+
             try {
                 $url = route('registration.verify', ['token' => $participant->token]);
 
@@ -186,7 +187,7 @@ class RegistrationPageController extends Controller
                     'subject' => 'Verification Email | BTN ANNIVERSARY 2024',
                     'url' => $url,
                 ];
-    
+
                 Mail::send('emails.verification', $mail, function($message) use ($mail){
                     $message->to($mail['to'])
                     ->from($mail['email'], $mail['from'])
@@ -213,7 +214,7 @@ class RegistrationPageController extends Controller
 
             try {
                 $token = $this->generateUniqueToken(12);
-                
+
                 $array = [
                     'token' => $token,
                     'name' => $request['name'],
@@ -245,7 +246,7 @@ class RegistrationPageController extends Controller
                 }
 
                 DB::commit();
-        
+
                 return redirect()->back()->with('success', 'ID Card sudah terkirim via email '. $participant->email);
             } catch (\Throwable $th) {
                 DB::rollBack();
@@ -266,7 +267,7 @@ class RegistrationPageController extends Controller
 
         try {
             $token = $this->generateUniqueToken(12);
-            
+
             $array = [
                 'token' => $token,
                 'name' => $request['name'],
@@ -281,20 +282,20 @@ class RegistrationPageController extends Controller
             Participant::create($array);
 
             DB::commit();
-    
+
             return redirect()->back()->with('success', 'Pendaftaran Berhasil, Link zoom akan kami kirimkan pada tanggal 14 Oktober 2024');
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
         }
-    
+
     }
 
     private function generateUniqueToken($length = 12) {
         do {
             $token = bin2hex(random_bytes($length / 2));
         } while (Participant::where('token', $token)->exists());
-    
+
         return $token;
     }
 

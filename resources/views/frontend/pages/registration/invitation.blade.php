@@ -24,7 +24,7 @@
   </head>
   <body  class=" d-flex flex-column">
     <script src="{{ asset('tabler/dist/js/demo-theme.min.js?1692870487') }}"></script>
-    
+
     {{-- Notif --}}
     @if(Session::get('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -66,30 +66,45 @@
                     <span class="text-uppercase" style="font-weight: 1000; font-size: 30px">{{ $participant->name }}</span><br>
                     <span class="text-uppercase" style="font-weight: 800; font-size: 25px">{{ $participant->instansi->name }}</span>
                 </div>
+<<<<<<< HEAD
     
                 <div class="qr-code-container text-end pe-4 ps-4 pb-4">
                     <img id="qrCodeImg" src="https://quickchart.io/qr?text={{ $participant->qrcode }}&size=300x300" alt="QR Code" width="200px" height="200px">
+=======
+
+
+                <div style="text-align: right; padding-right: 1rem; padding-left: 1rem; padding-bottom: 1rem;">
+                    <div id="qrCodeImg" alt="QR Code" style="padding-bottom: 20px; padding-left: 200px"></div>
+>>>>>>> 1e1a672661ea379910c52da214f8041c1e48461f
                 </div>
             </div>
         </div>
-    
+
         <div class="d-flex justify-content-center gap-2 text-center my-4">
             <a href="#" id="downloadBtn" class="btn btn-primary">Download Image</a>
+<<<<<<< HEAD
             <span id="loadingText" style="display: none;">Downloading...</span>
 
             <form id="sendImageForm" action="{{ route('registration.sendImage', $participant->token) }}" method="POST" class="m-0">
+=======
+            <form id="sendImageForm" action="{{ route('registration.sendImage', $participant->token) }}" method="POST"
+                  class="m-0" enctype="multipart/form-data">
+>>>>>>> 1e1a672661ea379910c52da214f8041c1e48461f
                 @csrf
                 <input type="hidden" name="imageData" id="imageData">
                 <button type="submit" id="sendImageBtn" class="btn btn-success">Kirim Foto via Email</button>
             </form>
         </div>
     </div>
-    
+
     <!-- Libs JS -->
     <script src="tabler/dist/js/tabler.min.js" defer></script>
     <script src="tabler/dist/js/demo.min.js" defer></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"
+            integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+<<<<<<< HEAD
 // JavaScript
 
 // Function to download QR Code as an image
@@ -177,6 +192,67 @@ document.getElementById('downloadBtn').addEventListener('click', function (e) {
     // downloadCard();
 });
 
+=======
+        var qrcode = new QRCode("qrCodeImg", {
+            text: "{{$participant->qrcode}}",
+            width: 200,
+            height: 200,
+        });
+
+        async function downloadCard() {
+            html2canvas(document.querySelector("#card"), {
+                    useCORS: true,
+                }
+            ).then(canvas => {
+                canvas.style.display = 'none'
+                document.body.appendChild(canvas)
+                return canvas
+            }).then(canvas => {
+                const image = canvas.toDataURL('image/png')
+                const a = document.createElement('a')
+                a.setAttribute('download', 'my-image.png')
+                a.setAttribute('href', image)
+                a.click()
+                canvas.remove()
+            });
+        }
+
+
+        document.getElementById('sendImageBtn').addEventListener('click', async function (e) {
+            e.preventDefault(); // Mencegah form disubmit langsung
+            const qrCodeUrl = document.getElementById('qrCodeImg').src;
+
+            try {
+                html2canvas(document.querySelector("#card"), {
+                        useCORS: true,
+                    }
+                ).then(canvas => {
+                    canvas.style.display = 'none'
+                    document.body.appendChild(canvas)
+                    return canvas
+                }).then(canvas => {
+                    const image = canvas.toDataURL('image/jpeg', 0.9);
+                    // const a = document.createElement('a')
+                    // a.setAttribute('download', 'my-image.png')
+                    // a.setAttribute('href', image)
+                    // a.click()
+                    // canvas.remove()
+                    document.getElementById('imageData').value = image;
+                    document.getElementById('sendImageForm').submit();
+                });
+
+
+            } catch (err) {
+                console.error('Error capturing card:', err);
+            }
+        });
+
+
+        document.getElementById('downloadBtn').addEventListener('click', function (e) {
+            e.preventDefault();
+            downloadCard();
+        });
+>>>>>>> 1e1a672661ea379910c52da214f8041c1e48461f
     </script>
     
     
@@ -194,8 +270,8 @@ document.getElementById('downloadBtn').addEventListener('click', function (e) {
       $(document).ready( function () {
         $('form').on('submit', function() {
           $.LoadingOverlay("show");
-      
-          setTimeout(function(){
+
+            setTimeout(function () {
               $.LoadingOverlay("hide");
           }, 100000);
         });
