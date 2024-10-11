@@ -49,11 +49,11 @@
     
         
     <div class="container my-4">
-        <div id="card" class="border rounded" style="width: 378px; margin: auto; background-color:white">
+        <div id="card" class="border rounded" style="width: 378px; margin: auto; background-color: transparent">
             <div class="position-relative">
                 <!-- Aksen Bawah -->    
-                <div class="position-absolute d-flex justify-content-center" style="bottom: 0; left:0; z-index: 1 !important;"> <!-- z-index lebih rendah -->
-                    <img src="/AKSEN2.png" alt="BUMN Learning Festival" width="220px">
+                <div class="position-absolute d-flex justify-content-center" style="bottom: 0; left:0; z-index: -99 !important;"> <!-- z-index lebih rendah -->
+                    <img src="/AKSEN2.png" alt="BUMN Learning Festival" width="220px" style="z-index: -99 !important">
                 </div>
             
                 <!-- Bagian ID -->
@@ -80,14 +80,14 @@
                 </div>
             
                 <!-- Nama dan Instansi -->
-                <div class="pe-5 ps-5" style="z-index: 3; position: relative; padding-bottom: 60px"> <!-- position relative dan z-index -->
+                <div class="pe-5 ps-5" style="z-index: 3; position: relative;"> <!-- position relative dan z-index -->
                     <span class="text-uppercase" style="font-weight: 1000; font-size: 24px">{{ $participant->name }}</span><br>
                     <span class="text-uppercase" style="font-weight: 800; font-size: 18px">{{ $participant->instansi->name }}</span>
                 </div>
             
                 <!-- QR Code -->
-                <div style="text-align: right; padding-right: 1rem; padding-left: 1rem; padding-bottom: 1rem; z-index: 2; position: relative;">
-                    <div class="w-100" id="qrCodeImg" alt="QR Code" style="padding-left: 180px"></div>
+                <div class="d-flex justify-content-end ms-auto col-md-7 z-2">
+                    <div class="ms-auto z-2 p-4" id="qrCodeImg" alt="" style="z-index: 99999 !important;"></div>
                 </div>
             </div>
             
@@ -96,6 +96,7 @@
             <a href="#" id="downloadBtn" class="btn btn-primary">Download Image</a>
             <form id="sendImageForm" action="{{ route('registration.sendImage', $participant->token) }}" method="POST"
                   class="m-0" enctype="multipart/form-data">
+                  @csrf
                 <input type="hidden" name="imageData" id="imageData">
                 <button type="submit" id="sendImageBtn" class="btn btn-success">Kirim Foto via Email</button>
             </form>
@@ -147,7 +148,7 @@
                     document.body.appendChild(canvas)
                     return canvas
                 }).then(canvas => {
-                    const image = canvas.toDataURL('image/jpeg', 0.9);
+                    const image = canvas.toDataURL('image/png', 1.0);
                     // const a = document.createElement('a')
                     // a.setAttribute('download', 'my-image.png')
                     // a.setAttribute('href', image)

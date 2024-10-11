@@ -111,7 +111,7 @@ class RegistrationPageController extends Controller
 
             // Define the public path for saving the image
             $publicPath = public_path('images');
-            $fileName = $participant->qrcode . '.jpg';
+            $fileName = $participant->qrcode . '.png';
             $filePath = $publicPath . '/' . $fileName;
 
             // Create directory if it doesn't exist
@@ -210,7 +210,7 @@ class RegistrationPageController extends Controller
                     ->from($mail['email'], $mail['from'])
                     ->subject($mail['subject']);
                 });
-                return redirect()->back()->with('success', 'registrasi anda berhasil silahkan cek inbox atau spam email'. $participant->email .'untuk verifikasi');
+                return redirect()->back()->with('success', 'Resend email berhasil, silahkan cek inbox atau spam email'. $participant->email .'untuk verifikasi');
             } catch (\Throwable $th) {
                 return back()->with('error', $th->getMessage());
             }
@@ -265,7 +265,7 @@ class RegistrationPageController extends Controller
 
                 DB::commit();
 
-                return redirect()->back()->with('success', 'ID Card sudah terkirim via email '. $participant->email);
+                return redirect()->back()->with('success', 'Registrasi anda berhasil silahkan cek inbox atau spam email'. $participant->email .' untuk verifikasi');
             } catch (\Throwable $th) {
                 DB::rollBack();
                 return back()->with('error', $th->getMessage());
@@ -324,7 +324,7 @@ class RegistrationPageController extends Controller
     
             DB::commit();
     
-            return redirect()->back()->with('success', 'Link Zoom sudah terkirim via email '. $participant->email);
+            return redirect()->back()->with('success', 'Link Zoom telah terkirim via email '. $participant->email);
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
