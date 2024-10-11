@@ -26,7 +26,7 @@
   </head>
   <body>
     <script src="{{ asset('tabler/dist/js/demo-theme.min.js?1692870487') }}"></script>
-    <div style="background: url({{ asset('assets/background.jpeg') }}); background-size: cover; width: 100vw; height: 100vh;">
+    <div style="background: url({{ asset('assets/background.png') }}); background-size: cover; width: 100vw; height: 100vh;">
       @yield('content')
     </div>
     <script src="{{ asset('tabler/dist/libs/apexcharts/dist/apexcharts.min.js?1692870487') }}" defer></script>

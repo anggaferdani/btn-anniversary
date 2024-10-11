@@ -9,6 +9,27 @@ use Illuminate\Support\Facades\DB;
 
 class ParticipantController extends Controller
 {
+    public function autocomplete(Request $request)
+    {
+        $query = Participant::where('verification', 1)->where('attendance', 2)->where('status', 1);
+
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('qrcode', $search)
+              ->orWhere('name', 'like', '%' . $search . '%')
+              ->orWhere('email', 'like', '%' . $search . '%')
+              ->orWhere('phone_number', 'like', '%' . $search . '%');
+        });
+
+        $participants = $query->take(3)->get();
+
+        if ($participants->isEmpty()) {
+            return response()->json(['message' => 'No participants found'], 404);
+        }
+
+        return response()->json($participants);
+    }
+    
     public function scan() {
         $participants = Participant::where('status', 1)->where('verification', 1)->where('attendance', 1)->get();
         return view('backend.pages.receptionist.scan', compact(
@@ -36,7 +57,7 @@ class ParticipantController extends Controller
                 'name' => $participant->name,
                 'qrcode' => $participant->qrcode,
                 'email' => $participant->email,
-                'phone' => $participant->phone,
+                'phone_number' => $participant->phone_number,
                 'point' => $participant->point,
             ]);
         }
@@ -184,10 +205,5 @@ class ParticipantController extends Controller
         } while (Participant::where('token', $token)->exists());
     
         return $token;
-    }
-
-    public function autocomplete(Request $request)
-    {
-        
     }
 }

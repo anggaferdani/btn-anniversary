@@ -13,6 +13,38 @@ class UserParticipantController extends Controller
         return view('backend.pages.tenant.scan');
     }
 
+    public function autocomplete(Request $request)
+    {
+        $query = Participant::where('verification', 1)->where('attendance', 1)->where('status', 1);
+
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('qrcode', $search)
+              ->orWhere('name', 'like', '%' . $search . '%')
+              ->orWhere('email', 'like', '%' . $search . '%')
+              ->orWhere('phone_number', 'like', '%' . $search . '%');
+        });
+
+        $participants = $query->take(3)->get();
+
+        if ($participants->isEmpty()) {
+            return response()->json(['message' => 'No participants found'], 404);
+        }
+
+        $userId = Auth::id();
+        foreach ($participants as $participant) {
+            $userParticipant = UserParticipant::where('user_id', $userId)
+                                              ->where('participant_id', $participant->id)
+                                              ->where('point', 1)
+                                              ->where('status', 1)
+                                              ->first();
+    
+            $participant->disableButton = $userParticipant ? true : false;
+        }
+
+        return response()->json(['participants' => $participants]);
+    }
+
     public function point($qrcode)
     {
         $participant = Participant::where('verification', 1)->where('qrcode', $qrcode)->first();
@@ -30,6 +62,7 @@ class UserParticipantController extends Controller
             $userParticipant = UserParticipant::where('user_id', $userId)
                                             ->where('participant_id', $participant->id)
                                             ->where('point', 1)
+                                            ->where('status', 1)
                                             ->first();
 
             if ($userParticipant) {
@@ -49,11 +82,11 @@ class UserParticipantController extends Controller
             UserParticipant::create($array);
 
             return response()->json([
-                'success' => '+1 Point berhasil ditambahkan',
+                'success' => '1 Point berhasil ditambahkan',
                 'name' => $participant->name,
                 'qrcode' => $participant->qrcode,
                 'email' => $participant->email,
-                'phone' => $participant->phone,
+                'phone_number' => $participant->phone_number,
                 'point' => $participant->point,
             ]);
         }
