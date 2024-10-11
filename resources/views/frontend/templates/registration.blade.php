@@ -22,9 +22,38 @@
       }
     </style>
   </head>
-  <body  class=" d-flex flex-column">
+  <body  class=" d-flex flex-column postition-relative">
+    <div class="position-absolute" style="top: 0; left: 0; padding-left: 135px">
+      <img src="{{ asset('assets/frontend/registration/LOGOLOGO1.png') }}" class="m-5 logo" alt="btn">
+    </div>
+
+    <!-- Logo kanan -->
+    <div class="position-absolute" style="top: 0; right: 0; padding-right: 135px">
+        <img src="{{ asset('assets/frontend/registration/LOGOLOGO2.png') }}" class="m-5 logo" alt="btn">
+    </div>
+
+    <style>
+        .logo {
+            width: 294px; /* Default width for large screens */
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                width: 150px; /* Width for mobile screens */
+                padding: 135px;
+                display: none; /* Sembunyikan logo pada layar kecil */
+            }
+        }
+
+        @media (min-width: 768px) {
+            .logo {
+                display: block; /* Tampilkan logo pada layar besar */
+            }
+        }
+    </style>
+
     <script src="{{ asset('tabler/dist/js/demo-theme.min.js?1692870487') }}"></script>
-    <div class="page page-center">
+    <div class="" style="background: url('{{ asset('assets/frontend/registration/Background.png') }}') no-repeat center center; background-size: cover;">
         @yield('content')
     </div>
     <!-- Libs JS -->

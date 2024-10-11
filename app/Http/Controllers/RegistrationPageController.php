@@ -169,7 +169,6 @@ class RegistrationPageController extends Controller
             'email' => 'required|email',
             'phone_number' => 'required',
             'instansi_id' => 'required',
-            'jabatan' => 'required',
         ]);
 
         $participantCheck = Participant::where('email', $request->email)->whereNotNull('qrcode')->first();
@@ -199,6 +198,17 @@ class RegistrationPageController extends Controller
             }
 
         } else {
+            // Cari instansi berdasarkan ID yang dipilih
+            $instansi = Instansi::find($request->instansi_id);
+
+            // Hitung jumlah partisipan yang sudah terdaftar di instansi
+            $participantCount = Participant::where('instansi_id', $request->instansi_id)->count();
+
+            // Cek apakah jumlah partisipan sudah mencapai batas maksimal
+            if ($participantCount >= $instansi->max_participant) {
+                return redirect()->back()->with('error', 'Kuota pendaftaran untuk instansi ini sudah penuh. Anda Tetap Bisa Melakukan Pendaftaran Online');
+            }
+
             DB::beginTransaction();
 
             try {
@@ -250,7 +260,6 @@ class RegistrationPageController extends Controller
             'email' => 'required|email',
             'phone_number' => 'required',
             'instansi_id' => 'required',
-            'jabatan' => 'required',
         ]);
 
         DB::beginTransaction();
