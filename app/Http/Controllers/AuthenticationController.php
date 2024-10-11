@@ -57,7 +57,7 @@ class AuthenticationController extends Controller
 
             $mail = [
                 'to' => $participant->email,
-                'email' => 'example@gmail.com',
+                'email' => 'btnfestivalevent@gmail.com',
                 'from' => 'Example',
                 'subject' => 'Example',
                 'url' => $url,

@@ -77,7 +77,7 @@
 
         <p>Jika Anda tidak merasa mendaftar akun ini, silakan abaikan email ini.</p>
 
-        <a href="{{ $url }}" class="btn-verify">Verifikasi Email</a>
+        <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Verifikasi Email</a>
 
         <div class="footer-note">
             <p>Terima kasih atas perhatian Anda. Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi tim kami.</p>

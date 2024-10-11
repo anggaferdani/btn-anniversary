@@ -6,6 +6,7 @@ use App\Models\Instansi;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use App\Models\Participant;
+use App\Models\Zoom;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -22,10 +23,14 @@ class RegistrationPageController extends Controller
      */
     public function index()
     {
-        $instansis = Instansi::withCount('participants')->where('status', 1)->get();
+        // Mengambil instansi dengan status = 1 dan status kehadiran
+        $instansis = Instansi::withCount('participants')
+                    ->where('status', 1)
+                    ->get(['id', 'name', 'max_participant', 'participants_count', 'status_kehadiran']); // Jangan lupa untuk mengambil kolom status_kehadiran
 
         return view('frontend.pages.registration.registration', compact('instansis'));
     }
+
 
     public function indexOnline()
     {
@@ -58,14 +63,26 @@ class RegistrationPageController extends Controller
             } else {
                 $participantCount = Participant::whereNotNull('qrcode')->lockForUpdate()->count() + 1;
 
-                if ($participantCount >= 3 && $participantCount <= 100) {
+                // if ($participantCount >= 3 && $participantCount <= 100) {
+                //     $qrcode = 'B' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
+                // } elseif ($participantCount >= 101 && $participantCount <= 200) {
+                //     $qrcode = 'U' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
+                // } elseif ($participantCount >= 201 && $participantCount <= 300) {
+                //     $qrcode = 'M' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
+                // } elseif ($participantCount >= 301) {
+                //     $qrcode = 'N' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
+                // }
+
+                if ($participantCount <= 100) {
                     $qrcode = 'B' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                } elseif ($participantCount >= 101 && $participantCount <= 200) {
-                    $qrcode = 'U' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                } elseif ($participantCount >= 201 && $participantCount <= 300) {
-                    $qrcode = 'M' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                } elseif ($participantCount >= 301) {
-                    $qrcode = 'N' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
+                } elseif ($participantCount > 100 && $participantCount <= 200) {
+                    $qrcode = 'U' . str_pad($participantCount - 100, 3, '0', STR_PAD_LEFT);
+                } elseif ($participantCount > 200 && $participantCount <= 300) {
+                    $qrcode = 'M' . str_pad($participantCount - 200, 3, '0', STR_PAD_LEFT);
+                } elseif ($participantCount > 300 && $participantCount <= 400) {
+                    $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
+                } elseif ($participantCount > 400) {
+                    $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
                 }
             }
 
@@ -113,7 +130,7 @@ class RegistrationPageController extends Controller
             // Prepare email data
             $mail = [
                 'to' => $participant->email,
-                'from_email' => 'example@gmail.com',
+                'from_email' => 'btnfestivalevent@gmail.com',
                 'from_name' => 'BTN Anniversary',
                 'subject' => 'Kartu QR Code',
                 'name' => $participant->name,
@@ -168,9 +185,8 @@ class RegistrationPageController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'phone_number' => 'required',
+            'phone_number' => 'required|min:8|max:13',
             'instansi_id' => 'required',
-            'jabatan' => 'required',
         ]);
 
         $participantCheck = Participant::where('email', $request->email)->whereNotNull('qrcode')->first();
@@ -194,12 +210,23 @@ class RegistrationPageController extends Controller
                     ->from($mail['email'], $mail['from'])
                     ->subject($mail['subject']);
                 });
-                return redirect()->back()->with('success', 'notifikasi id card sudah terkirim via email ' . $participant->email);
+                return redirect()->back()->with('success', 'notifikasi id card sudah terkirim via email ' . $participant->email . 'Mohon Cek Inbox atau Spam Email Anda!');
             } catch (\Throwable $th) {
                 return back()->with('error', $th->getMessage());
             }
 
         } else {
+            // Cari instansi berdasarkan ID yang dipilih
+            $instansi = Instansi::find($request->instansi_id);
+
+            // Hitung jumlah partisipan yang sudah terdaftar di instansi
+            $participantCount = Participant::where('instansi_id', $request->instansi_id)->count();
+
+            // Cek apakah jumlah partisipan sudah mencapai batas maksimal
+            if ($participantCount >= $instansi->max_participant) {
+                return redirect()->back()->with('error', 'Kuota pendaftaran untuk instansi ini sudah penuh. Anda Tetap Bisa Melakukan Pendaftaran Online');
+            }
+
             DB::beginTransaction();
 
             try {
@@ -213,6 +240,7 @@ class RegistrationPageController extends Controller
                     'instansi_id' => $request['instansi_id'],
                     'jabatan' => $request['jabatan'],
                     'kehadiran' => 'onsite',
+                    'kendaraan' => $request['kendaraan'],
                 ];
 
                 $participant = Participant::create($array);
@@ -249,16 +277,15 @@ class RegistrationPageController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'phone_number' => 'required',
+            'phone_number' => 'required|min:8|max:13',
             'instansi_id' => 'required',
-            'jabatan' => 'required',
         ]);
-
+    
         DB::beginTransaction();
-
+    
         try {
             $token = $this->generateUniqueToken(12);
-
+    
             $array = [
                 'token' => $token,
                 'name' => $request['name'],
@@ -266,20 +293,42 @@ class RegistrationPageController extends Controller
                 'phone_number' => $request['phone_number'],
                 'instansi_id' => $request['instansi_id'],
                 'jabatan' => $request['jabatan'],
-                'verification' => 1,
                 'kehadiran' => 'online',
+                'kendaraan' => $request['kendaraan'],
+                'verification' => 1,
             ];
-
-            Participant::create($array);
-
+    
+            $participant = Participant::create($array);
+    
+            if ($participant && $participant->email) {
+                // Menggunakan $participant->email untuk query
+                $participant = Participant::where('email', $participant->email)->first();
+    
+                $url = Zoom::first();
+    
+                $mail = [
+                    'to' => $participant->email,
+                    'name' => $participant->name,
+                    'email' => 'btnfestivalevent@gmail.com',
+                    'from' => 'BTN Event',
+                    'subject' => 'Verification Email | BTN ANNIVERSARY 2024',
+                    'url' => $url->link,
+                ];
+    
+                Mail::send('emails.linkzoom', $mail, function($message) use ($mail) {
+                    $message->to($mail['to'])
+                        ->from($mail['email'], $mail['from'])
+                        ->subject($mail['subject']);
+                });
+            }
+    
             DB::commit();
-
-            return redirect()->back()->with('success', 'Pendaftaran Berhasil, Link zoom akan kami kirimkan pada tanggal 14 Oktober 2024');
+    
+            return redirect()->back()->with('success', 'ID Card sudah terkirim via email '. $participant->email);
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());
         }
-
     }
 
     private function generateUniqueToken($length = 12) {

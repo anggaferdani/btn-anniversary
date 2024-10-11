@@ -1,22 +1,58 @@
 @extends('frontend.templates.registration')
 @section('title', 'Registration | BTN Anniversary')
 @section('content')
-<div class="container container-sm py-4" style="max-width: 900px; margin: auto;">
+<div class="container container-sm py-4" style="max-width: 1092px; margin: auto; position: relative;">
+    <!-- Logo kiri -->
+
+    <!-- Konten Form Registrasi -->
     <div class="text-center mb-4">
         <div class="d-flex align-items-center justify-content-center mb-4">
             <a href="{{ route('index') }}" class="navbar-brand navbar-brand-autodark me-3">
-                <img src="{{ asset('bumn-learning-festival.png') }}" width="200" alt="btn">
+                <img src="{{ asset('bumn-logo-final.png') }}" class="responsive-logo" alt="btn">
             </a>
         </div>
-        <div class="d-flex align-items-center justify-content-center mb-2" style="color: #003E64; font-weight: 900;">
-            <h1>REGISTRASI</h1>
+        
+        <style>
+            .responsive-logo {
+                margin-top: 30%; /* Default margin for large screens */
+                width: 223px;
+            }
+        
+            @media (max-width: 768px) {
+                .responsive-logo {
+                    margin-top: 20%; /* Margin-top for small screens */
+                    width: 137px;
+                }
+            }
+        </style>
+        
+        <div class="d-flex align-items-center justify-content-center mb-0" style="color: #0566AE;">
+            <h1 class="responsive-title" style="color: #0566AE; font-weight: 800;">REGISTRASI</h1>
+
+            <style>
+                .responsive-title {
+                    font-size: 40px; /* Default size for large screens */
+                }
+
+                @media (max-width: 768px) {
+                    .responsive-title {
+                        font-size: 25px; /* Size for small screens */
+                    }
+                }
+            </style>
         </div>
     </div>
-    <form class="card card-md border-0 bg-transparent border" action="{{ route('registration.store') }}" method="POST" id="registrationForm" autocomplete="off" novalidate>
+
+    <!-- Pesan jika kuota penuh -->
+    <div id="quota-message" class="text-danger" style="display:none;">
+        Kuota pendaftaran on-site Instansi Anda telah maksimal. Anda dapat melakukan pendaftaran Online
+    </div>
+    
+    <!-- Form Registrasi -->
+    <form class="border-0 bg-transparent border" action="{{ route('registration.store') }}" method="POST" id="registrationForm" autocomplete="off" novalidate>
         @csrf
         <div class="card-body">
-
-            {{-- Notif --}}
+            {{-- Notifikasi Sukses dan Error --}}
             @if(Session::get('success'))
                 <div class="alert alert-important alert-success" role="alert">
                     {{ Session::get('success') }}
@@ -27,17 +63,17 @@
                     {{ Session::get('error') }}
                 </div>
             @endif
-    
 
-            <div class="row mb-3">
-                <div class="col">
+            <!-- Nama dan Nomor Telepon -->
+            <div class="row mb-2">
+                <div class="col-md-6 col-12 mb-2">
                     <label class="form-label required" style="color:#005CA4; font-size: 18px;">Nama</label>
-                    <input type="text" class="form-control" name="name" placeholder="Masukkan nama lengkap anda" height="60px" value="{{ old('name') }}" required>
+                    <input type="text" class="form-control" name="name" placeholder="Masukkan nama lengkap anda" value="{{ old('name') }}" required>
                     @error('name')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col">
+                <div class="col-md-6 col-12">
                     <label class="form-label required" style="color:#005CA4; font-size: 18px;">Nomor telepon</label>
                     <input type="number" class="form-control" name="phone_number" placeholder="08xxxxxxxxxx" value="{{ old('phone_number') }}" required />
                     @error('phone_number')
@@ -45,11 +81,12 @@
                     @enderror
                 </div>
             </div>
-        
-            <div class="row mb-3">
-                <div class="col">
+
+            <!-- Instansi dan Jabatan -->
+            <div class="row mb-2">
+                <div class="col-md-6 col-12 mb-2">
                     <label class="form-label required" style="color:#005CA4; font-size: 18px;">Instansi</label>
-                    <select class="form-control mb-2" name="instansi_id" required id="instansi_id" onchange="updateButtonVisibility()">
+                    <select class="form-control mb-2" name="instansi_id" required id="instansi_id" onchange="updateButtonVisibility()" style="height: 50px; font-size: 16px;">
                         <option value="">Pilih Instansi</option>
                         @foreach ($instansis as $instansi)
                             <option value="{{ $instansi->id }}" 
@@ -62,75 +99,101 @@
                     @error('instansi_id')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
-                
-                    <!-- Pesan jika kuota penuh -->
-                    <div id="quota-message" class="text-danger" style="display:none;">
-                        Kuota pendaftaran on-site Instansi Anda telah maksimal. Anda dapat melakukan pendaftaran Online
-                    </div>
+            
+                    
                 </div>
-                <div class="col">
+                <div class="col-md-6 col-12">
                     <label class="form-label" style="color:#005CA4; font-size: 18px;">Jabatan <small class="text-muted">(optional)</small>:</label>
-                    <input type="text" class="form-control" name="jabatan" placeholder="Nama Jabatan" value="{{ old('jabatan') }}">
+                    <input type="text" class="form-control" name="jabatan" placeholder="Nama Jabatan" value="{{ old('jabatan') }}" style="height: 50px; font-size: 16px;">
                     @error('jabatan')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
             </div>
 
-        
-            <div class="mb-3">
+            <!-- Email -->
+            <div class="mb-2">
                 <label class="form-label required" style="color:#005CA4; font-size: 18px;">Email address</label>
                 <input type="email" class="form-control" name="email" placeholder="Masukkan alamat email valid anda" value="{{ old('email') }}" required>
                 @error('email')
                     <div class="text-danger">{{ $message }}</div>
                 @enderror
             </div>
-        
+
+            <!-- Checkbox untuk kendaraan -->
+            <div class="mb-2">
+                <label class="form-label" style="color:#005CA4; font-size: 18px;">
+                    <input type="checkbox" id="kendaraanCheckbox" onchange="toggleSelect();" style="margin-right: 5px;">
+                    Apakah Anda membawa kendaraan?
+                </label>
+            </div>
+            
+            <div id="kendaraanSelectDiv" class="mb-2" style="display: none;">
+                <label class="form-label required" style="color:#005CA4; font-size: 18px;">Pilih jenis kendaraan</label>
+                <select name="kendaraan" class="form-control">
+                    <option value="-">-- Pilih kendaraan --</option>
+                    <option value="mobil">Mobil</option>
+                    <option value="motor">Motor</option>
+                </select>
+            </div>
+
+            <script>
+                function toggleSelect() {
+                    const checkbox = document.getElementById('kendaraanCheckbox');
+                    const selectDiv = document.getElementById('kendaraanSelectDiv');
+                    selectDiv.style.display = checkbox.checked ? 'block' : 'none';
+                }
+            </script>
+
+            <!-- Checkbox untuk Online dan Offline -->
+            <input type="checkbox" class="btn-check" id="btn-check-online" autocomplete="off">
+            <label class="btn btn-primary" for="btn-check-online">Online</label>
+
+            <input type="checkbox" class="btn-check" id="btn-check-offline" autocomplete="off">
+            <label class="btn btn-primary" for="btn-check-offline">Offline</label>
+
+            <script>
+                function toggleCheckbox(checkboxId, otherCheckboxId) {
+                    const checkbox = document.getElementById(checkboxId);
+                    const otherCheckbox = document.getElementById(otherCheckboxId);
+
+                    if (checkbox.checked) {
+                        otherCheckbox.checked = false; // Uncheck the other checkbox
+                    }
+
+                    updateFormAction();
+                }
+
+                function updateFormAction() {
+                    const form = document.getElementById('registrationForm');
+                    const onlineCheckbox = document.getElementById('btn-check-online');
+                    const offlineCheckbox = document.getElementById('btn-check-offline');
+
+                    if (onlineCheckbox.checked) {
+                        form.action = "{{ route('registration.store.online') }}";
+                    } else if (offlineCheckbox.checked) {
+                        form.action = "{{ route('registration.store') }}";
+                    } else {
+                        form.action = "{{ route('registration.store') }}"; // Default action
+                    }
+                }
+
+                // Event listeners to toggle checkboxes
+                document.getElementById('btn-check-online').addEventListener('change', function() {
+                    toggleCheckbox('btn-check-online', 'btn-check-offline');
+                });
+                
+                document.getElementById('btn-check-offline').addEventListener('change', function() {
+                    toggleCheckbox('btn-check-offline', 'btn-check-online');
+                });
+            </script>
+
+            <!-- Tombol Submit -->
             <div class="form-footer">
-                <button type="button" id="submit-button" class="btn w-100 rounded-full text-uppercase mb-2" style="background-color: #0566AE; color: white;" onclick="submitForm('registration.store')">On Site</button>
-                <button type="button" class="btn w-100 rounded-full" style="background-color: #003E64; color: white;" onclick="submitForm('registration.store.online')">Online</button>
-                {{-- {{ route('registration.store.online') }} --}}
+                <button type="submit" id="submit-button" class="btn w-100 rounded-full text-uppercase mb-2" style="background-color: #0566AE; color: white;">Submit</button>
             </div>
         </div>
     </form>
-
-    <script>
-        function updateButtonVisibility() {
-            const select = document.getElementById('instansi_id');
-            const selectedOption = select.options[select.selectedIndex];
-            const maxParticipants = parseInt(selectedOption.getAttribute('data-max'));
-            const currentParticipants = parseInt(selectedOption.getAttribute('data-current-participants') || '0');
-
-            const submitButton = document.getElementById('submit-button');
-            const quotaMessage = document.getElementById('quota-message');
-
-            if (currentParticipants >= maxParticipants) {
-                submitButton.style.display = 'none';
-                quotaMessage.style.display = 'block'; // Tampilkan pesan kuota penuh
-            } else {
-                submitButton.style.display = 'block';
-                quotaMessage.style.display = 'none'; // Sembunyikan pesan kuota penuh
-            }
-        }
-
-        // Call the function on page load to set the initial visibility
-        window.onload = updateButtonVisibility;
-
-    </script>
-
-    <script>
-        function submitForm(route) {
-            const form = document.getElementById('registrationForm');
-            if (route === 'registration.store') {
-                form.action = "{{ route('registration.store') }}";
-            } else if (route === 'registration.store.online') {
-                form.action = "{{ route('registration.store.online') }}";
-            }
-            form.submit();
-        }
-    </script>
-    
-
 </div>
 
 <style>
@@ -140,16 +203,5 @@
         padding: 12px; /* Increased padding */
         font-size: 16px; /* Increased font size */
     }
-
-    .btn {
-        padding: 12px; /* Increase button padding */
-        font-size: 16px; /* Match font size */
-        border-radius: 4px; /* Match rounded corners */
-    }
-
-    .alert {
-        margin-bottom: 20px; /* Spacing for alerts */
-    }
 </style>
-
 @endsection
