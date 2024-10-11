@@ -40,23 +40,6 @@ class DatabaseSeeder extends Seeder
 
         User::insert($users);
 
-        $instansis = [
-            [
-                'name' => 'Pertamina',
-                'max_participant' => 3,
-            ],
-            [
-                'name' => 'Mandiri',
-                'max_participant' => 2,
-            ],
-            [
-                'name' => 'BCA',
-                'max_participant' => 2,
-            ],
-        ];
-
-        Instansi::insert($instansis);
-
         $zooms = [
             [
                 'link' => null,
@@ -81,5 +64,474 @@ class DatabaseSeeder extends Seeder
         //         'attendance' => 2,
         //     ]);
         // }
+
+        $instansis = [
+            [
+                'name' => 'PT Bank Mandiri (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Bank Negara Indonesia (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Bank Rakyat Indonesia (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Bank Syariah Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pertamina (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pertamina Patra Niaga',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Perusahaan Listrik Negara (Indonesia Power)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Perusahaan Listrik Negara (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Telekomunikasi Indonesia (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Telekomunikasi Selular',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'Perum BULOG',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Aviasi Pariwisata Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Bank Tabungan Negara (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Kharisma Pemasaran Bersama Nusantara',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Mineral Industri Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pelabuhan Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Perkebunan Nusantara III (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Perusahaan Gas Negara Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Perusahaan Pengelola Aset',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pupuk Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pupuk Indonesia Pangan',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Semen Indonesia (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Sinergi Gula Nusantara',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'Perum Percetakan Uang Republik Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'Perum Perhutani',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Adhi Karya (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Angkasa Pura Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT ASDP Indonesia Ferry (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Asuransi Jasa Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Asuransi Jiwa Taspen',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Asuransi Jiwasraya (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Bahana Pembinaan Usaha Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Bio Farma (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Biro Klasifikasi Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Danareksa (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Hutama Karya (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Jasa Marga (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Kereta Api Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Kimia Farma Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Krakatau Steel (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Len Industri (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT LEN Railway Systems',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pegadaian',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pelayaran Nasional Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pembangunan Perumahan (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pos Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Rajawali Nusantara Indonesia (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Rekayasa Industri',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Taspen (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Waskita Beton Precast Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Waskita Karya (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Waskita Toll Road',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Wijaya Karya (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'Perum Lembaga Penyelenggara Pelayanan Navigasi Penerbangan Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'Perum Perumnas',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'Perusahaan Umum Damri',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Asabri (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Asuransi Asei Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Asuransi Kredit Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Brantas Abipraya (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Dahana',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Djakarta Lloyd (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Indofarma Tbk',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Jaminan Kredit Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Jasa Raharja',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Kawasan Berikat Nusantara',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Permodalan Nasional Madani',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Perusahaan Perdagangan Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pindad',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Reasuransi Indonesia Utama (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Sucofindo',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Surveyor Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'Perum Lembaga Kantor Berita Nasional Antara',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'Perum Percetakan Negara Republik Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Amarta Karya (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Berdikari',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Energy Management Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Indra Karya (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Jakarta Industrial Estate Pulogadung',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Kliring Berjangka Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Kliring Perdagangan Berjangka Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Nindya Karya',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pengembangan Armada Niaga Nasional (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Perikanan Indonesia',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Produksi Film Negara (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Sang Hyang Seri',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Virama Karya (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Yodya Karya (Persero)',
+                'status_kehadiran' => 'Hybrid',
+            ],
+            [
+                'name' => 'PT Pupuk Kalimantan Timur',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Pupuk Sriwidjaja Palembang',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Semen Gresik',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Semen Padang',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT TIMAH Tbk',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Indonesia Asahan Aluminium',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT LPP Agro Nusantara',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Perkebunan Nusantara I',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Perkebunan Nusantara IV',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Petrokimia Gresik',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Pupuk Iskandar Muda',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Pupuk Kujang Cikampek',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Aneka Tambang Tbk',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Bukit Asam Tbk',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Semen Tonasa',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'Perum Jasa Tirta II',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Hotel Indonesia Natour',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Industri Kereta Api (Persero)',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT PAL Indonesia',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Pengembangan Pariwisata Indonesia',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Surabaya Industrial Estate Rungkut',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'Perum Jasa Tirta I',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Garam',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Industri Kapal Indonesia (Persero)',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Kawasan Industri Makassar',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Kawasan Industri Medan',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT Kawasan Industri Wijayakusuma',
+                'status_kehadiran' => 'online',
+            ],
+            [
+                'name' => 'PT TWC Borobudur, Prambanan dan Ratu Boko',
+                'status_kehadiran' => 'online',
+            ],
+        ];
+
+        Instansi::insert($instansis);
     }
 }

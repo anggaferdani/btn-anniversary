@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('instansis', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->integer('max_participant');
+            $table->string('status_kehadiran');
+            $table->integer('max_participant')->default(3);
             $table->integer('status')->default(1);
             $table->timestamps();
         });
