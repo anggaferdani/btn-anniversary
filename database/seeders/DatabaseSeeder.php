@@ -40,23 +40,6 @@ class DatabaseSeeder extends Seeder
 
         User::insert($users);
 
-        $instansis = [
-            [
-                'name' => 'Pertamina',
-                'max_participant' => 3,
-            ],
-            [
-                'name' => 'Mandiri',
-                'max_participant' => 2,
-            ],
-            [
-                'name' => 'BCA',
-                'max_participant' => 2,
-            ],
-        ];
-
-        Instansi::insert($instansis);
-
         $zooms = [
             [
                 'link' => null,
@@ -81,5 +64,15 @@ class DatabaseSeeder extends Seeder
         //         'attendance' => 2,
         //     ]);
         // }
+
+        $instansis = [
+            [
+                'name' => 'PT Bank Mandiri (Persero) Tbk',
+                'status_kehadiran' => 'Hybrid',
+                'max_participant' => 3,
+            ],
+        ];
+
+        Instansi::insert($instansis);
     }
 }
