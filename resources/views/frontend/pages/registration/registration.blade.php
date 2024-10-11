@@ -87,9 +87,7 @@
             </div>
         
             <div class="form-footer">
-                <button type="button" id="submit-button" class="btn w-100 rounded-full text-uppercase mb-2" style="background-color: #0566AE; color: white;" onclick="submitForm('registration.store')">On Site</button>
-                <button type="button" class="btn w-100 rounded-full" style="background-color: #003E64; color: white;" onclick="submitForm('registration.store.online')">Online</button>
-                {{-- {{ route('registration.store.online') }} --}}
+                <button type="button" id="submit-button" class="btn w-100 rounded-full text-uppercase mb-2" style="background-color: #0566AE; color: white;" onclick="submitForm('registration.store')">Submit</button>
             </div>
         </div>
     </form>

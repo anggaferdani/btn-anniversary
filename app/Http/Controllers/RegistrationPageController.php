@@ -193,7 +193,7 @@ class RegistrationPageController extends Controller
                     ->from($mail['email'], $mail['from'])
                     ->subject($mail['subject']);
                 });
-                return redirect()->back()->with('success', 'notifikasi id card sudah terkirim via email ' . $participant->email);
+                return redirect()->back()->with('success', 'notifikasi id card sudah terkirim via email ' . $participant->email . 'Mohon Cek Inbox atau Spam Email Anda!');
             } catch (\Throwable $th) {
                 return back()->with('error', $th->getMessage());
             }
