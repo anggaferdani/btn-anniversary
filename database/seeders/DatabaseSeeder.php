@@ -70,10 +70,10 @@ class DatabaseSeeder extends Seeder
                 'name' => 'PT Bank Mandiri (Persero) Tbk',
                 'status_kehadiran' => 'Hybrid',
             ],
-            [
-                'name' => 'PT Bank Mandiri (Persero) Tbk',
-                'status_kehadiran' => 'Hybrid',
-            ],
+            // [
+            //     'name' => '',
+            //     'status_kehadiran' => 'Hybrid',
+            // ],
         ];
 
         Instansi::insert($instansis);
