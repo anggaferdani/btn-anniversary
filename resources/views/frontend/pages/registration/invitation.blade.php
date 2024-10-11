@@ -14,13 +14,33 @@
     <link href="/tabler/dist/css/tabler-vendors.min.css?1692870487" rel="stylesheet"/>
     <link href="/tabler/dist/css/demo.min.css?1692870487" rel="stylesheet"/>
     <style>
-      @import url('https://rsms.me/inter/inter.css');
-      :root {
-      	--tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
-      }
-      body {
-      	font-feature-settings: "cv03", "cv04", "cv11";
-      }
+        @import url('https://rsms.me/inter/inter.css');
+        :root {
+      	    --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+        }
+        body {
+      	    font-feature-settings: "cv03", "cv04", "cv11";
+        }
+
+        #card {
+            width: 378px !important; /* Ukuran tetap */
+            height: auto; /* Sesuaikan tinggi dengan konten */
+            max-width: 378px; /* Mencegah kartu menjadi lebih besar dari 378px */
+            min-width: 378px; /* Mencegah kartu menjadi lebih kecil dari 378px */
+            overflow: hidden; /* Pastikan konten tidak keluar dari batas */
+        }
+
+        /* Menonaktifkan responsivitas di seluruh halaman */
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden; /* Mencegah scroll horizontal */
+        }
+
+        /* Cegah scaling pada mobile */
+        meta[name="viewport"] {
+            content: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no";
+        }
     </style>
   </head>
   <body  class=" d-flex flex-column">
@@ -67,7 +87,7 @@
             
                 <!-- QR Code -->
                 <div style="text-align: right; padding-right: 1rem; padding-left: 1rem; padding-bottom: 1rem; z-index: 2; position: relative;">
-                    <div id="qrCodeImg" alt="QR Code" style="padding-left: 180px"></div>
+                    <div class="w-100" id="qrCodeImg" alt="QR Code" style="padding-left: 180px"></div>
                 </div>
             </div>
             
