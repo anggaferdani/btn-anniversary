@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('jabatan')->nullable();
             $table->string('email');
             $table->string('phone_number')->nullable();
+            $table->string('image')->nullable();
             $table->integer('verification')->default(2);
             $table->integer('attendance')->default(2);
             $table->integer('point')->default(0);
