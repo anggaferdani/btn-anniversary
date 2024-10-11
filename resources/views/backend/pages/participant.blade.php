@@ -166,12 +166,21 @@
           </div>
           <div class="mb-3">
             <label class="form-label required">Kehadiran</label>
-            <select class="form-select" name="kehadiran">
+            <select class="form-select" name="kehadiran" id="kehadiran">
               <option disabled selected value="">Pilih</option>
               <option value="onsite">Onsite</option>
               <option value="online">Online</option>
             </select>
             @error('kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label" id="label-kendaraan">Apakah membawa kendaraan pribadi?</label>
+            <select class="form-select" name="kendaraan" id="kendaraan">
+              <option disabled selected value="">Pilih</option>
+              <option value="mobil">Mobil</option>
+              <option value="motor">Motor</option>
+            </select>
+            @error('kendaraan')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
         <div class="modal-footer">
@@ -229,12 +238,21 @@
           </div>
           <div class="mb-3">
             <label class="form-label required">Kehadiran</label>
-            <select class="form-select" name="kehadiran">
+            <select class="form-select" name="kehadiran" id="kehadiran{{ $participant->id }}">
               <option disabled selected value="">Pilih</option>
               <option value="onsite" @if($participant->kehadiran == 'onsite') @selected(true) @endif>Onsite</option>
               <option value="online" @if($participant->kehadiran == 'online') @selected(true) @endif>Online</option>
             </select>
             @error('kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label" id="label-kendaraan{{ $participant->id }}">Apakah membawa kendaraan pribadi?</label>
+            <select class="form-select" name="kendaraan" id="kendaraan{{ $participant->id }}">
+                <option disabled selected value="">Pilih</option>
+                <option value="mobil" @if($participant->kendaraan == 'mobil') @selected(true) @endif>Mobil</option>
+                <option value="motor" @if($participant->kendaraan == 'motor') @selected(true) @endif>Motor</option>
+            </select>
+            @error('kendaraan')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
         <div class="modal-footer">
@@ -277,3 +295,38 @@
 </div>
 @endforeach
 @endsection
+@push('scripts')
+<script>
+    document.getElementById('kehadiran').addEventListener('change', function () {
+        const kehadiran = this.value;
+        const kendaraanSelect = document.getElementById('kendaraan');
+        const kendaraanLabel = document.getElementById('label-kendaraan');
+
+        if (kehadiran === 'onsite') {
+            kendaraanSelect.setAttribute('required', 'required');
+            kendaraanLabel.classList.add('required');
+        } else {
+            kendaraanSelect.removeAttribute('required');
+            kendaraanLabel.classList.remove('required');
+            kendaraanSelect.value = "";
+        }
+    });
+
+    @foreach ($participants as $participant)
+    document.getElementById('kehadiran{{ $participant->id }}').addEventListener('change', function () {
+        const kehadiran = this.value;
+        const kendaraanSelect = document.getElementById('kendaraan{{ $participant->id }}');
+        const kendaraanLabel = document.getElementById('label-kendaraan{{ $participant->id }}');
+
+        if (kehadiran === 'onsite') {
+            kendaraanSelect.setAttribute('required', 'required');
+            kendaraanLabel.classList.add('required');
+        } else {
+            kendaraanSelect.removeAttribute('required');
+            kendaraanLabel.classList.remove('required');
+            kendaraanSelect.value = "";
+        }
+    });
+    @endforeach
+</script>
+@endpush

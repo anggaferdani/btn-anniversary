@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ZoomContoller;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\InstansiController;
 use App\Http\Controllers\DashboardController;
@@ -12,7 +14,6 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserParticipantController;
 use App\Http\Controllers\RegistrationPageController;
 use App\Http\Controllers\AttendanceParticipantController;
-use App\Http\Controllers\ZoomContoller;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('resend-digital-invitation/{token}', [AuthenticationController::class, 'resendDigitalInvitation'])->name('resend-digital-invitation');
         Route::resource('attendance-participant', AttendanceParticipantController::class);
         Route::get('history', [UserParticipantController::class, 'history'])->name('history');
+        Route::get('leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
     });
 });
 

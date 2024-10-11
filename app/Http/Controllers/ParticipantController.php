@@ -137,6 +137,7 @@ class ParticipantController extends Controller
                 'email' => $request['email'],
                 'phone_number' => $request['phone_number'],
                 'kehadiran' => $request['kehadiran'],
+                'kendaraan' => $request['kendaraan'],
                 'verification' => 1,
                 'attendance' => 2,
             ];
@@ -175,6 +176,7 @@ class ParticipantController extends Controller
                 'email' => $request['email'],
                 'phone_number' => $request['phone_number'],
                 'kehadiran' => $request['kehadiran'],
+                'kendaraan' => $request['kendaraan'],
             ];
 
             $participant->update($array);
