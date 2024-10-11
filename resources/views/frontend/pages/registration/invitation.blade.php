@@ -68,13 +68,15 @@
                 </div>
     
                 <div class="qr-code-container text-end pe-4 ps-4 pb-4">
-                    <img id="qrCodeImg" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ $participant->qrcode }}" alt="QR Code" width="200px" height="200px">
+                    <img id="qrCodeImg" src="https://quickchart.io/qr?text={{ $participant->qrcode }}&size=300x300" alt="QR Code" width="200px" height="200px">
                 </div>
             </div>
         </div>
     
         <div class="d-flex justify-content-center gap-2 text-center my-4">
             <a href="#" id="downloadBtn" class="btn btn-primary">Download Image</a>
+            <span id="loadingText" style="display: none;">Downloading...</span>
+
             <form id="sendImageForm" action="{{ route('registration.sendImage', $participant->token) }}" method="POST" class="m-0">
                 @csrf
                 <input type="hidden" name="imageData" id="imageData">
@@ -88,117 +90,96 @@
     <script src="tabler/dist/js/demo.min.js" defer></script>
 
     <script>
-        // Function to download QR Code as an image
-        function downloadQRCode(url) {
-            return new Promise((resolve, reject) => {
-                const img = new Image();
-                img.crossOrigin = 'Anonymous'; // Enable CORS for external image
-                img.src = url;
-                img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = img.width;
-                    canvas.height = img.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0);
-                    resolve(canvas.toDataURL('image/png')); // Keep this as PNG for QR code
-                };
-                img.onerror = reject;
-            });
-        }
+// JavaScript
 
-        document.getElementById('sendImageBtn').addEventListener('click', async function (e) {
-            e.preventDefault(); // Mencegah form disubmit langsung
-            const qrCodeUrl = document.getElementById('qrCodeImg').src;
-            
-            try {
-                const qrCodeDataUrl = await downloadQRCode(qrCodeUrl);
-                const card = document.getElementById('card');
-                
-                // Buat canvas untuk kartu
-                const cardCanvas = await html2canvas(card);
-                const combinedCanvas = document.createElement('canvas');
-                combinedCanvas.width = cardCanvas.width;
-                combinedCanvas.height = cardCanvas.height;
+// Function to download QR Code as an image
+// function downloadQRCode(url) {
+//     return new Promise((resolve, reject) => {
+//         const img = new Image();
+//         img.crossOrigin = 'Anonymous'; // Enable CORS for external image
+//         img.src = url;
+//         img.onload = () => {
+//             const canvas = document.createElement('canvas');
+//             canvas.width = img.width;
+//             canvas.height = img.height;
+//             const ctx = canvas.getContext('2d');
+//             ctx.drawImage(img, 0, 0);
+//             resolve(canvas.toDataURL('image/png')); // Keep this as PNG for QR code
+//         };
+//         img.onerror = reject;
+//     });
+// }
 
-                const combinedCtx = combinedCanvas.getContext('2d');
-                combinedCtx.drawImage(cardCanvas, 0, 0);
-
-                const qrCodeImg = new Image();
-                qrCodeImg.src = qrCodeDataUrl;
-
-                qrCodeImg.onload = () => {
-                    const qrCodeWidth = 200;  // Ukuran QR code tetap
-                    const qrCodeHeight = 200; // Ukuran QR code tetap
-                    const qrCodePositionX = cardCanvas.width - qrCodeWidth - 10; // Posisi QR code
-                    const qrCodePositionY = cardCanvas.height - qrCodeHeight - 10; // Posisi QR code
-
-                    // Menggambar QR code di canvas dengan ukuran yang benar
-                    combinedCtx.drawImage(qrCodeImg, qrCodePositionX, qrCodePositionY, qrCodeWidth, qrCodeHeight);
-                    
-                    // Dapatkan URL gambar data
-                    const imageDataUrl = combinedCanvas.toDataURL('image/jpeg', 0.9);
-                    document.getElementById('imageData').value = imageDataUrl; // Setel nilai input tersembunyi
-                    
-                    // Submit form untuk mengirim email dengan gambar
-                    document.getElementById('sendImageForm').submit();
-                };
-            } catch (err) {
-                console.error('Error capturing card:', err);
-            }
-        });
-
+// async function downloadCard() {
+//     const qrCodeUrl = document.getElementById('qrCodeImg').src;
+//     const downloadBtn = document.getElementById('downloadBtn');
+//     const loadingText = document.getElementById('loadingText');
     
-        // Function to download the card as an image and save it to the server
-        async function downloadCard() {
-            const qrCodeUrl = document.getElementById('qrCodeImg').src;
-            try {
-                const qrCodeDataUrl = await downloadQRCode(qrCodeUrl);
-                const card = document.getElementById('card');
+//     try {
+//         // Show loading text and disable the button
+//         downloadBtn.disabled = true;
+//         loadingText.style.display = 'inline';
 
-                // Create a new canvas to combine the card and QR code
-                const cardCanvas = await html2canvas(card);
-                const combinedCanvas = document.createElement('canvas');
-                combinedCanvas.width = cardCanvas.width;
-                combinedCanvas.height = cardCanvas.height;
+//         const qrCodeDataUrl = await downloadQRCode(qrCodeUrl);
+//         const card = document.getElementById('card');
 
-                const combinedCtx = combinedCanvas.getContext('2d');
-                combinedCtx.drawImage(cardCanvas, 0, 0);
+//         // Create a new canvas to combine the card and QR code
+//         const cardCanvas = await html2canvas(card);
+//         const combinedCanvas = document.createElement('canvas');
+//         combinedCanvas.width = cardCanvas.width;
+//         combinedCanvas.height = cardCanvas.height;
 
-                const qrCodeImg = new Image();
-                qrCodeImg.src = qrCodeDataUrl;
+//         const combinedCtx = combinedCanvas.getContext('2d');
+//         combinedCtx.drawImage(cardCanvas, 0, 0);
 
-                qrCodeImg.onload = async () => {
-                    // Calculate the position for the QR code
-                    const qrCodeWidth = 200; 
-                    const qrCodeHeight = 200; 
-                    const qrCodePositionX = cardCanvas.width - qrCodeWidth - 10; 
-                    const qrCodePositionY = cardCanvas.height - qrCodeHeight - 10; 
+//         const qrCodeImg = new Image();
+//         qrCodeImg.src = qrCodeDataUrl;
 
-                    combinedCtx.drawImage(qrCodeImg, qrCodePositionX, qrCodePositionY, qrCodeWidth, qrCodeHeight);
+//         qrCodeImg.onload = async () => {
+//             // Get the size of the QR code from the HTML
+//             const qrCodeWidth = document.getElementById('qrCodeImg').width;
+//             const qrCodeHeight = document.getElementById('qrCodeImg').height;
 
-                    const imageDataUrl = combinedCanvas.toDataURL('image/jpeg', 0.9);
+//             // Position the QR code in the bottom right corner
+//             const qrCodePositionX = combinedCanvas.width - qrCodeWidth - 10; // 10px margin
+//             const qrCodePositionY = combinedCanvas.height - qrCodeHeight - 10; // 10px margin
 
-                    // Download the image
-                    const link = document.createElement('a');
-                    link.download = '{{ $participant->qrcode }}.jpg';
-                    link.href = imageDataUrl;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+//             // Draw the QR code with the specified size and position
+//             combinedCtx.drawImage(qrCodeImg, qrCodePositionX, qrCodePositionY, qrCodeWidth, qrCodeHeight);
 
-                    // Send image data to the server
-                    await saveImageToServer(imageDataUrl);
-                };
-            } catch (err) {
-                console.error('Error capturing card:', err);
-            }
-        }
-    
-        document.getElementById('downloadBtn').addEventListener('click', function (e) {
-            e.preventDefault();
-            downloadCard();
-        });
+//             const imageDataUrl = combinedCanvas.toDataURL('image/jpeg', 0.9);
+
+//             // Download the image
+//             const link = document.createElement('a');
+//             link.download = '{{ $participant->qrcode }}.jpg';
+//             link.href = imageDataUrl;
+//             document.body.appendChild(link);
+//             link.click();
+//             document.body.removeChild(link);
+
+//             // Hide loading text and re-enable the button after download
+//             loadingText.style.display = 'none';
+//             downloadBtn.disabled = false;
+//         };
+//     } catch (err) {
+//         console.error('Error capturing card:', err);
+//         // Hide loading text and re-enable the button in case of error
+//         loadingText.style.display = 'none';
+//         downloadBtn.disabled = false;
+//     }
+// }
+
+document.getElementById('downloadBtn').addEventListener('click', function (e) {
+    e.preventDefault();
+    html2canvas(document.querySelector("#card")).then(canvas => {
+        document.body.appendChild(canvas)
+    });
+    // downloadCard();
+});
+
     </script>
+    
+    
 
     <!-- Include html2canvas library for screenshot functionality -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
