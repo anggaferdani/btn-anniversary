@@ -31,7 +31,7 @@
     <div class="container my-4">
         <div id="card" class="border rounded" style="width: 378px; margin: auto; background-color:white">
             <div class="position-relative">
-                <!-- Aksen Bawah -->
+                <!-- Aksen Bawah -->    
                 <div class="position-absolute d-flex justify-content-center" style="bottom: 0; left:0; z-index: 1 !important;"> <!-- z-index lebih rendah -->
                     <img src="/AKSEN2.png" alt="BUMN Learning Festival" width="220px">
                 </div>
