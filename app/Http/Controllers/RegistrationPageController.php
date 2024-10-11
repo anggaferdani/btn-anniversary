@@ -104,7 +104,7 @@ class RegistrationPageController extends Controller
 
         // Decode the image data
         $imageData = $request->input('imageData');
-//        dd($imageData);
+        // dd($imageData);
         if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type)) {
             $imageData = substr($imageData, strpos($imageData, ',') + 1);
             $imageData = base64_decode($imageData);
@@ -210,7 +210,7 @@ class RegistrationPageController extends Controller
                     ->from($mail['email'], $mail['from'])
                     ->subject($mail['subject']);
                 });
-                return redirect()->back()->with('success', 'notifikasi id card sudah terkirim via email ' . $participant->email . 'Mohon Cek Inbox atau Spam Email Anda!');
+                return redirect()->back()->with('success', 'registrasi anda berhasil silahkan cek inbox atau spam email'. $participant->email .'untuk verifikasi');
             } catch (\Throwable $th) {
                 return back()->with('error', $th->getMessage());
             }
@@ -311,7 +311,7 @@ class RegistrationPageController extends Controller
                     'name' => $participant->name,
                     'email' => 'btnfestivalevent@gmail.com',
                     'from' => 'BTN Event',
-                    'subject' => 'Verification Email | BTN ANNIVERSARY 2024',
+                    'subject' => 'Link Zoom | BTN ANNIVERSARY 2024',
                     'url' => $url->link,
                 ];
     
@@ -324,7 +324,7 @@ class RegistrationPageController extends Controller
     
             DB::commit();
     
-            return redirect()->back()->with('success', 'ID Card sudah terkirim via email '. $participant->email);
+            return redirect()->back()->with('success', 'Link Zoom sudah terkirim via email '. $participant->email);
         } catch (\Throwable $th) {
             DB::rollBack();
             return back()->with('error', $th->getMessage());

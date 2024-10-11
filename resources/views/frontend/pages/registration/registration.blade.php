@@ -145,12 +145,31 @@
                 }
             </script>
 
-            <!-- Checkbox untuk Online dan Offline -->
-            <input type="checkbox" class="btn-check" id="btn-check-online" autocomplete="off">
-            <label class="btn btn-primary" for="btn-check-online">Online</label>
 
-            <input type="checkbox" class="btn-check" id="btn-check-offline" autocomplete="off">
-            <label class="btn btn-primary" for="btn-check-offline">Offline</label>
+
+            <div class="mb-2">
+                <label class="form-label" style="color:#005CA4; font-size: 18px;">
+                    <input type="checkbox" id="statusCheckBox" onchange="toggleSelectStatus();" style="margin-right: 5px;">
+                    Anda ingin registrasi Offline atau Online?
+                </label>
+            </div>
+
+            <div id="statusSelectDiv" class="mb-2" style="display: none;">
+                <!-- Checkbox untuk Online dan Offline -->
+                <input type="checkbox" class="btn-check" id="btn-check-online" autocomplete="off">
+                <label class="btn btn-primary" for="btn-check-online">Online</label>
+
+                <input type="checkbox" class="btn-check" id="btn-check-offline" autocomplete="off">
+                <label class="btn btn-primary" for="btn-check-offline">Offline</label>
+            </div>
+
+            <script>
+                function toggleSelectStatus() {
+                    const checkboxStatus = document.getElementById('statusCheckBox');
+                    const selectDivStatus = document.getElementById('statusSelectDiv');
+                    selectDivStatus.style.display = checkboxStatus.checked ? 'block' : 'none';
+                }
+            </script>
 
             <script>
                 function toggleCheckbox(checkboxId, otherCheckboxId) {
