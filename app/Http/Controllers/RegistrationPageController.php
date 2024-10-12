@@ -111,7 +111,7 @@ class RegistrationPageController extends Controller
 
             // Define the public path for saving the image
             $publicPath = public_path('images');
-            $fileName = $participant->qrcode . '.png';
+            $fileName = $participant->token . '.png';
             $filePath = $publicPath . '/' . $fileName;
 
             // Create directory if it doesn't exist
@@ -131,7 +131,7 @@ class RegistrationPageController extends Controller
             $mail = [
                 'to' => $participant->email,
                 'from_email' => 'btnfestivalevent@gmail.com',
-                'from_name' => 'BTN Anniversary',
+                'from_name' => 'BTN Event',
                 'subject' => 'Kartu QR Code',
                 'name' => $participant->name,
                 'image' => $participant->image,
@@ -225,7 +225,7 @@ class RegistrationPageController extends Controller
 
             // Cek apakah jumlah partisipan sudah mencapai batas maksimal
             if ($participantCount >= $instansi->max_participant) {
-                return redirect()->back()->with('error', 'Kuota pendaftaran untuk instansi ini sudah penuh. Anda Tetap Bisa Melakukan Pendaftaran Online');
+                return redirect()->back()->with('error', 'Kuota pendaftaran On Site untuk instansi ini sudah penuh. Anda Tetap Bisa Melakukan Pendaftaran Online');
             }
 
             DB::beginTransaction();

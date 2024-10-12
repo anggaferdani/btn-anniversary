@@ -134,7 +134,7 @@
     
     <script>
         var qrcode = new QRCode("qrCodeImg", {
-            text: "{{ $participant->qrcode }}",
+            text: "{{ $participant->token }}",
             width: 300,
             height: 300,
         });
