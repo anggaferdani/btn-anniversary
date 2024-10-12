@@ -21,21 +21,9 @@
             border: 1px solid #e0e0e0;
         }
 
-        .brand-color {
-            color: #0056a3;
-            font-weight: bold;
-            font-size: 24px;
-        }
-
         .logo {
             width: 120px;
             margin-bottom: 20px;
-        }
-
-        p {
-            font-size: 16px;
-            line-height: 1.5;
-            color: #333333;
         }
 
         .btn-verify {
@@ -49,7 +37,6 @@
             font-weight: bold;
             display: inline-block;
             margin-top: 20px;
-            justify-content: center;
         }
 
         .btn-verify:hover {
@@ -65,22 +52,16 @@
     </style>
 </head>
 <body>
-    <div class="email-container text-center">
-
-        <img src="{{ $message->embed('final-event.png') }}" alt="Logo BTN" class="logo">
-
-        <h1>Selamat, {{ $name }}!</h1>
-
-        <img src="{{ $message->embed('images/'. $image) }}" alt="qrcode"
+    <div class="email-container" style="text-align: center;">
+        <img src="{{ $message->embed('final-event.png') }}" alt="Logo BTN" class="logo" style="display: block; margin: 0 auto;">
+        <h1 style="text-align: center;">Selamat, {{ $name }}!</h1>
+        <img src="{{ $message->embed('images/'. $image .'png') }}" alt="qrcode"
              style="width: 100%; max-width: 100%; height: auto; overflow: hidden;">
-        <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Download QR Code</a>
-
-        <p>QR code Anda telah disisipkan sebagai lampiran. Harap bawa QR code ini untuk mengikuti Event.</p>
-
-        <div class="footer-note">
+        <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none;">Download QR Code</a>
+        <p style="text-align: center;">QR code Anda telah disisipkan sebagai lampiran. Harap bawa QR code ini untuk mengikuti Event.</p>
+        <div class="footer-note" style="text-align: center;">
             <p>Terima kasih atas perhatian Anda. Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi tim kami.</p>
         </div>
     </div>
 </body>
 </html>
-
