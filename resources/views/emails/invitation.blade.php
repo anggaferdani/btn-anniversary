@@ -55,7 +55,7 @@
     <div class="email-container" style="text-align: center;">
         <img src="{{ $message->embed('final-event.png') }}" alt="Logo BTN" class="logo" style="display: block; margin: 0 auto;">
         <h1 style="text-align: center;">Selamat, {{ $name }}!</h1>
-        <img src="{{ $message->embed('images/'. $image .'png') }}" alt="qrcode"
+        <img src="{{ $message->embed('images/'. $image) }}" alt="qrcode"
              style="width: 100%; max-width: 100%; height: auto; overflow: hidden;">
         <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none;">Download QR Code</a>
         <p style="text-align: center;">QR code Anda telah disisipkan sebagai lampiran. Harap bawa QR code ini untuk mengikuti Event.</p>
