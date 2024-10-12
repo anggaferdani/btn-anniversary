@@ -69,15 +69,13 @@
 <body>
     <div class="email-container text-center">
         
-        <img src="{{ $message->embed('bumn-learning-festival.png') }}" alt="Logo BTN" class="logo">
+        <img src="{{ $message->embed('final-event.png') }}" alt="Logo BTN" class="logo">
 
-        <h2 class="brand-color">Verifikasi Email Anda</h2>
+        <h2 class="brand-color">Verifikasi Pendaftaran</h2>
         
-        <p>Terima kasih telah mendaftar. Untuk melanjutkan proses pendaftaran dan mendapatkan QR Code, silakan verifikasi alamat email Anda dengan menekan tombol di bawah ini.</p>
+        <p>Terima kasih telah mendaftar. Untuk mendapatkan ID Card & QR Code, silakan klik tombol di bawah ini.</p>
 
-        <p>Jika Anda tidak merasa mendaftar akun ini, silakan abaikan email ini.</p>
-
-        <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Verifikasi Email</a>
+        <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Verifikasi</a>
 
         <div class="footer-note">
             <p>Terima kasih atas perhatian Anda. Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi tim kami.</p>
