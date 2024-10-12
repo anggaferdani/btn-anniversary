@@ -26,7 +26,7 @@ class RegistrationPageController extends Controller
     {
         // Mengambil instansi dengan status = 1 dan status kehadiran
         $instansis = Instansi::withCount('participants')
-                    ->where('status', 1)->orderBy('name', 'desc')
+                    ->where('status', 1)->orderBy('name', 'asc')
                     ->get(['id', 'name', 'max_participant', 'participants_count', 'status_kehadiran']); // Jangan lupa untuk mengambil kolom status_kehadiran
 
         return view('frontend.pages.registration.register', compact('instansis'));
