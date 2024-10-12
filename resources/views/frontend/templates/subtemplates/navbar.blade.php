@@ -16,7 +16,7 @@
                     <a href="{{ route('registration.index') }}" class="text-uppercase"
                         style="color: #0566AE; font-size: 20px; text-decoration: none">Registrasi </a>
                 </li>
-                <div class="d-lg-flex d-lg-none " style="height: 30px; padding-left: 30px; padding-right: 30px">
+                <div class="d-lg-flex d-sm-none " style="height: 30px; padding-left: 30px; padding-right: 30px">
                     <div class="vr"></div>
                 </div>
                 <li class="nav-item d-sm-hidden">
