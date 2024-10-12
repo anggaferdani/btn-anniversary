@@ -55,36 +55,25 @@ class RegistrationPageController extends Controller
         if (!empty($participant->qrcode)) {
             return view('frontend.pages.registration.invitation', compact('participant'));
         } else {
-            $participantCount = Participant::whereNotNull('qrcode')->lockForUpdate()->count();
+            $existingQRCodes = Participant::whereNotNull('qrcode')
+                ->pluck('qrcode')
+                ->toArray();
 
-            if ($participantCount === 0) {
-                $qrcode = 'B001';
-            } elseif ($participantCount === 1) {
-                $qrcode = 'B002';
-            } else {
-                $participantCount = Participant::whereNotNull('qrcode')->lockForUpdate()->count() + 1;
+            $qrcode = null;
 
-                // if ($participantCount >= 3 && $participantCount <= 100) {
-                //     $qrcode = 'B' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                // } elseif ($participantCount >= 101 && $participantCount <= 200) {
-                //     $qrcode = 'U' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                // } elseif ($participantCount >= 201 && $participantCount <= 300) {
-                //     $qrcode = 'M' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                // } elseif ($participantCount >= 301) {
-                //     $qrcode = 'N' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                // }
-
-                if ($participantCount <= 100) {
-                    $qrcode = 'B' . str_pad($participantCount, 3, '0', STR_PAD_LEFT);
-                } elseif ($participantCount > 100 && $participantCount <= 200) {
-                    $qrcode = 'U' . str_pad($participantCount - 100, 3, '0', STR_PAD_LEFT);
-                } elseif ($participantCount > 200 && $participantCount <= 300) {
-                    $qrcode = 'M' . str_pad($participantCount - 200, 3, '0', STR_PAD_LEFT);
-                } elseif ($participantCount > 300 && $participantCount <= 400) {
-                    $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
-                } elseif ($participantCount > 400) {
-                    $qrcode = 'N' . str_pad($participantCount - 300, 3, '0', STR_PAD_LEFT);
-                }
+            $qrcode = $this->findAvailableQRCode($existingQRCodes, 'B', 1, 100);
+            if (!$qrcode) {
+                $qrcode = $this->findAvailableQRCode($existingQRCodes, 'U', 1, 100);
+            }
+            if (!$qrcode) {
+                $qrcode = $this->findAvailableQRCode($existingQRCodes, 'M', 1, 100);
+            }
+            if (!$qrcode) {
+                $participantCount = Participant::whereNotNull('qrcode')
+                    ->where('qrcode', 'like', 'N%')
+                    ->lockForUpdate()
+                    ->count();
+                $qrcode = 'N' . str_pad($participantCount + 1, 3, '0', STR_PAD_LEFT);
             }
 
             $participant->update([
@@ -106,6 +95,17 @@ class RegistrationPageController extends Controller
 
             return view('frontend.pages.registration.invitation', compact('participant'));
         }
+    }
+
+    private function findAvailableQRCode($existingQRCodes, $prefix, $start, $end)
+    {
+        for ($i = $start; $i <= $end; $i++) {
+            $formattedCode = $prefix . str_pad($i, 3, '0', STR_PAD_LEFT);
+            if (!in_array($formattedCode, $existingQRCodes)) {
+                return $formattedCode;
+            }
+        }
+        return null;
     }
 
     public function sendImage(Request $request, $token) {
@@ -192,9 +192,6 @@ class RegistrationPageController extends Controller
         return response()->download($filePath, $participant->image);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request) {
         $request->validate([
             'name' => 'required',
@@ -226,19 +223,16 @@ class RegistrationPageController extends Controller
                         ->from($mail['email'], $mail['from'])
                         ->subject($mail['subject']);
                     });
-                    return redirect()->back()->with('success', 'Resend email berhasil, silahkan cek inbox atau spam email'. $participant->email .'untuk verifikasi');
+                    return redirect()->back()->with('success', 'Resend email berhasil, silahkan cek inbox atau spam email ' . $participant->email . ' untuk verifikasi');
                 } catch (\Throwable $th) {
                     return back()->with('error', $th->getMessage());
                 }
 
             } else {
-                // Cari instansi berdasarkan ID yang dipilih
                 $instansi = Instansi::find($request->instansi_id);
 
-                // Hitung jumlah partisipan yang sudah terdaftar di instansi
                 $participantCount = Participant::where('instansi_id', $request->instansi_id)->count();
 
-                // Cek apakah jumlah partisipan sudah mencapai batas maksimal
                 if ($participantCount >= $instansi->max_participant) {
                     return redirect()->back()->with('error', 'Kuota pendaftaran On Site untuk instansi ini sudah penuh. Anda Tetap Bisa Melakukan Pendaftaran Online');
                 }
@@ -281,7 +275,7 @@ class RegistrationPageController extends Controller
 
                     DB::commit();
 
-                    return redirect()->back()->with('success', 'Registrasi anda berhasil silahkan cek inbox atau spam email'. $participant->email .' untuk verifikasi');
+                    return redirect()->back()->with('success', 'Registrasi anda berhasil silahkan cek inbox atau spam email '. $participant->email .' untuk verifikasi');
                 } catch (\Throwable $th) {
                     DB::rollBack();
                     return back()->with('error', $th->getMessage());
