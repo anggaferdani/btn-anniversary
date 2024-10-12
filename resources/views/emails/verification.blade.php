@@ -71,11 +71,11 @@
         
         <img src="{{ $message->embed('final-event.png') }}" alt="Logo BTN" class="logo">
 
-        <h2 class="brand-color">Verifikasi Pendaftaran</h2>
+        <h2 class="brand-color">Pendaftaran anda berhasil</h2>
         
         <p>Terima kasih telah mendaftar. Untuk mendapatkan ID Card & QR Code, silakan klik tombol di bawah ini.</p>
 
-        <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Verifikasi</a>
+        <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Download ID Card</a>
 
         <div class="footer-note">
             <p>Terima kasih atas perhatian Anda. Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi tim kami.</p>
