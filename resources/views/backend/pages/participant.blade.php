@@ -144,22 +144,23 @@
             <select id="instansiSelect" class="selectpicker border rounded" data-live-search="true" name="instansi_id" style="width: 100% !important;">
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
-                @php
-                    $currentCount = $instansi->participants_count;
-                    $maxCount = $instansi->max_participant;
-                @endphp
-                <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}" 
-                    @if($currentCount >= $maxCount) 
-                        disabled 
-                    @endif
-                >
-                    {{ $instansi->name }} 
-                    @if($currentCount >= $maxCount) 
-                        ({{ $currentCount }}/{{ $maxCount }})
-                    @else
-                        ({{ $currentCount }}/{{ $maxCount }})
-                    @endif
-                </option>
+                  @php
+                      $currentCount = $instansi->participants_count;
+                      $maxCount = $instansi->max_participant;
+                      $isOnline = $instansi->status_kehadiran == 'online';
+                  @endphp
+                  <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}" 
+                      @if(!$isOnline && $currentCount >= $maxCount) 
+                          disabled 
+                      @endif
+                  >
+                      {{ $instansi->name }} 
+                      @if($isOnline)
+                          (Online)
+                      @else
+                          ({{ $currentCount }}/{{ $maxCount }})
+                      @endif
+                  </option>
               @endforeach
             </select>
             @error('instansi_id')<div class="text-danger">{{ $message }}</div>@enderror

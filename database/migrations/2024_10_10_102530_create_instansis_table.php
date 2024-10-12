@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('status_kehadiran');
-            $table->integer('max_participant')->default(3);
+            $table->integer('max_participant')->default(0);
             $table->integer('status')->default(1);
             $table->timestamps();
         });

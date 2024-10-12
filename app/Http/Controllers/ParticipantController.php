@@ -11,7 +11,7 @@ class ParticipantController extends Controller
 {
     public function autocomplete(Request $request)
     {
-        $query = Participant::where('verification', 1)->where('attendance', 2)->where('status', 1);
+        $query = Participant::where('verification', 1)->where('attendance', 2)->where('kehadiran', 'offline')->where('status', 1);
 
         $search = $request->input('search');
         $query->where(function ($q) use ($search) {
@@ -47,7 +47,7 @@ class ParticipantController extends Controller
             }
 
             if ($participant->attendance == 1) {
-                return response()->json(['error' => 'Attendance has already been marked'], 400);
+                return response()->json(['error' => 'Participant sudah absen kehadiran'], 400);
             }
 
             $participant->update(['attendance' => 1]);

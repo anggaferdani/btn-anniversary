@@ -145,17 +145,12 @@
                 }
             </script>
 
+            <!-- Checkbox untuk Online dan Offline -->
+            <input type="checkbox" class="btn-check" id="btn-check-online" autocomplete="off">
+            <label class="btn btn-primary" for="btn-check-online">Online</label>
 
-
-            <div class="mb-2">
-                <label class="form-label" style="color:#005CA4; font-size: 18px;">Pilih metode kehadiran? <br>
-                <input type="checkbox" class="btn-check" id="btn-check-online" autocomplete="off">
-                <label class="btn btn-primary" for="btn-check-online">Online</label>
-            
-                <input type="checkbox" class="btn-check" id="btn-check-offline" autocomplete="off">
-                <label class="btn btn-primary" for="btn-check-offline">Offline</label>
-                </label>
-            </div>
+            <input type="checkbox" class="btn-check" id="btn-check-offline" autocomplete="off">
+            <label class="btn btn-primary" for="btn-check-offline">Offline</label>
 
             <script>
                 function toggleCheckbox(checkboxId, otherCheckboxId) {
