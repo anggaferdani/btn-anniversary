@@ -7,7 +7,7 @@
       <img src="{{ asset('assets/partner.png') }}" class="" width="200">
     </div>
     <div class="text-center mb-3">
-      <img src="{{ asset('assets/final-event.png') }}" class="" width="150">
+      <img src="{{ asset('logobaru.png') }}" class="" width="150">
     </div>
     <form action="{{ route('registration.store') }}" method="POST" class="">
       @csrf
@@ -127,7 +127,7 @@
           icon: 'error',
           title: 'Error',
           text: "{{ session('error') }}",
-          timer: 2000,
+          timer: 10000000,
           showConfirmButton: false
       });
     @endif
