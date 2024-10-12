@@ -12,7 +12,7 @@ class EventController extends Controller
     }
 
     public function onlineEvent() {
-        $zoom = Zoom::first()->get();
+        $zoom = Zoom::first();
 
         if ($zoom->link == null) {
             return redirect()->route('index');
