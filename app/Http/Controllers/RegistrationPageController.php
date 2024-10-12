@@ -332,6 +332,7 @@ class RegistrationPageController extends Controller
                 DB::commit();
         
                 return redirect()->back()->with('success', 'Link Zoom telah terkirim via email '. $participant->email);
+
             } catch (\Throwable $th) {
                 DB::rollBack();
                 return back()->with('error', $th->getMessage());

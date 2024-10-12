@@ -27,7 +27,7 @@ class ZoomContoller extends Controller
         $zoom = Zoom::find($id);
 
         $request->validate([
-            'link' => 'required',
+            'link' => 'nullable',
         ]);
 
         try {

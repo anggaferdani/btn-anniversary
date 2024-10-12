@@ -48,6 +48,7 @@
               <tr>
                 <th>No.</th>
                 <th>Name</th>
+                <th>Status Kehadiran</th>
                 <th>Max Participant</th>
                 <th>Action</th>
               </tr>
@@ -57,6 +58,7 @@
                 <tr>
                   <td>{{ ($instansis->currentPage() - 1) * $instansis->perPage() + $loop->iteration }}</td>
                   <td>{{ $instansi->name }}</td>
+                  <td>{{ $instansi->status_kehadiran }}</td>
                   <td>{{ $instansi->max_participant }}</td>
                   <td>
                     <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $instansi->id }}"><i class="fa-solid fa-pen"></i></button>
@@ -101,6 +103,15 @@
             <input type="number" class="form-control" name="max_participant" placeholder="Max Participant" autocomplete="off">
             @error('max_participant')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
+          <div class="mb-3">
+            <label class="form-label required">Status Kehadiran</label>
+            <select class="form-select" name="status_kehadiran">
+              <option disabled selected value="">Pilih</option>
+              <option value="hybrid">Hybrid</option>
+              <option value="online">Online</option>
+            </select>
+            @error('status_kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
         </div>
         <div class="modal-footer">
           <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
@@ -134,6 +145,15 @@
             <label class="form-label required">Max Participant</label>
             <input type="number" class="form-control" name="max_participant" placeholder="Max Participant" value="{{ $instansi->max_participant }}" autocomplete="off">
             @error('max_participant')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Status Kehadiran</label>
+            <select class="form-select" name="status_kehadiran">
+              <option disabled selected value="">Pilih</option>
+              <option value="hybrid" @if($instansi->status_kehadiran == 'hybrid') @selected(true) @endif>Hybrid</option>
+              <option value="online" @if($instansi->status_kehadiran == 'online') @selected(true) @endif>Online</option>
+            </select>
+            @error('status_kehadiran')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
         </div>
         <div class="modal-footer">
