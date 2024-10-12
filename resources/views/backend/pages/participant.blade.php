@@ -58,6 +58,7 @@
               <tr>
                 <th>No.</th>
                 <th>QRCode</th>
+                <th>Token</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
@@ -71,6 +72,7 @@
                 <tr>
                   <td>{{ ($participants->currentPage() - 1) * $participants->perPage() + $loop->iteration }}</td>
                   <td>{{ $participant->qrcode }}</td>
+                  <td>{{ $participant->token }}</td>
                   <td>{{ $participant->name }}</td>
                   <td>{{ $participant->email }}</td>
                   <td>{{ $participant->phone_number }}</td>
