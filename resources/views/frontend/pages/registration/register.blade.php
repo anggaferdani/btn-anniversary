@@ -3,11 +3,11 @@
 @section('content')
 <div class="container">
   <div class="col-md-6 m-auto mb-3">
-    <div class="text-center mb-3">
-      <img src="{{ asset('assets/final-event.png') }}" class="" width="100">
+    <div class="text-center">
+      <img src="{{ asset('assets/partner.png') }}" class="" width="200">
     </div>
     <div class="text-center mb-3">
-      <img src="{{ asset('assets/partner.png') }}" class="" width="150">
+      <img src="{{ asset('assets/final-event.png') }}" class="" width="150">
     </div>
     <form action="{{ route('registration.store') }}" method="POST" class="">
       @csrf
@@ -65,12 +65,12 @@
               <div class="col-lg-6">
                 <label class="form-selectgroup-item">
                   <input type="radio" name="kehadiran" value="onsite" class="form-selectgroup-input" checked="">
-                  <span class="form-selectgroup-label d-flex align-items-center p-3 border border-success">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3 border border-3 border-success">
                     <span class="me-3">
                       <span class="form-selectgroup-check"></span>
                     </span>
                     <span class="form-selectgroup-label-content">
-                      <span class="form-selectgroup-title strong mb-1">Onsite</span>
+                      <span class="form-selectgroup-title strong mb-1 text-success fw-bold">Onsite</span>
                       <span class="d-block text-secondary">Mengikuti kegiatan secara onsite ditempat</span>
                     </span>
                   </span>
@@ -79,12 +79,12 @@
               <div class="col-lg-6">
                 <label class="form-selectgroup-item">
                   <input type="radio" name="kehadiran" value="online" class="form-selectgroup-input">
-                  <span class="form-selectgroup-label d-flex align-items-center p-3 border border-primary">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3 border border-3 border-primary">
                     <span class="me-3">
                       <span class="form-selectgroup-check"></span>
                     </span>
                     <span class="form-selectgroup-label-content">
-                      <span class="form-selectgroup-title strong mb-1">Online</span>
+                      <span class="form-selectgroup-title strong mb-1 text-primary fw-bold">Online</span>
                       <span class="d-block text-secondary">Mengikuti kegiatan secara daring melalui zoom</span>
                     </span>
                   </span>

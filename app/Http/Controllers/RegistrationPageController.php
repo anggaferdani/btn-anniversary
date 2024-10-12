@@ -224,7 +224,7 @@ class RegistrationPageController extends Controller
                     ->from($mail['email'], $mail['from'])
                     ->subject($mail['subject']);
                 });
-                return redirect()->back()->with('success', 'Resend email berhasil, silahkan cek inbox atau spam email'. $participant->email .'untuk verifikasi');
+                return redirect()->back()->with('success', 'Resend email berhasil, silahkan cek inbox atau spam email '. $participant->email .' untuk verifikasi');
             } catch (\Throwable $th) {
                 return back()->with('error', $th->getMessage());
             }
@@ -279,7 +279,7 @@ class RegistrationPageController extends Controller
 
                 DB::commit();
 
-                return redirect()->back()->with('success', 'Registrasi anda berhasil silahkan cek inbox atau spam email'. $participant->email .' untuk verifikasi');
+                return redirect()->back()->with('success', 'Registrasi anda berhasil silahkan cek inbox atau spam email '. $participant->email .' untuk verifikasi');
             } catch (\Throwable $th) {
                 DB::rollBack();
                 return back()->with('error', $th->getMessage());
