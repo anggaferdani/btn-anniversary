@@ -30,12 +30,14 @@ class InstansiController extends Controller
         $request->validate([
             'name' => 'required',
             'max_participant' => 'required',
+            'status_kehadiran' => 'required',
         ]);
 
         try {
             $array = [
                 'name' => $request['name'],
                 'max_participant' => $request['max_participant'],
+                'status_kehadiran' => $request['status_kehadiran'],
             ];
 
             Instansi::create($array);
@@ -56,12 +58,14 @@ class InstansiController extends Controller
         $request->validate([
             'name' => 'required',
             'max_participant' => 'required',
+            'status_kehadiran' => 'required',
         ]);
 
         try {
             $array = [
                 'name' => $request['name'],
                 'max_participant' => $request['max_participant'],
+                'status_kehadiran' => $request['status_kehadiran'],
             ];
 
             $instansi->update($array);
