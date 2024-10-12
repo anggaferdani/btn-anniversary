@@ -108,11 +108,8 @@
                       title: 'Success',
                       text: response.success,
                       html: `<b>${response.success}<br>
-                             <b>Name :</b> ${response.name}<br>
-                             <b>QRCode :</b> ${response.qrcode}<br>
-                             <b>Email :</b> ${response.email}<br>
-                             <b>Phone Number :</b> ${response.phone_number}<br>
-                             <b>Points :</b> ${response.point}`,
+                            <b>QRCode :</b> ${response.qrcode}<br>
+                            <b>Name :</b> ${response.name}`,
                       confirmButtonText: 'OK',
                       showCancelButton: false,
                       allowOutsideClick: false

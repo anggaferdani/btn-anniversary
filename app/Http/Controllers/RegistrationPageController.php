@@ -29,7 +29,7 @@ class RegistrationPageController extends Controller
                     ->where('status', 1)
                     ->get(['id', 'name', 'max_participant', 'participants_count', 'status_kehadiran']); // Jangan lupa untuk mengambil kolom status_kehadiran
 
-        return view('frontend.pages.registration.registration', compact('instansis'));
+        return view('frontend.pages.registration.register', compact('instansis'));
     }
 
 
