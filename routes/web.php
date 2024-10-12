@@ -26,6 +26,7 @@ use App\Http\Controllers\AttendanceParticipantController;
 |
 */
 
+Route::get('/online-event', [EventController::class, 'onlineEvent'])->name('online-event');
 Route::middleware(['web', 'disableBackButton'])->group(function(){
     Route::middleware(['disableRedirectToLoginPage'])->group(function(){
         Route::get('login', [AuthenticationController::class, 'login'])->name('login');
