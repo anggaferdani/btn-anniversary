@@ -305,7 +305,7 @@ class RegistrationPageController extends Controller
                     // Menggunakan $participant->email untuk query
                     $participant = Participant::where('email', $participant->email)->first();
         
-                    $url = Zoom::first();
+                    $url = route('online-event');
         
                     $mail = [
                         'to' => $participant->email,
@@ -313,7 +313,7 @@ class RegistrationPageController extends Controller
                         'email' => 'bumnlearningfestival@gmail.com',
                         'from' => 'BUMN Learning Festival',
                         'subject' => 'Link Zoom | BUMN LEARNING FESTIVAL 2024',
-                        'url' => $url->link,
+                        'url' => $url,
                     ];
         
                     Mail::send('emails.linkzoom', $mail, function($message) use ($mail) {

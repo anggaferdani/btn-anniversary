@@ -53,7 +53,7 @@
 </head>
 <body>
     <div class="email-container" style="text-align: center;">
-        <img src="{{ $message->embed('LOGOVOKEFINAL.png') }}" alt="Logo BTN" class="logo" style="display: block; margin: 0 auto;">
+        <img src="{{ $message->embed('logobaru.png') }}" alt="Logo BTN" class="logo" style="display: block; margin: 0 auto;">
         <h1 style="text-align: center;">Selamat, {{ $name }}!</h1>
         <img src="{{ $message->embed('images/'. $image) }}" alt="qrcode"
              style="width: 100%; max-width: 100%; height: auto; overflow: hidden;">

@@ -67,7 +67,7 @@
 <body>
     <div class="email-container text-center">
 
-        <img src="{{ $message->embed('LOGOVOKEFINAL.png') }}" alt="Logo BTN" class="logo">
+        <img src="{{ $message->embed('logobaru.png') }}" alt="Logo BTN" class="logo">
 
         <h1>Selamat, {{ $name }}!</h1>
 
