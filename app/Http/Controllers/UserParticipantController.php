@@ -66,7 +66,7 @@ class UserParticipantController extends Controller
                                             ->first();
 
             if ($userParticipant) {
-                return response()->json(['error' => 'Point sudah ditambahkan sebelumnya untuk user ini dan participant ini'], 400);
+                return response()->json(['error' => 'Total point anda: {$participant->point}'], 400);
             }
 
             $participant->update([
@@ -82,12 +82,9 @@ class UserParticipantController extends Controller
             UserParticipant::create($array);
 
             return response()->json([
-                'success' => '1 Point berhasil ditambahkan',
+                'success' => 'Point berhasil ditambahkan',
                 'name' => $participant->name,
                 'qrcode' => $participant->qrcode,
-                'email' => $participant->email,
-                'phone_number' => $participant->phone_number,
-                'point' => $participant->point,
             ]);
         }
 
