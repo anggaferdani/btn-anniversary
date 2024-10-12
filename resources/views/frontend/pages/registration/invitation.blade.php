@@ -96,11 +96,11 @@
             </div>
         </div>
         <div class="d-flex justify-content-center gap-2 text-center my-4">
-            <a href="#" id="downloadBtn" class="btn btn-primary">Download Image</a>
+            <a href="#" id="downloadBtn" class="btn btn-primary">Download ID Card</a>
             <form id="sendImageForm" action="{{ route('registration.sendImage', $participant->token) }}" method="POST" class="m-0" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="imageData" id="imageData">
-                <button type="submit" id="sendImageBtn" class="btn btn-success">Kirim Foto via Email</button>
+                <button type="submit" id="sendImageBtn" class="btn btn-success">Kirim ID Card Via email</button>
             </form>
         </div>
     </div>

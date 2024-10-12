@@ -203,63 +203,14 @@ class RegistrationPageController extends Controller
             'instansi_id' => 'required',
         ]);
 
-        $participantCheck = Participant::where('email', $request->email)->whereNotNull('qrcode')->first();
 
-        if ($participantCheck) {
-            $participant = Participant::where('qrcode', $participantCheck->qrcode)->where('verification', 1)->first();
+        if ($request->kehadiran == "onsite") {
+            $participantCheck = Participant::where('email', $request->email)->whereNotNull('qrcode')->first();
 
-            try {
-                $url = route('registration.verify', ['token' => $participant->token]);
+            if ($participantCheck) {
+                $participant = Participant::where('qrcode', $participantCheck->qrcode)->where('verification', 1)->first();
 
-                $mail = [
-                    'to' => $participant->email,
-                    'email' => 'bumnlearningfestival@gmail.com',
-                    'from' => 'BUMN Learning Festival',
-                    'subject' => 'Verification Email | BUMN LEARNING FESTIVAL 2024',
-                    'url' => $url,
-                ];
-
-                Mail::send('emails.verification', $mail, function($message) use ($mail){
-                    $message->to($mail['to'])
-                    ->from($mail['email'], $mail['from'])
-                    ->subject($mail['subject']);
-                });
-                return redirect()->back()->with('success', 'Resend email berhasil, silahkan cek inbox atau spam email'. $participant->email .'untuk verifikasi');
-            } catch (\Throwable $th) {
-                return back()->with('error', $th->getMessage());
-            }
-
-        } else {
-            // Cari instansi berdasarkan ID yang dipilih
-            $instansi = Instansi::find($request->instansi_id);
-
-            // Hitung jumlah partisipan yang sudah terdaftar di instansi
-            $participantCount = Participant::where('instansi_id', $request->instansi_id)->count();
-
-            // Cek apakah jumlah partisipan sudah mencapai batas maksimal
-            if ($participantCount >= $instansi->max_participant) {
-                return redirect()->back()->with('error', 'Kuota pendaftaran On Site untuk instansi ini sudah penuh. Anda Tetap Bisa Melakukan Pendaftaran Online');
-            }
-
-            DB::beginTransaction();
-
-            try {
-                $token = $this->generateUniqueToken(12);
-
-                $array = [
-                    'token' => $token,
-                    'name' => $request['name'],
-                    'email' => $request['email'],
-                    'phone_number' => $request['phone_number'],
-                    'instansi_id' => $request['instansi_id'],
-                    'jabatan' => $request['jabatan'],
-                    'kehadiran' => 'onsite',
-                    'kendaraan' => $request['kendaraan'],
-                ];
-
-                $participant = Participant::create($array);
-
-                if ($participant && $participant->email) {
+                try {
                     $url = route('registration.verify', ['token' => $participant->token]);
 
                     $mail = [
@@ -275,74 +226,118 @@ class RegistrationPageController extends Controller
                         ->from($mail['email'], $mail['from'])
                         ->subject($mail['subject']);
                     });
+                    return redirect()->back()->with('success', 'Resend email berhasil, silahkan cek inbox atau spam email'. $participant->email .'untuk verifikasi');
+                } catch (\Throwable $th) {
+                    return back()->with('error', $th->getMessage());
                 }
 
-                DB::commit();
+            } else {
+                // Cari instansi berdasarkan ID yang dipilih
+                $instansi = Instansi::find($request->instansi_id);
 
-                return redirect()->back()->with('success', 'Registrasi anda berhasil silahkan cek inbox atau spam email'. $participant->email .' untuk verifikasi');
+                // Hitung jumlah partisipan yang sudah terdaftar di instansi
+                $participantCount = Participant::where('instansi_id', $request->instansi_id)->count();
+
+                // Cek apakah jumlah partisipan sudah mencapai batas maksimal
+                if ($participantCount >= $instansi->max_participant) {
+                    return redirect()->back()->with('error', 'Kuota pendaftaran On Site untuk instansi ini sudah penuh. Anda Tetap Bisa Melakukan Pendaftaran Online');
+                }
+
+                DB::beginTransaction();
+
+                try {
+                    $token = $this->generateUniqueToken(12);
+
+                    $array = [
+                        'token' => $token,
+                        'name' => $request['name'],
+                        'email' => $request['email'],
+                        'phone_number' => $request['phone_number'],
+                        'instansi_id' => $request['instansi_id'],
+                        'jabatan' => $request['jabatan'],
+                        'kehadiran' => 'onsite',
+                        'kendaraan' => $request['kendaraan'],
+                    ];
+
+                    $participant = Participant::create($array);
+
+                    if ($participant && $participant->email) {
+                        $url = route('registration.verify', ['token' => $participant->token]);
+
+                        $mail = [
+                            'to' => $participant->email,
+                            'email' => 'bumnlearningfestival@gmail.com',
+                            'from' => 'BUMN Learning Festival',
+                            'subject' => 'Verification Email | BUMN LEARNING FESTIVAL 2024',
+                            'url' => $url,
+                        ];
+
+                        Mail::send('emails.verification', $mail, function($message) use ($mail){
+                            $message->to($mail['to'])
+                            ->from($mail['email'], $mail['from'])
+                            ->subject($mail['subject']);
+                        });
+                    }
+
+                    DB::commit();
+
+                    return redirect()->back()->with('success', 'Registrasi anda berhasil silahkan cek inbox atau spam email'. $participant->email .' untuk verifikasi');
+                } catch (\Throwable $th) {
+                    DB::rollBack();
+                    return back()->with('error', $th->getMessage());
+                }
+            }
+        } else {
+            DB::beginTransaction();
+    
+            try {
+                $token = $this->generateUniqueToken(12);
+        
+                $array = [
+                    'token' => $token,
+                    'name' => $request['name'],
+                    'email' => $request['email'],
+                    'phone_number' => $request['phone_number'],
+                    'instansi_id' => $request['instansi_id'],
+                    'jabatan' => $request['jabatan'],
+                    'kehadiran' => 'online',
+                    'kendaraan' => $request['kendaraan'],
+                    'verification' => 1,
+                ];
+        
+                $participant = Participant::create($array);
+        
+                if ($participant && $participant->email) {
+                    // Menggunakan $participant->email untuk query
+                    $participant = Participant::where('email', $participant->email)->first();
+        
+                    $url = Zoom::first();
+        
+                    $mail = [
+                        'to' => $participant->email,
+                        'name' => $participant->name,
+                        'email' => 'bumnlearningfestival@gmail.com',
+                        'from' => 'BUMN Learning Festival',
+                        'subject' => 'Link Zoom | BUMN LEARNING FESTIVAL 2024',
+                        'url' => $url->link,
+                    ];
+        
+                    Mail::send('emails.linkzoom', $mail, function($message) use ($mail) {
+                        $message->to($mail['to'])
+                            ->from($mail['email'], $mail['from'])
+                            ->subject($mail['subject']);
+                    });
+                }
+        
+                DB::commit();
+        
+                return redirect()->back()->with('success', 'Link Zoom telah terkirim via email '. $participant->email);
             } catch (\Throwable $th) {
                 DB::rollBack();
                 return back()->with('error', $th->getMessage());
             }
         }
-    }
 
-    public function storeOnline(Request $request) {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'phone_number' => 'required|min:8|max:13',
-            'instansi_id' => 'required',
-        ]);
-    
-        DB::beginTransaction();
-    
-        try {
-            $token = $this->generateUniqueToken(12);
-    
-            $array = [
-                'token' => $token,
-                'name' => $request['name'],
-                'email' => $request['email'],
-                'phone_number' => $request['phone_number'],
-                'instansi_id' => $request['instansi_id'],
-                'jabatan' => $request['jabatan'],
-                'kehadiran' => 'online',
-                'kendaraan' => $request['kendaraan'],
-                'verification' => 1,
-            ];
-    
-            $participant = Participant::create($array);
-    
-            if ($participant && $participant->email) {
-                // Menggunakan $participant->email untuk query
-                $participant = Participant::where('email', $participant->email)->first();
-    
-                $url = Zoom::first();
-    
-                $mail = [
-                    'to' => $participant->email,
-                    'name' => $participant->name,
-                    'email' => 'bumnlearningfestival@gmail.com',
-                    'from' => 'BUMN Learning Festival',
-                    'subject' => 'Link Zoom | BUMN LEARNING FESTIVAL 2024',
-                    'url' => $url->link,
-                ];
-    
-                Mail::send('emails.linkzoom', $mail, function($message) use ($mail) {
-                    $message->to($mail['to'])
-                        ->from($mail['email'], $mail['from'])
-                        ->subject($mail['subject']);
-                });
-            }
-    
-            DB::commit();
-    
-            return redirect()->back()->with('success', 'Link Zoom telah terkirim via email '. $participant->email);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            return back()->with('error', $th->getMessage());
-        }
     }
 
     private function generateUniqueToken($length = 12) {
