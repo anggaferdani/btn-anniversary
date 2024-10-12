@@ -71,16 +71,5 @@
             });
         });
     </script>
-
-    <script>
-        $(document).ready(function() {
-            $('#instansi_id').select2({
-                placeholder: "Pilih Instansi", // Placeholder untuk Select2
-                allowClear: true, // Memungkinkan penghapusan pilihan
-                width: '100%' // Lebar dropdown
-            });
-        });
-    </script>
-
-</body>
+  </body>
 </html>

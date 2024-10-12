@@ -22,11 +22,20 @@
       ::-webkit-resizer{
         display: none;
       }
+      .bootstrap-select {
+          width: 100% !important;
+      }
+      .selectpicker {
+          width: 100% !important;
+      }
+      .bootstrap-select .dropdown-menu{
+          width: 100% !important;
+      }
     </style>
   </head>
   <body>
     <script src="{{ asset('tabler/dist/js/demo-theme.min.js?1692870487') }}"></script>
-    <div style="background: url({{ asset('assets/background.png') }}); background-size: cover; width: 100vw; height: 100vh;">
+    <div style="background: url({{ asset('assets/background.png') }}); background-size: cover; background-attachment: fixed; min-height: 100vh; width: 100vw;">
       @yield('content')
     </div>
     <script src="{{ asset('tabler/dist/libs/apexcharts/dist/apexcharts.min.js?1692870487') }}" defer></script>
@@ -41,7 +50,16 @@
     <script src="{{ asset('onscan.js') }}"></script>
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/css/bootstrap-select.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.18/js/bootstrap-select.min.js"></script>
     @stack('scripts')
+
+    <script>
+      $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+      });
+    </script>
 
     <script type="text/javascript">
       $(document).ready( function () {
