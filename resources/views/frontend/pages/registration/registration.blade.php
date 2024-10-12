@@ -201,6 +201,17 @@
     </form>
 </div>
 
+<script type="text/javascript">
+    $(document).ready( function () {
+        $('form').on('submit', function() {
+            $.LoadingOverlay("show");
+            setTimeout(function(){
+                $.LoadingOverlay("hide");
+            }, 100000);
+        });
+    });
+</script>
+
 <style>
     .form-control {
         border-radius: 4px; /* Rounded corners */

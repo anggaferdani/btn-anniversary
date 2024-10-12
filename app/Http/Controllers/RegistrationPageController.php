@@ -149,6 +149,7 @@ class RegistrationPageController extends Controller
 
                 // Set a flash message to indicate success
                 session()->flash('success', 'Image sent successfully to ' . $mail['to']);
+                return view('frontend.pages.registration.invitation', compact('participant'));
             } catch (\Exception $e) {
                 session()->flash('error', 'Failed to send email: ' . $e->getMessage());
             }
