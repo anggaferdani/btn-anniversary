@@ -8,6 +8,7 @@ use Dompdf\Options;
 use App\Models\Participant;
 use App\Models\Zoom;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -91,6 +92,18 @@ class RegistrationPageController extends Controller
                 'verification' => 1,
             ]);
 
+            $qrCodeData = $participant->qrcode;
+            $png = QrCode::format('png')->size(512)->generate($qrCodeData);
+            $base64Image = base64_encode($png);
+            $publicPath = public_path();
+            $directoryPath = $publicPath . '/qrcodes/';
+            if (!file_exists($directoryPath)) {
+                mkdir($directoryPath, 0755, true);
+            }
+            $fileName = $participant->token . '.png';
+            $filePath = $directoryPath . $fileName;
+            file_put_contents($filePath, base64_decode($base64Image));
+
             return view('frontend.pages.registration.invitation', compact('participant'));
         }
     }
@@ -130,8 +143,8 @@ class RegistrationPageController extends Controller
             // Prepare email data
             $mail = [
                 'to' => $participant->email,
-                'from_email' => 'btnfestivalevent@gmail.com',
-                'from_name' => 'BTN Event',
+                'from_email' => 'bumnlearningfestival@gmail.com',
+                'from_name' => 'BUMN Learning Festival',
                 'subject' => 'Kartu QR Code',
                 'name' => $participant->name,
                 'image' => $participant->image,
@@ -200,9 +213,9 @@ class RegistrationPageController extends Controller
 
                 $mail = [
                     'to' => $participant->email,
-                    'email' => 'btnfestivalevent@gmail.com',
-                    'from' => 'BTN Event',
-                    'subject' => 'Verification Email | BTN ANNIVERSARY 2024',
+                    'email' => 'bumnlearningfestival@gmail.com',
+                    'from' => 'BUMN Learning Festival',
+                    'subject' => 'Verification Email | BUMN LEARNING FESTIVAL 2024',
                     'url' => $url,
                 ];
 
@@ -251,9 +264,9 @@ class RegistrationPageController extends Controller
 
                     $mail = [
                         'to' => $participant->email,
-                        'email' => 'btnfestivalevent@gmail.com',
-                        'from' => 'BTN Event',
-                        'subject' => 'Verification Email | BTN ANNIVERSARY 2024',
+                        'email' => 'bumnlearningfestival@gmail.com',
+                        'from' => 'BUMN Learning Festival',
+                        'subject' => 'Verification Email | BUMN LEARNING FESTIVAL 2024',
                         'url' => $url,
                     ];
 
@@ -310,9 +323,9 @@ class RegistrationPageController extends Controller
                 $mail = [
                     'to' => $participant->email,
                     'name' => $participant->name,
-                    'email' => 'btnfestivalevent@gmail.com',
-                    'from' => 'BTN Event',
-                    'subject' => 'Link Zoom | BTN ANNIVERSARY 2024',
+                    'email' => 'bumnlearningfestival@gmail.com',
+                    'from' => 'BUMN Learning Festival',
+                    'subject' => 'Link Zoom | BUMN LEARNING FESTIVAL 2024',
                     'url' => $url->link,
                 ];
     

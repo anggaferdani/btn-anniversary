@@ -12,7 +12,6 @@
     <link href="/tabler/dist/css/tabler-payments.min.css?1692870487" rel="stylesheet"/>
     <link href="/tabler/dist/css/tabler-vendors.min.css?1692870487" rel="stylesheet"/>
     <link href="/tabler/dist/css/demo.min.css?1692870487" rel="stylesheet"/>
-    
 
     <style>
         @import url('https://rsms.me/inter/inter.css');
@@ -54,11 +53,11 @@
     @endif
 
     <div class="container my-4">
-        <div id="card" class="border rounded" style="background-color: transparent">
+        <div id="card" class="border rounded" style="background-color: white">
             <div class="position-relative">
                 <!-- Aksen Bawah -->
-                <div class="position-absolute d-flex justify-content-center" style="bottom: 0; left:0; z-index: -99;">
-                    <img src="/AKSEN2.png" alt="BUMN Learning Festival" width="220px" style="z-index: -99;">
+                <div class="position-absolute d-flex justify-content-center" style="bottom: 0; left:0; z-index: 1;">
+                    <img src="/AKSEN2.png" alt="BUMN Learning Festival" width="220px" style="z-index: 1;">
                 </div>
 
                 <!-- Bagian ID -->
@@ -92,7 +91,7 @@
 
                 <!-- QR Code -->
                 <div class="d-flex justify-content-end ms-auto col-md-7 z-2">
-                    <div class="ms-auto z-2 p-4" id="qrCodeImg" alt=""></div>
+                    <img src="/qrcodes/{{ $participant->token }}.png" alt="QR Code" id="qrCodeImg">
                 </div>
             </div>
         </div>
@@ -113,69 +112,45 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
-    <script src="/tabler/dist/js/tabler.min.js?1692870487" defer></script>
-    <script src="/tabler/dist/js/demo.min.js?1692870487" defer></script>
-
-    
 
     <script type="text/javascript">
         $(document).ready(function () {
             $('#downloadBtn').on('click', function (e) {
-                e.preventDefault(); // Mencegah link dari melakukan navigasi
-                $.LoadingOverlay("show");
-                setTimeout(function () {
-                    $.LoadingOverlay("hide");
-                    // Tambahkan logika untuk mendownload gambar di sini
-                }, 10000); // Sesuaikan waktu sesuai kebutuhan
+                e.preventDefault();
+                downloadCard(); // Panggil fungsi downloadCard langsung
             });
-        });
-    </script>
-    
-    <script>
-        var qrcode = new QRCode("qrCodeImg", {
-            text: "{{ $participant->token }}",
-            width: 300,
-            height: 300,
+
+            $('#sendImageBtn').on('click', async function (e) {
+                e.preventDefault(); // Mencegah form disubmit langsung
+                html2canvas(document.querySelector("#card"), { useCORS: true })
+                .then(canvas => {
+                    const image = canvas.toDataURL('image/png', 1.0);
+                    document.getElementById('imageData').value = image; // Menyimpan gambar ke input hidden
+                    document.getElementById('sendImageForm').submit(); // Mengirim form
+                });
+            });
         });
 
         async function downloadCard() {
-            html2canvas(document.querySelector("#card"), {
+            const canvas = await html2canvas(document.querySelector("#card"), {
                 useCORS: true,
-            }).then(canvas => {
-                const image = canvas.toDataURL('image/png');
-                const a = document.createElement('a');
-                a.setAttribute('download', 'qrcode.png');
-                a.setAttribute('href', image);
-                a.click();
             });
+            const image = canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.setAttribute('download', 'qrcode.png');
+            a.setAttribute('href', image);
+            a.click();
         }
 
-        document.getElementById('sendImageBtn').addEventListener('click', async function (e) {
-            e.preventDefault(); // Mencegah form disubmit langsung
-            html2canvas(document.querySelector("#card"), { useCORS: true })
-            .then(canvas => {
-                const image = canvas.toDataURL('image/png', 1.0);
-                document.getElementById('imageData').value = image;
-                document.getElementById('sendImageForm').submit();
-            });
-        });
-
-        document.getElementById('downloadBtn').addEventListener('click', function (e) {
-            e.preventDefault();
-            downloadCard();
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready( function () {
-            $('form').on('submit', function() {
+        $(document).ready(function () {
+            $('form').on('submit', function () {
                 $.LoadingOverlay("show");
-                setTimeout(function(){
+                setTimeout(function () {
                     $.LoadingOverlay("hide");
                 }, 100000);
             });
         });
     </script>
+
 </body>
 </html>
