@@ -1,5 +1,5 @@
 @extends('backend.templates.scan')
-@section('title', 'Scan Kehadiran Participant')
+@section('title', 'REGISTRASI BUMN LEARNING FESTIVAL 2024')
 @section('content')
 <div class="container">
   <div class="col-md-6 m-auto mb-3">
@@ -70,8 +70,8 @@
                       <span class="form-selectgroup-check"></span>
                     </span>
                     <span class="form-selectgroup-label-content">
-                      <span class="form-selectgroup-title strong mb-1 text-success fw-bold">Onsite</span>
-                      <span class="d-block text-secondary">Mengikuti kegiatan secara onsite ditempat</span>
+                      <span class="form-selectgroup-title strong mb-1 text-success fw-bold">Offline</span>
+                      <span class="d-block text-secondary">Mengikuti kegiatan secara offline ditempat</span>
                     </span>
                   </span>
                 </label>
