@@ -35,7 +35,7 @@
 
         /* Gaya untuk QR Code */
         #qrCodeImg {
-            width: 50%; /* Ukuran tetap untuk QR Code */
+            width: 100%; /* Ukuran tetap untuk QR Code */
             height: auto; /* Ukuran tetap untuk QR Code */
         }
     </style>
