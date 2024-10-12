@@ -69,7 +69,7 @@
 <body>
     <div class="email-container text-center">
         
-        <img src="{{ $message->embed('final-event.png') }}" alt="Logo BTN" class="logo">
+        <img src="{{ $message->embed('LOGOVOKEFINAL.png') }}" alt="Logo BTN" class="logo">
 
         <h2 class="brand-color">Pendaftaran anda berhasil</h2>
         
