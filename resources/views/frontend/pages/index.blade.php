@@ -54,7 +54,7 @@
         <div class="row">
           <!-- Steps 1-3 -->
           <div class="col-md-6">
-            <div class="row mb-5">
+            <div class="row mb-5 mb-lg-5">
               <div class="col-2">
                 <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                   1
@@ -90,7 +90,7 @@
 
           <!-- Steps 4-6 -->
           <div class="col-md-6">
-            <div class="row mb-5">
+            <div class="row mb-5 mb-lg-3">
               <div class="col-2">
                 <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                   4
@@ -101,7 +101,7 @@
               </div>
             </div>
 
-            <div class="row mb-5">
+            <div class="row mb-5 mb-lg-4">
               <div class="col-2">
                 <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
                   5
@@ -119,7 +119,7 @@
                 </div>
               </div>
               <div class="col-10" style="color:white">
-                Anda wajib masuk acara melalui pintu sesuai huruf pertama yang ada di <b>Digital Card Image</b> Anda, yaitu “B”, “U”, “M”, atau “N”
+                Saat hadir di lokasi acara, peserta diwajibkan menuju <b>Counter Check-In</b> sesuai dengan Kode Huruf yang tertera di ID Card Online dan mendapatkan ID Card.
               </div>
             </div>
           </div>
