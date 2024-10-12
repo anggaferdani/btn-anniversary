@@ -90,8 +90,8 @@
                 </div>
 
                 <!-- QR Code -->
-                <div class="d-flex justify-content-end ms-auto col-md-7 z-2">
-                    <img src="/qrcodes/{{ $participant->token }}.png" alt="QR Code" id="qrCodeImg" width="200px" height="200px">
+                <div class="d-flex justify-content-end ms-auto col-7 z-2">
+                    <img src="/qrcodes/{{ $participant->token }}.png" alt="QR Code" id="qrCodeImg">
                 </div>
             </div>
         </div>
