@@ -38,95 +38,95 @@
     }
 </style>
 
-<div class="container-fluid mt-5 m-auto d-flex align-items-center justify-content-center" style="background-color: #01436F;">
-    <div class="row" style="max-width: 1170px; padding-top: 97px; padding-bottom: 107px">
-      <!-- Phone Image -->
-      <div class="col-md-4 d-flex justify-content-center align-items-baseline">
-        <img src="{{ asset('assets/frontend/home/registrasi_1.png') }}" alt="Phone" class="custom-img">
-      </div>
+  <div class="container-fluid mt-5 m-auto d-flex align-items-center justify-content-center" style="background-color: #01436F;">
+      <div class="row" style="max-width: 1200px; padding-top: 97px; padding-bottom: 107px">
+        <!-- Phone Image -->
+        <div class="col-md-4 d-flex justify-content-center align-items-baseline">
+          <img src="{{ asset('assets/frontend/home/registrasi_1.png') }}" alt="Phone" class="custom-img">
+        </div>
 
-      <!-- Steps Content -->
-      <div class="col-md-8">
-        <h1 style="font-size: 30px; font-weight: 900; color: #fff;">Step by Step Registrasi</h1>
-        <p style="font-size: 18px; color: #fff; margin-bottom: 70px;">Final Event BUMN Learning Festival</p>
+        <!-- Steps Content -->
+        <div class="col-md-8">
+          <h1 style="font-size: 30px; font-weight: 900; color: #fff;">Step by Step Registrasi</h1>
+          <p style="font-size: 18px; color: #fff; margin-bottom: 70px;">Final Event BUMN Learning Festival</p>
 
-        <!-- Row for splitting Steps 1-3 and 4-6 -->
-        <div class="row">
-          <!-- Steps 1-3 -->
-          <div class="col-md-6">
-            <div class="row mb-5 mb-lg-5">
-              <div class="col-2">
-                <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                  1
+          <!-- Row for splitting Steps 1-3 and 4-6 -->
+          <div class="row">
+            <!-- Steps 1-3 -->
+            <div class="col-md-6">
+              <div class="row mb-5 mb-lg-5">
+                <div class="col-2">
+                  <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                    1
+                  </div>
+                </div>
+                <div class="col-10" style="color:white">
+                  Pilih Registrasi, <b>ONLINE atau OFFLINE</b>
                 </div>
               </div>
-              <div class="col-10" style="color:white">
-                Pilih Registrasi, <b>ONLINE atau OFFLINE</b>
+
+              <div class="row mb-5">
+                <div class="col-2">
+                  <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                    2
+                  </div>
+                </div>
+                <div class="col-10" style="color:white">
+                  Isi Formulir data diri anda dengan lengkap, lalu <b>Submit</b>
+                </div>
+              </div>
+
+              <div class="row mb-5">
+                <div class="col-2">
+                  <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                    3
+                  </div>
+                </div>
+                <div class="col-10" style="color:white">
+                  Kemudian anda akan mendapatkan <b>Digital Card Image</b>
+                </div>
               </div>
             </div>
 
-            <div class="row mb-5">
-              <div class="col-2">
-                <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                  2
+            <!-- Steps 4-6 -->
+            <div class="col-md-6">
+              <div class="row mb-5 mb-lg-3">
+                <div class="col-2">
+                  <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                    4
+                  </div>
+                </div>
+                <div class="col-10" style="color:white">
+                  Di halaman Digital Card Image, Anda bisa memilih untuk <b>Download</b> atau <b>Kirim Via Email</b>
                 </div>
               </div>
-              <div class="col-10" style="color:white">
-                Isi Formulir data diri anda dengan lengkap, lalu <b>Submit</b>
-              </div>
-            </div>
 
-            <div class="row mb-5">
-              <div class="col-2">
-                <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                  3
+              <div class="row mb-5 mb-lg-4">
+                <div class="col-2">
+                  <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                    5
+                  </div>
+                </div>
+                <div class="col-10" style="color:white">
+                  Di dalam Digital Card Image terdapat <b>ID Nomor dan QR Code</b>, untuk memasuki acara
                 </div>
               </div>
-              <div class="col-10" style="color:white">
-                Kemudian anda akan mendapatkan <b>Digital Card Image</b>
-              </div>
-            </div>
-          </div>
 
-          <!-- Steps 4-6 -->
-          <div class="col-md-6">
-            <div class="row mb-5 mb-lg-3">
-              <div class="col-2">
-                <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                  4
+              <div class="row mb-5">
+                <div class="col-2">
+                  <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                    6
+                  </div>
                 </div>
-              </div>
-              <div class="col-10" style="color:white">
-                Di halaman Digital Card Image, Anda bisa memilih untuk <b>Download</b> atau <b>Kirim Via Email</b>
-              </div>
-            </div>
-
-            <div class="row mb-5 mb-lg-4">
-              <div class="col-2">
-                <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                  5
+                <div class="col-10" style="color:white">
+                  Saat hadir di lokasi acara, peserta diwajibkan menuju <b>Counter Check-In</b> sesuai dengan Kode Huruf yang tertera di ID Card Online dan mendapatkan ID Card Fisik.
                 </div>
-              </div>
-              <div class="col-10" style="color:white">
-                Di dalam Digital Card Image terdapat <b>ID Nomor dan QR Code</b>, untuk memasuki acara
-              </div>
-            </div>
-
-            <div class="row mb-5">
-              <div class="col-2">
-                <div style="background-color: white; color: #01436F; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                  6
-                </div>
-              </div>
-              <div class="col-10" style="color:white">
-                Saat hadir di lokasi acara, peserta diwajibkan menuju <b>Counter Check-In</b> sesuai dengan Kode Huruf yang tertera di ID Card Online dan mendapatkan ID Card.
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-</div>
+  </div>
 
 
 
