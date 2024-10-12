@@ -166,7 +166,7 @@
                             </div>
                         </div>
                         <div class="col-10" style="color:white">
-                            Di dalam Digital Card Image terdapat <b>ID Nomor dan QR Code</b>, untuk memasuki acara
+                            Di dalam Digital Card Image terdapat <b>ID Number dan QR Code</b>, untuk memasuki acara
                         </div>
                     </div>
 
