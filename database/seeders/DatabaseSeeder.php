@@ -67,6 +67,11 @@ class DatabaseSeeder extends Seeder
 
         $instansis = [
             [
+                'name' => 'PT Bank Tabungan Negara (Persero) Tbk',
+                'status_kehadiran' => 'hybrid',
+                'max_participant' => 50,
+            ],
+            [
                 'name' => 'PT Bank Mandiri (Persero) Tbk',
                 'status_kehadiran' => 'hybrid',
                 'max_participant' => 3,
