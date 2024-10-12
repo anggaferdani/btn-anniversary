@@ -111,6 +111,30 @@
 @push('scripts')
 <script>
   $(document).ready(function() {
+    @if(session('success'))
+      Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: "{{ session('success') }}",
+          confirmButtonText: 'OK',
+          showCancelButton: false,
+          allowOutsideClick: false
+      })
+    @endif
+
+    @if(session('error'))
+      Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: "{{ session('error') }}",
+          timer: 2000,
+          showConfirmButton: false
+      });
+    @endif
+  });
+</script>
+<script>
+  $(document).ready(function() {
     $('#instansiSelect').on('change', function() {
         var statusKehadiran = $(this).find(':selected').data('status-kehadiran');
 
