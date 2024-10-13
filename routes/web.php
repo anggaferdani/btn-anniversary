@@ -38,6 +38,7 @@ Route::middleware(['web', 'disableBackButton'])->group(function(){
 
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::middleware(['auth:web', 'disableBackButton', 'admin'])->group(function(){
+        Route::get('ajax/leaderboard', [EventController::class, 'ajaxLeaderboard'])->name('ajax.leaderboard');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('instansi', InstansiController::class);
         Route::resource('zoom', ZoomContoller::class);

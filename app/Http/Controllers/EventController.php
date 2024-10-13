@@ -3,12 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Zoom;
+use App\Models\Participant;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
     public function leaderboard() {
         return view('backend.pages.leaderboard');
+    }
+
+    public function ajaxLeaderboard(Request $request)
+    {
+        $participants = Participant::orderBy('point', 'desc')->take(50)->get();
+
+        return response()->json($participants);
     }
 
     public function onlineEvent() {
