@@ -29,7 +29,7 @@
                       $isOnline = $instansi->status_kehadiran == 'online';
                   @endphp
                   <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}" 
-                      @if(!$isOnline && $currentCount > $maxCount) 
+                      @if(!$isOnline && $currentCount >= $maxCount) 
                           disabled 
                       @endif
                   >
