@@ -215,11 +215,6 @@
         </div>
         <div class="modal-body">
           <div class="mb-3">
-            <label class="form-label required">QRCode</label>
-            <input type="text" class="form-control" name="qrcode" placeholder="QRCode" value="{{ $participant->qrcode }}" autocomplete="off">
-            @error('qrcode')<div class="text-danger">{{ $message }}</div>@enderror
-          </div>
-          <div class="mb-3">
             <label class="form-label required">Name</label>
             <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $participant->name }}" autocomplete="off">
             @error('name')<div class="text-danger">{{ $message }}</div>@enderror
