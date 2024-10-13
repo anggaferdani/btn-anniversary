@@ -1,5 +1,5 @@
 @extends('backend.templates.scan')
-@section('title', 'Scan Kehadiran Participant')
+@section('title', 'SPIN')
 
 @section('content')
     <style>
@@ -117,6 +117,8 @@
     </div>
 @endsection
 @push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+
     <script>
         (function () {
                 "use strict";
@@ -159,10 +161,14 @@
                         firstDoorResult = boxes.children[0].textContent;
                         updateDoor2Items(firstDoorResult);
                         await initSingleDoor(doors[1], false, 1, 2);
+                        spinCount += 1;
                     } else if (spinCount == 0) {
                         init(false, 1, 2);
                         spinCount += 1;
-                    }else{
+                    }else if(spinCount == 2){
+                        console.log('asdas')
+                        const jsConfetti = new JSConfetti()
+                        jsConfetti.addConfetti()
                     }
 
 
@@ -222,6 +228,7 @@
                                 if (index > 0) this.removeChild(box);
                             });
                             spin()
+
                             // console.log("doorIndex", doorIndex);
                         },
                         {once: true}
