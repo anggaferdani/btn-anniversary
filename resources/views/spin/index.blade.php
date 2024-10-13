@@ -1,5 +1,5 @@
 @extends('backend.templates.scan')
-@section('title', 'Scan Kehadiran Participant')
+@section('title', 'SPIN')
 
 @section('content')
     <style>
