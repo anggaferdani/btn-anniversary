@@ -48,6 +48,7 @@ Route::middleware(['web', 'disableBackButton'])->group(function(){
 Route::prefix('admin')->name('admin.')->group(function(){
     Route::middleware(['auth:web', 'disableBackButton', 'admin'])->group(function(){
         Route::get('ajax/leaderboard', [EventController::class, 'ajaxLeaderboard'])->name('ajax.leaderboard');
+        Route::get('ajax/leaderboard/quiz', [QuizController::class, 'ajaxLeaderboard'])->name('ajax.leaderboard.quiz');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('instansi', InstansiController::class);
         Route::resource('zoom', ZoomContoller::class);
@@ -61,6 +62,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::resource('attendance-participant', AttendanceParticipantController::class);
         Route::get('history', [UserParticipantController::class, 'history'])->name('history');
         Route::get('leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
+        Route::get('leaderboard/quiz', [QuizController::class, 'leaderboard'])->name('leaderboard.quiz');
+        Route::get('history/quiz', [QuizController::class, 'history'])->name('history.quiz');
     });
 });
 

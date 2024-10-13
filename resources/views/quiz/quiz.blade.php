@@ -9,7 +9,11 @@
   </div>
   <div class="card card-md">
     <div class="card-body">
-      <h2 class="h2 text-center mb-4" id="countdownTimer">7:00</h2>
+      <h2 class="h2 text-center mb-4" id="countdownTimer">{{ gmdate('i:s', $setting->max_waktu_pengerjaan) }}</h2>
+
+      @if($existsInScores)
+      <div class="alert alert-important alert-danger" role="alert">Sudah mengisi kuis ini sebelumnya</div>
+      @endif
 
       <form action="{{ route('quiz.post', ['token' => $token]) }}" method="post">
         @csrf
@@ -61,7 +65,7 @@
         @endforeach
 
         <div class="form-footer">
-          <button type="submit" class="btn btn-primary w-100">Submit</button>
+          <button type="submit" class="btn btn-primary w-100" @if($existsInScores) disabled @endif>Submit</button>
         </div>
       </form>
     </div>
@@ -70,35 +74,65 @@
 @endsection
 @push('scripts')
 <script>
-  let timeLeft = 420;
-  let countdownElement = document.getElementById('countdownTimer');
+  $(document).ready(function() {
+    @if(session('success'))
+      Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: "{{ session('success') }}",
+          confirmButtonText: 'OK',
+          showCancelButton: false,
+          allowOutsideClick: false
+      })
+    @endif
 
-  const updateCountdown = () => {
-    let minutes = Math.floor(timeLeft / 60);
-    let seconds = timeLeft % 60;
+    @if(session('error'))
+      Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: "{{ session('error') }}",
+          timer: 2000,
+          showConfirmButton: false
+      });
+    @endif
+  });
 
-    seconds = seconds < 10 ? '0' + seconds : seconds;
+  @if(! $existsInScores)
+    let totalDuration = {{ $setting->max_waktu_pengerjaan }};
+    let timeLeft = totalDuration;
+    let countdownElement = document.getElementById('countdownTimer');
 
-    countdownElement.innerHTML = `${minutes}:${seconds}`;
-    
-    timeLeft--;
+    const updateCountdown = () => {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
 
-    if (timeLeft < 0) {
-        clearInterval(countdownInterval);
-        Swal.fire({
-            icon: 'success',
-            title: 'Waktu pengerjaan habis',
-            confirmButtonText: 'OK',
-            showCancelButton: false,
-            allowOutsideClick: false
-        })
-        document.getElementById('waktuPengerjaan').value = 0;
-        document.querySelector('form').submit();
-    } else {
-        document.getElementById('waktuPengerjaan').value = timeLeft;
-    }
-};
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
 
-  let countdownInterval = setInterval(updateCountdown, 1000);
+        countdownElement.innerHTML = `${minutes}:${seconds}`;
+        
+        timeLeft--;
+
+        if (timeLeft < 0) {
+            clearInterval(countdownInterval);
+            Swal.fire({
+              icon: 'success',
+              title: 'Waktu habis',
+              timer: 3000,
+              confirmButtonText: 'OK',
+              showCancelButton: false,
+              allowOutsideClick: false,
+              willClose: () => {
+                  document.getElementById('waktuPengerjaan').value = totalDuration;
+                  document.querySelector('form').submit();
+              }
+            });
+        } else {
+            document.getElementById('waktuPengerjaan').value = totalDuration - timeLeft;
+        }
+    };
+  @endif
+
+let countdownInterval = setInterval(updateCountdown, 1000);
 </script>
 @endpush

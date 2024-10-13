@@ -41,6 +41,25 @@
               <form action="{{ route('receptionist.participant.index') }}" class="">
             @endif
               <div class="d-flex gap-1">
+                <select class="form-select" name="instansi">
+                  <option disabled selected value="">Instansi</option>
+                  <option value="">Semua</option>
+                  @foreach($instansis as $instansi)
+                      <option value="{{ $instansi->id }}" {{ request('instansi') == $instansi->id ? 'selected' : '' }}>
+                          {{ $instansi->name }}
+                      </option>
+                  @endforeach
+                </select>
+                <select class="form-select" name="kehadiran">
+                    <option disabled selected value="">Kehadiran</option>
+                    <option value="onsite" {{ request('kehadiran') == 'onsite' ? 'selected' : '' }}>Offline</option>
+                    <option value="online" {{ request('kehadiran') == 'online' ? 'selected' : '' }}>Online</option>
+                </select>
+                <select class="form-select" name="status">
+                    <option disabled selected value="">Status</option>
+                    <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Verified</option>
+                    <option value="2" {{ request('status') == '2' ? 'selected' : '' }}>Not Verified</option>
+                </select>
                 <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search">
                 <button type="submit" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-magnifying-glass"></i></button>
                 @if(auth()->user()->role == 1)
@@ -80,7 +99,7 @@
                   <td>{{ $participant->phone_number }}</td>
                   <td>
                     @if($participant->kehadiran == 'onsite')
-                      <span class="badge bg-success text-white">Onsite</span>
+                      <span class="badge bg-success text-white">Offline</span>
                     @else
                       <span class="badge bg-primary text-white">Online</span>
                     @endif
@@ -147,9 +166,9 @@
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
                   @php
-                      $currentCount = $instansi->participants_count;
-                      $maxCount = $instansi->max_participant;
-                      $isOnline = $instansi->status_kehadiran == 'online';
+                    $currentCount = $instansi->participants->where('verification', 1)->where('kehadiran', 'onsite')->count();
+                    $maxCount = $instansi->max_participant;
+                    $isOnline = $instansi->status_kehadiran == 'online';
                   @endphp
                   <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}" 
                       @if(!$isOnline && $currentCount >= $maxCount) 
@@ -183,6 +202,15 @@
             @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
           <input type="hidden" class="form-control" id="kehadiranInput" name="kehadiran" placeholder="" value="" autocomplete="off">
+          <div id="kendaraanDiv" style="display:none;" class="mb-3">
+            <label class="form-label">Apakah membawa kendaraan pribadi?</label>
+            <select class="form-select" name="kendaraan">
+              <option disabled selected value="">Pilih</option>
+              <option value="mobil">Mobil</option>
+              <option value="motor">Motor</option>
+            </select>
+            @error('kendaraan')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
           <div id="kendaraanDiv" style="display:none;" class="mb-3">
             <label class="form-label">Apakah membawa kendaraan pribadi?</label>
             <select class="form-select" name="kendaraan">
@@ -227,7 +255,7 @@
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
                 @php
-                    $currentCount = $instansi->participants_count;
+                    $currentCount = $instansi->participants->where('verification', 1)->where('kehadiran', 'onsite')->count();
                     $maxCount = $instansi->max_participant;
                     $isParticipant = $participant->instansi_id == $instansi->id;
                 @endphp
