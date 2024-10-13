@@ -55,7 +55,7 @@
                     <div class="subheader">HADIR (Offline)</div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 me-2" style="font-size: 40px">{{ $participantsVerifiedOfflineCountHadir ?? "0" }} / {{ $participantsOfflineCount }}</div>
+                    <div class="h1 me-2" style="font-size: 40px">{{ $participantsVerifiedOfflineCountHadir ?? "0" }}</div>
                   </div>
                 </div>
               </div>

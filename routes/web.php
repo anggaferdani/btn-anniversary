@@ -1,21 +1,22 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ZoomContoller;
-use App\Http\Controllers\QuizController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\TenantController;
-use App\Http\Controllers\InstansiController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\IndexPageController;
-use App\Http\Controllers\QuizAdminController;
-use App\Http\Controllers\ParticipantController;
-use App\Http\Controllers\ReceptionistController;
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\UserParticipantController;
-use App\Http\Controllers\RegistrationPageController;
 use App\Http\Controllers\AttendanceParticipantController;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\IndexPageController;
+use App\Http\Controllers\InstansiController;
+use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\QuizAdminController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\ReceptionistController;
+use App\Http\Controllers\RegistrationPageController;
+use App\Http\Controllers\SpinController;
+use App\Http\Controllers\TenantController;
+use App\Http\Controllers\UserParticipantController;
+use App\Http\Controllers\ZoomContoller;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,8 @@ use App\Http\Controllers\AttendanceParticipantController;
 Route::get('/quiz', [QuizController::class, 'join'])->name('join');
 Route::post('/join/post', [QuizController::class, 'joinPost'])->name('join.post');
 Route::get('/quiz/{token}', [QuizController::class, 'quiz'])->name('quiz');
+Route::get('/spin', [SpinController::class, 'index'])->name('admin.spin.index');
+//admin.spin.index
 Route::post('/quiz/{token}/post', [QuizController::class, 'quizPost'])->name('quiz.post');
 Route::get('/result/{token}', [QuizController::class, 'result'])->name('result');
 
@@ -41,7 +44,7 @@ Route::middleware(['web', 'disableBackButton'])->group(function(){
         Route::get('login', [AuthenticationController::class, 'login'])->name('login');
         Route::post('post/login', [AuthenticationController::class, 'postLogin'])->name('post.login');
     });
-    
+
     Route::get('logout', [AuthenticationController::class, 'logout'])->name('logout');
 });
 
