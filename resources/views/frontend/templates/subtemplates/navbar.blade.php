@@ -9,9 +9,16 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav d-flex align-items-center">
                 <li class="nav-item mb-3 mb-lg-0 mt-3 mt-lg-0">
-                    <a href="{{ route('registration.index') }}" class="text-uppercase"
-                        style="color: #0566AE; font-size: 20px; text-decoration: none">Registrasi </a>
+                    <a href="{{ route('registration.index.online') }}" class="text-uppercase"
+                        style="color: #0566AE; font-size: 20px; text-decoration: none">Registrasi Online</a>
                 </li>
+                <div class="d-lg-flex d-none " style="height: 30px; padding-left: 30px; padding-right: 30px">
+                    <div class="vr"></div>
+                </div>
+                <li class="nav-item mb-3 mb-lg-0 mt-3 mt-lg-0">
+                  <a href="{{ route('registration.index') }}" class="text-uppercase"
+                      style="color: #0566AE; font-size: 20px; text-decoration: none">Registrasi Offline</a>
+              </li>
                 {{-- <div class="d-lg-flex d-none " style="height: 30px; padding-left: 30px; padding-right: 30px">
                     <div class="vr"></div>
                 </div> --}}

@@ -44,13 +44,14 @@
       <div class="col-12 col-lg-4 mb-4">
         <div class="card" style="width: 100%; height: 244px; background: #4298C5;">
           <div class="card-body m-0 pl-5 py-4 d-flex flex-column justify-content-between">
-            <h5 class="card-title m-0" style="font-size: 30px; font-weight: 700; color: white; padding-bottom: 16px;">
+            <h5 class="card-title m-0" style="font-size: 30px; font-weight: 700; color: white;">
               <img src="{{ asset('assets/frontend/home/baju.png') }}" alt="Icon 1" style="width: 41.67px;" class="me-2"> 
-              Dresscode
+              Dresscode <br><br>
+              <span class="card-text m-0" style="font-size: 20px; font-weight: 400; color: white;">
+                Atasan Kemeja Putih, <br> Bawahan Jeans
+              </span>
             </h5>
-            <p class="card-text m-0" style="font-size: 20px; font-weight: 400; color: white; padding-bottom: 10px;">
-              Atasan Kemeja Putih, Bawahan Jeans
-            </p>
+            
           </div>
         </div>
       </div>
@@ -99,7 +100,7 @@
 
         <!-- Steps Content -->
         <div class="col-md-8">
-            <h1 style="font-size: 30px; font-weight: 900; color: #fff;">Langkah-Langkah Registrasi</h1>
+            <h1 style="font-size: 30px; font-weight: 900; color: #fff;">Panduan Langkah Registrasi</h1>
             <p style="font-size: 18px; color: #fff; margin-bottom: 70px;">Final Event BUMN Learning Festival</p>
 
             <!-- Row for splitting Steps 1-3 and 4-6 -->
@@ -189,8 +190,8 @@
 </div>
 
 <div class="container-fluid h-auto" style="margin-bottom: 70px; background-color: #4298C5">
-    <div class="row m-auto" style="max-width: 1130px; padding-top: 88px; padding-bottom: 87px">
-        <div class="col-md-6 d-flex align-items-center">
+    <div class="row m-auto gap-lg-0 gap-2 " style="max-width: 1130px; padding-top: 88px; padding-bottom: 87px">
+        <div class="col-md-4 d-flex align-items-center">
             <div>
                 <h1 style="color:white; font-size: 40px; font-weight: 800;">Registrasi</h1>
                 <p style="color:white;font-size: 25px; font-weight: 400; max-width: 250px;">Final Event BUMN Learning
@@ -198,24 +199,38 @@
                 </p>
             </div>
         </div>
-    <div class="col-md-6">
-    <div class="position-relative card overflow-hidden" style="border-radius: 28px; height: auto; width: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s; background: url('{{ asset('assets/frontend/home/bg-card.png') }}') no-repeat; background-size: cover;">
-        <img src="{{ asset('AKSEN.png')}}" alt="BUMN Learning Festival" class="position-absolute d-flex justify-content-center z-1" style="bottom: 0; right: -5%; width: 336px;">
-          <div class="p-lg-5 p-3 z-2">
-              <img src="{{ asset('bumn-logo-final.png') }}" width="160px" alt="" class="pb-3">
-              <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: #0566AE;">Pendaftaran Peserta
-              </h5>
-              <h6 class="card-subtitle mb-3" style="font-size: 30px; font-weight: 800; color: #0566AE;">REGISTRASI</h6>
-              <a href="{{ route('registration.index') }}" class="btn"
-                  style="background-color: #0566AE; color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Klik Disini
-              </a>
-          </div>
-      </div>
+        <div class="col-md-4">
+            <div class="position-relative card overflow-hidden" style="border-radius: 28px; height: auto; width: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s; background: url('{{ asset('assets/frontend/home/bg-card.png') }}') no-repeat; background-size: cover;">
+                <img src="{{ asset('AKSEN.png')}}" alt="BUMN Learning Festival" class="position-absolute d-flex justify-content-center z-1" style="bottom: 0; right: -5%; width: 290px;">
+                <div class="p-lg-5 p-3 z-2">
+                    <img src="{{ asset('bumn-logo-final.png') }}" width="160px" alt="" class="pb-3">
+                    <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: #003E64;">Pendaftaran Peserta
+                    </h5>
+                    <h6 class="card-subtitle mb-3" style="font-size: 30px; font-weight: 800; color: #003E64;">ONLINE</h6>
+                    <a href="{{ route('registration.index.online') }}" class="btn"
+                        style="background-color: #003E64; color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Klik Disini
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="position-relative card overflow-hidden" style="border-radius: 28px; height: auto; width: 100%; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s; background: url('{{ asset('assets/frontend/home/bg-card.png') }}') no-repeat; background-size: cover;">
+                <img src="{{ asset('AKSEN.png')}}" alt="BUMN Learning Festival" class="position-absolute d-flex justify-content-center z-1" style="bottom: 0; right: -5%; width: 290px;">
+                <div class="p-lg-5 p-3 z-2">
+                    <img src="{{ asset('bumn-logo-final.png') }}" width="160px" alt="" class="pb-3">
+                    <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: #0566AE;">Pendaftaran Peserta
+                    </h5>
+                    <h6 class="card-subtitle mb-3" style="font-size: 30px; font-weight: 800; color: #0566AE;">OFFLINE</h6>
+                    <a href="{{ route('registration.index') }}" class="btn"
+                        style="background-color: #0566AE; color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Klik Disini
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<div class="container-fluid" style="max-width: 1170px;px; margin: auto; padding: 20px; text-align: center;">
+<div class="container-fluid mb-5" style="max-width: 1170px;px; margin: auto; padding: 20px; text-align: center;">
     <h2 style="margin-bottom: 20px; font-size: 40px ; font-weight:800; color: #01436F">Rundown</h2>
     <h5 style="font-size: 25px ; font-weight: 500; color: #01436F">Final Event BUMN Learning Festival</h5>
     <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-lg-4 mt-4">
@@ -257,7 +272,7 @@
                 <div class="d-flex flex-column justify-content-between h-100 p-4 z-2">
                     <h5 class="card-title font-weight-lighter m-0"
                         style="font-size: 20px; color: white; max-width: 227px">Talkshow Sesi 1 " How To Cultivate
-                        Akhlak To Achieve " Indonesia Emas 2045" As Insan BUMN</h5>
+                        AKHLAK To Achieve " Indonesia Emas 2045" As Insan BUMN</h5>
                     <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: white;">09.30</h5>
                 </div>
             </div>
@@ -276,7 +291,7 @@
                 <img src="{{ asset('AKSEN.png') }}" alt="BUMN Learning Festival" class="position-absolute z-1" style="bottom: 0; right: -5%; width: 270px; opacity: 0.3;">
                 <div class="d-flex flex-column justify-content-between h-100 p-4 z-2">
                     <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: white; max-width: 165px">Talkshow Sesi 2
-                        "How To Embed Continuous Learning Into Lifestye"
+                        "How To Embed Continuous Learning into Lifestye"
                     </h5>
                     <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: white;">10.30</h5>
                 </div>
@@ -287,7 +302,7 @@
                 style="border-radius: 20px; width: 100%; max-width: 270px; height: 270px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); transition: transform 0.2s; background-color: #01436F; margin: 0 auto;">
                 <img src="{{ asset('AKSEN.png') }}" alt="BUMN Learning Festival" class="position-absolute z-1" style="bottom: 0; right: -5%; width: 270px; opacity: 0.3;">
                 <div class="d-flex flex-column justify-content-between h-100 p-4 z-2">
-                    <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: white; max-width: 165px">Pengumunan Kompetisi Challenge</h5>
+                    <h5 class="card-title font-weight-lighter m-0" style="font-size: 14px; color: white; max-width: 270px">Pengumuman Kompetisi Challenge Kategori Perusahaan dengan Tema <b style="font-size: 14px">"AKHLAKIN KALEIDOSCOPE: 4 YEARS OF SOLID TRANSFORMATION"</b> <br> dan Kategori Individu dengan Tema <b style="font-size: 14px">"A DAY IN MY LIFE WITH AKHLAK"</b></h5>
                     <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: white;">11.35</h5>
                 </div>
             </div>
@@ -297,7 +312,7 @@
                 <img src="{{ asset('AKSEN.png') }}" alt="BUMN Learning Festival" class="position-absolute z-1" style="bottom: 0; right: -5%; width: 270px; opacity: 0.3;">
                 <div class="d-flex flex-column justify-content-between h-100 p-4 z-2">
                     <h5 class="card-title font-weight-lighter m-0"
-                        style="font-size: 20px; color: white; max-width: 165px">Annoucement Super Learner Award</h5>
+                        style="font-size: 20px; color: white; max-width: 165px">Announcement Super Learner Award</h5>
                     <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: white;">11.45</h5>
                 </div>
             </div>

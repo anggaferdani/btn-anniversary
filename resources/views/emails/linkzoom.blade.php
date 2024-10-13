@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Invitation</title>
+    <title>Zoom Invitation</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -19,6 +19,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border: 1px solid #e0e0e0;
+            justify-content: center;
         }
 
         .brand-color {
@@ -65,15 +66,23 @@
     </style>
 </head>
 <body>
-    <div class="email-container text-center">
+    <div class="email-container">
 
         <img src="{{ $message->embed('logobaru.png') }}" alt="Logo BTN" class="logo">
 
         <h1>Selamat, {{ $name }}!</h1>
 
+        <p>Anda diundang ke webinar Zoom.</p>
+
+        <p>Waktu: 15 Okt 2024 07:30 Jakarta</p>
+
+        <p>Topik: Final Event BUMN Learning Festival Hosted by BTN</p>
+
+        <p>Daftar lebih awal untuk webinar ini :</p>
+
         <a href="{{ $url }}" class="btn-verify" style="color: white; text-decoration: none">Link Zoom</a>
 
-        <p>Link Zoom telah terkirim.</p>
+        <p>Setelah mendaftar, Anda akan menerima email konfirmasi yang berisi informasi tentang cara bergabung ke webinar.</p>
 
         <div class="footer-note">
             <p>Terima kasih atas perhatian Anda. Jika ada pertanyaan lebih lanjut, jangan ragu untuk menghubungi tim kami.</p>
