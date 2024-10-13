@@ -13,9 +13,9 @@
 
       <form action="{{ route('quiz.post', ['token' => $token]) }}" method="post">
         @csrf
-        
+
         <input type="hidden" name="waktu_pengerjaan" id="waktuPengerjaan" value="">
-        
+
         @foreach($quizzes as $quiz)
           <div class="mb-3">
             <label class="form-label">{{ $loop->iteration }}. {{ $quiz->soal }}</label>
@@ -70,35 +70,35 @@
 @endsection
 @push('scripts')
 <script>
-  let timeLeft = 420;
-  let countdownElement = document.getElementById('countdownTimer');
-
-  const updateCountdown = () => {
-    let minutes = Math.floor(timeLeft / 60);
-    let seconds = timeLeft % 60;
-
-    seconds = seconds < 10 ? '0' + seconds : seconds;
-
-    countdownElement.innerHTML = `${minutes}:${seconds}`;
-    
-    timeLeft--;
-
-    if (timeLeft < 0) {
-        clearInterval(countdownInterval);
-        Swal.fire({
-            icon: 'success',
-            title: 'Waktu pengerjaan habis',
-            confirmButtonText: 'OK',
-            showCancelButton: false,
-            allowOutsideClick: false
-        })
-        document.getElementById('waktuPengerjaan').value = 0;
-        document.querySelector('form').submit();
-    } else {
-        document.getElementById('waktuPengerjaan').value = timeLeft;
-    }
-};
-
-  let countdownInterval = setInterval(updateCountdown, 1000);
+//   let timeLeft = 420;
+//   let countdownElement = document.getElementById('countdownTimer');
+//
+//   const updateCountdown = () => {
+//     let minutes = Math.floor(timeLeft / 60);
+//     let seconds = timeLeft % 60;
+//
+//     seconds = seconds < 10 ? '0' + seconds : seconds;
+//
+//     countdownElement.innerHTML = `${minutes}:${seconds}`;
+//
+//     timeLeft--;
+//
+//     if (timeLeft < 0) {
+//         clearInterval(countdownInterval);
+//         Swal.fire({
+//             icon: 'success',
+//             title: 'Waktu pengerjaan habis',
+//             confirmButtonText: 'OK',
+//             showCancelButton: false,
+//             allowOutsideClick: false
+//         })
+//         document.getElementById('waktuPengerjaan').value = 0;
+//         document.querySelector('form').submit();
+//     } else {
+//         document.getElementById('waktuPengerjaan').value = timeLeft;
+//     }
+// };
+//
+//   let countdownInterval = setInterval(updateCountdown, 1000);
 </script>
 @endpush
