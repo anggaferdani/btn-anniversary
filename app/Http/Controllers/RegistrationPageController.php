@@ -36,7 +36,7 @@ class RegistrationPageController extends Controller
     public function indexOnline()
     {
         // Mengambil instansi dengan status = 1 dan status kehadiran
-        $instansis = Instansi::where('status_kehadiran', 'online')->withCount('participants')
+        $instansis = Instansi::withCount('participants')
                     ->where('status', 1)->orderBy('name', 'asc')
                     ->get(['id', 'name', 'max_participant', 'participants_count', 'status_kehadiran']);
 

@@ -24,12 +24,12 @@
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
                   @php
-                      $currentCount = $instansi->participants->where('verification', 1)->count();
+                      $currentCount = $instansi->participants->where('verification', 1)->where('kehadiran', 'onsite')->count();
                       $maxCount = $instansi->max_participant;
                       $isOnline = $instansi->status_kehadiran == 'online';
                   @endphp
                   <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}" 
-                      @if(!$isOnline && $currentCount >= $maxCount) 
+                      @if(!$isOnline && $currentCount > $maxCount) 
                           disabled 
                       @endif
                   >

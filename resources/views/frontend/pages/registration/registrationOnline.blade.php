@@ -23,22 +23,22 @@
             <select id="instansiSelect" class="selectpicker border rounded" data-live-search="true" name="instansi_id" style="width: 100% !important;">
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
-                  @php
+                  {{-- @php
                       $currentCount = $instansi->participants->where('verification', 1)->count();
                       $maxCount = $instansi->max_participant;
                       $isOnline = $instansi->status_kehadiran == 'online';
-                  @endphp
-                  <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}" 
-                      @if(!$isOnline && $currentCount >= $maxCount) 
+                  @endphp --}}
+                  <option value="{{ $instansi->id }}" 
+                      {{-- @if(!$isOnline && $currentCount >= $maxCount) 
                           disabled 
-                      @endif
+                      @endif --}}
                   >
                       {{ $instansi->name }} 
-                      @if($isOnline)
+                      {{-- @if($isOnline)
                           (Online)
                       @else
                           ({{ $currentCount }}/{{ $maxCount }})
-                      @endif
+                      @endif --}}
                   </option>
               @endforeach
             </select>
@@ -59,7 +59,9 @@
             <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" autocomplete="off">
             @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
-          <div id="kehadiranDiv" style="display:none;" class="mb-3">
+          <input type="hidden" class="form-control" name="kehadiran" value="online" autocomplete="off">
+          
+          {{-- <div id="kehadiranDiv" style="display:none;" class="mb-3">
             <label class="form-label required">Pilih metode kehadiran?</label>
             <div class="form-selectgroup-boxes row g-1 mb-3">
               <div class="col-lg-6">
@@ -91,7 +93,7 @@
                 </label>
               </div>
             </div>
-          </div>
+          </div> --}}
           <div id="kendaraanDiv" style="display:none;" class="mb-3">
             <label class="form-label">Apakah membawa kendaraan pribadi?</label>
             <select class="form-select" name="kendaraan">
