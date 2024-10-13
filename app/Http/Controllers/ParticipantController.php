@@ -31,6 +31,28 @@ class ParticipantController extends Controller
 
         return response()->json($participants);
     }
+
+    public function downloadId($token) {
+        $participant = Participant::where('token', $token)->where('verification', 1)->where('status', 1)->first();
+        $filePath = public_path('images/' . $participant->image);
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+    }
+
+    public function downloadQr($token) {
+        $participant = Participant::where('token', $token)->where('verification', 1)->where('status', 1)->first();
+        $filePath = public_path('qrcodes/' . $participant->image);
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+    }
     
     public function scan() {
         $participants = Participant::where('status', 1)->where('verification', 1)->where('attendance', 1)->get();
