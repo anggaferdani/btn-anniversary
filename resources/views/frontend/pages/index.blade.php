@@ -312,7 +312,7 @@
                 <img src="{{ asset('AKSEN.png') }}" alt="BUMN Learning Festival" class="position-absolute z-1" style="bottom: 0; right: -5%; width: 270px; opacity: 0.3;">
                 <div class="d-flex flex-column justify-content-between h-100 p-4 z-2">
                     <h5 class="card-title font-weight-lighter m-0"
-                        style="font-size: 20px; color: white; max-width: 165px">Announcement Super Learner Award</h5>
+                        style="font-size: 20px; color: white; max-width: 165px">Pengumuman Super Learner Award</h5>
                     <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: white;">11.45</h5>
                 </div>
             </div>
