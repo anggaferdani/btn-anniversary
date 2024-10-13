@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Instansi;
 use App\Models\Participant;
 use Illuminate\Http\Request;
+use App\Models\UserParticipant;
 use Illuminate\Support\Facades\DB;
 
 class ParticipantController extends Controller
@@ -192,8 +194,13 @@ class ParticipantController extends Controller
     public function destroy($id) {
         try {
             $participant = Participant::find($id);
+            $userPatricipant = UserParticipant::where('participant_id', $participant->id)->first();
 
             $participant->update([
+                'status' => 2,
+            ]);
+
+            $userPatricipant->update([
                 'status' => 2,
             ]);
 

@@ -99,18 +99,12 @@ class UserParticipantController extends Controller
         $userParticipants = UserParticipant::query()
             ->when($user->role == 1, function ($query) use ($user) {
                 return $query->where('point', 1)
-                             ->where('status', 1)
-                             ->whereHas('user', function ($q) {
-                                 $q->where('status', 1);
-                            });
+                             ->where('status', 1);
             })
             ->when($user->role == 3, function ($query) use ($user) {
                 return $query->where('user_id', $user->id)
                              ->where('point', 1)
-                             ->where('status', 1)
-                             ->whereHas('user', function ($q) {
-                                 $q->where('status', 1);
-                            });
+                             ->where('status', 1);
             })
             ->when($search, function ($query, $search) {
                 return $query->whereHas('participant', function ($q) use ($search) {
