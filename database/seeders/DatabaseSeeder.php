@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Quiz;
 use App\Models\User;
 use App\Models\Zoom;
 use App\Models\Instansi;
@@ -49,6 +50,91 @@ class DatabaseSeeder extends Seeder
 
         Zoom::insert($zooms);
 
+        $quizzes = [
+            [
+                'soal' => 'Apa ibukota Indonesia?',
+                'jawaban_a' => 'Jakarta',
+                'jawaban_b' => 'Bandung',
+                'jawaban_c' => 'Surabaya',
+                'jawaban_d' => 'Medan',
+                'jawaban' => 'a',
+            ],
+            [
+                'soal' => 'Siapa presiden pertama Indonesia?',
+                'jawaban_a' => 'Soekarno',
+                'jawaban_b' => 'Soeharto',
+                'jawaban_c' => 'BJ Habibie',
+                'jawaban_d' => 'Jokowi',
+                'jawaban' => 'a',
+            ],
+            [
+                'soal' => 'Apa nama planet terdekat dengan Bumi?',
+                'jawaban_a' => 'Mars',
+                'jawaban_b' => 'Venus',
+                'jawaban_c' => 'Merkurius',
+                'jawaban_d' => 'Jupiter',
+                'jawaban' => 'c',
+            ],
+            [
+                'soal' => 'Apa lambang kimia untuk air?',
+                'jawaban_a' => 'O2',
+                'jawaban_b' => 'H2O',
+                'jawaban_c' => 'CO2',
+                'jawaban_d' => 'NaCl',
+                'jawaban' => 'b',
+            ],
+            [
+                'soal' => 'Siapa penulis novel "Laskar Pelangi"?',
+                'jawaban_a' => 'Andrea Hirata',
+                'jawaban_b' => 'Habiburrahman El Shirazy',
+                'jawaban_c' => 'Tere Liye',
+                'jawaban_d' => 'Pramoedya Ananta Toer',
+                'jawaban' => 'a',
+            ],
+            [
+                'soal' => 'Apa nama gunung tertinggi di Indonesia?',
+                'jawaban_a' => 'Gunung Semeru',
+                'jawaban_b' => 'Gunung Kerinci',
+                'jawaban_c' => 'Gunung Rinjani',
+                'jawaban_d' => 'Gunung Jayawijaya',
+                'jawaban' => 'd',
+            ],
+            [
+                'soal' => 'Apa ibu kota Jepang?',
+                'jawaban_a' => 'Seoul',
+                'jawaban_b' => 'Tokyo',
+                'jawaban_c' => 'Beijing',
+                'jawaban_d' => 'Bangkok',
+                'jawaban' => 'b',
+            ],
+            [
+                'soal' => 'Apa nama hewan terbesar di dunia?',
+                'jawaban_a' => 'Gajah',
+                'jawaban_b' => 'Biru Paus',
+                'jawaban_c' => 'Jerapah',
+                'jawaban_d' => 'Singa',
+                'jawaban' => 'b',
+            ],
+            [
+                'soal' => 'Siapa penemu lampu pijar?',
+                'jawaban_a' => 'Nikola Tesla',
+                'jawaban_b' => 'Thomas Edison',
+                'jawaban_c' => 'Alexander Graham Bell',
+                'jawaban_d' => 'Albert Einstein',
+                'jawaban' => 'b',
+            ],
+            [
+                'soal' => 'Apa nama mata uang Jepang?',
+                'jawaban_a' => 'Yuan',
+                'jawaban_b' => 'Won',
+                'jawaban_c' => 'Yen',
+                'jawaban_d' => 'Baht',
+                'jawaban' => 'c',
+            ],
+        ];
+
+        Quiz::insert($quizzes);
+
         $faker = Faker::create();
 
         for ($i = 1; $i <= 100; $i++) {
@@ -63,7 +149,7 @@ class DatabaseSeeder extends Seeder
                 'email' => $faker->unique()->safeEmail,
                 'phone_number' => $faker->phoneNumber,
                 'verification' => 1,
-                'attendance' => 2,
+                'attendance' => 1,
                 'kehadiran' => 'onsite',
             ]);
         }

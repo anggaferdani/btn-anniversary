@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ZoomContoller;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\TenantController;
 use App\Http\Controllers\InstansiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IndexPageController;
+use App\Http\Controllers\QuizAdminController;
 use App\Http\Controllers\ParticipantController;
 use App\Http\Controllers\ReceptionistController;
 use App\Http\Controllers\AuthenticationController;
@@ -26,7 +28,12 @@ use App\Http\Controllers\AttendanceParticipantController;
 |
 */
 
+Route::get('/join', [QuizController::class, 'join'])->name('join');
+Route::post('/join/post', [QuizController::class, 'joinPost'])->name('join.post');
+Route::get('/quiz', [QuizController::class, 'quiz'])->name('quiz');
+
 Route::get('/online-event', [EventController::class, 'onlineEvent'])->name('online-event');
+
 Route::middleware(['web', 'disableBackButton'])->group(function(){
     Route::middleware(['disableRedirectToLoginPage'])->group(function(){
         Route::get('login', [AuthenticationController::class, 'login'])->name('login');
@@ -42,6 +49,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::resource('instansi', InstansiController::class);
         Route::resource('zoom', ZoomContoller::class);
+        Route::resource('quiz', QuizAdminController::class);
         Route::resource('admin', AdminController::class);
         Route::resource('receptionist', ReceptionistController::class);
         Route::resource('tenant', TenantController::class);
