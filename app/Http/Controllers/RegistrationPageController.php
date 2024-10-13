@@ -254,7 +254,7 @@ class RegistrationPageController extends Controller
             $instansi = Instansi::find($request->instansi_id);
             $participantCount = Participant::where('instansi_id', $request->instansi_id)->count();
     
-            if ($participantCount >= $instansi->max_participant) {
+            if ($participantCount > $instansi->max_participant) {
                 return redirect()->back()->with('error', 'Kuota pendaftaran On Site untuk instansi ini sudah penuh. Anda Tetap Bisa Mendaftar Secara Online.');
             }
     
