@@ -20,6 +20,7 @@
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             border: 1px solid #e0e0e0;
+            justify-content: center;
         }
 
         .brand-color {
@@ -67,9 +68,9 @@
 </head>
 
 <body>
-    <div class="email-container text-center">
+    <div class="email-container">
         
-        <img src="{{ $message->embed('final-event.png') }}" alt="Logo BTN" class="logo">
+        <img src="{{ $message->embed('logobaru.png') }}" alt="Logo BTN" class="logo">
 
         <h2 class="brand-color">Pendaftaran anda berhasil</h2>
         

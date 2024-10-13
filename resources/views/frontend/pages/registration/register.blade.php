@@ -1,5 +1,5 @@
 @extends('backend.templates.scan')
-@section('title', 'Scan Kehadiran Participant')
+@section('title', 'REGISTRASI BUMN LEARNING FESTIVAL 2024')
 @section('content')
 <div class="container">
   <div class="col-md-6 m-auto mb-3">
@@ -7,7 +7,7 @@
       <img src="{{ asset('assets/partner.png') }}" class="" width="200">
     </div>
     <div class="text-center mb-3">
-      <img src="{{ asset('assets/final-event.png') }}" class="" width="150">
+      <img src="{{ asset('logobaru.png') }}" class="" width="150">
     </div>
     <form action="{{ route('registration.store') }}" method="POST" class="">
       @csrf
@@ -24,12 +24,12 @@
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
                   @php
-                      $currentCount = $instansi->participants->where('verification', 1)->count();
+                      $currentCount = $instansi->participants->where('verification', 1)->where('kehadiran', 'onsite')->count();
                       $maxCount = $instansi->max_participant;
                       $isOnline = $instansi->status_kehadiran == 'online';
                   @endphp
                   <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}" 
-                      @if(!$isOnline && $currentCount >= $maxCount) 
+                      @if(!$isOnline && $currentCount > $maxCount) 
                           disabled 
                       @endif
                   >
@@ -70,8 +70,8 @@
                       <span class="form-selectgroup-check"></span>
                     </span>
                     <span class="form-selectgroup-label-content">
-                      <span class="form-selectgroup-title strong mb-1 text-success fw-bold">Onsite</span>
-                      <span class="d-block text-secondary">Mengikuti kegiatan secara onsite ditempat</span>
+                      <span class="form-selectgroup-title strong mb-1 text-success fw-bold">Offline</span>
+                      <span class="d-block text-secondary">Mengikuti kegiatan secara offline ditempat</span>
                     </span>
                   </span>
                 </label>
