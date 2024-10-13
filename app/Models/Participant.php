@@ -23,4 +23,9 @@ class Participant extends Model
     {
         return $this->belongsTo(Instansi::class, 'instansi_id');
     }
+
+    public function score()
+    {
+        return $this->hasOne(Score::class);
+    }
 }

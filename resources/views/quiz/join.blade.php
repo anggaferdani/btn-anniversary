@@ -21,7 +21,7 @@
           <input type="number" class="form-control" name="pin" placeholder="Masukan Pin untuk join quiz">
         </div>
         <div class="form-footer">
-          <button type="submit" class="btn btn-primary w-100">Join</button>
+          <button type="submit" class="btn btn-primary w-100" @if(!$canJoin) @disabled(true) @endif>Join</button>
         </div>
       </form>
     </div>
