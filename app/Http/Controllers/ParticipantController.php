@@ -66,7 +66,7 @@ class ParticipantController extends Controller
     }
 
     public function index(Request $request) {
-        $query = Participant::where('status', 1);
+        $query = Participant::query();
     
         if ($request->has('search')) {
             $search = $request->input('search');
@@ -165,6 +165,7 @@ class ParticipantController extends Controller
         try {
             $request->validate([
                 'name' => 'required',
+                'qrcode' => 'required',
                 'email' => 'required',
                 'phone_number' => 'required|min:10',
                 'instansi_id' => 'required',
@@ -173,6 +174,7 @@ class ParticipantController extends Controller
 
             $array = [
                 'name' => $request['name'],
+                'qrcode' => $request['qrcode'],
                 'instansi_id' => $request['instansi_id'],
                 'jabatan' => $request['jabatan'],
                 'email' => $request['email'],

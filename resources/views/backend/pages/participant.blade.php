@@ -96,14 +96,12 @@
                         @if($participant->verification == 2)
                           <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
                         @endif
-                        <a href="{{ route('admin.resend-digital-invitation', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Digital Invitation</span></a>
                         <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $participant->id }}"><i class="fa-solid fa-pen"></i></button>
                         <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $participant->id }}"><i class="fa-solid fa-trash"></i></button>
                       @elseif(auth()->user()->role == 2)
                         @if($participant->verification == 2)
                           <a href="{{ route('receptionist.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
                         @endif
-                        <a href="{{ route('receptionist.resend-digital-invitation', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Digital Invitation</span></a>
                       @endif
                     </div>
                   </td>
@@ -216,6 +214,11 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label required">QRCode</label>
+            <input type="text" class="form-control" name="qrcode" placeholder="QRCode" value="{{ $participant->qrcode }}" autocomplete="off">
+            @error('qrcode')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
           <div class="mb-3">
             <label class="form-label required">Name</label>
             <input type="text" class="form-control" name="name" placeholder="Name" value="{{ $participant->name }}" autocomplete="off">
