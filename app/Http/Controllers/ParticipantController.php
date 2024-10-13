@@ -77,7 +77,10 @@ class ParticipantController extends Controller
                   ->orWhere('name', 'like', '%' . $search . '%')
                   ->orWhere('email', 'like', '%' . $search . '%')
                   ->orWhere('phone_number', 'like', '%' . $search . '%')
-                  ->orWhere('kehadiran', 'like', '%' . $search . '%');
+                  ->orWhere('kehadiran', 'like', '%' . $search . '%')
+                  ->orWhereHas('instansi', function($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%');
+                    });
             });
         }
     
