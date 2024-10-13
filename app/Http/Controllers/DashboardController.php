@@ -11,6 +11,7 @@ class DashboardController extends Controller
     public function index(Request $request) {
         $participantsCount = Participant::where('status', 1)->count();
         $participantsVerifiedCount = Participant::where('verification', 1)->where('status', 1)->count();
+        $participantsUnverifiedCount = Participant::where('verification', 2)->where('status', 1)->count();
         $participantsVerifiedOfflineCountHadir = Participant::where('verification', 1)->where('attendance', 1)->where('kehadiran', 'onsite')->where('status', 1)->count();
         $participantsVerifiedOfflineCountNotHadir = Participant::where('verification', 1)->where('attendance', 2)->where('kehadiran', 'onsite')->where('status', 1)->count();
 
@@ -32,6 +33,6 @@ class DashboardController extends Controller
         
         $instansis = $query->with('participants')->latest()->paginate(10);
         
-        return view('backend.pages.dashboard', compact('participantsCount', 'participantsVerifiedCount', 'participantsVerifiedOfflineCountHadir', 'participantsVerifiedOfflineCountNotHadir', 'instansis', 'participantsOnlineCount', 'participantsOfflineCount'));
+        return view('backend.pages.dashboard', compact('participantsCount', 'participantsVerifiedCount', 'participantsUnverifiedCount', 'participantsVerifiedOfflineCountHadir', 'participantsVerifiedOfflineCountNotHadir', 'instansis', 'participantsOnlineCount', 'participantsOfflineCount'));
     }
 }
