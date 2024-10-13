@@ -359,8 +359,8 @@ class RegistrationPageController extends Controller
                     'instansi_id' => $request->instansi_id,
                     'jabatan' => $request->jabatan,
                     'kehadiran' => 'online',
-                    'kehadiran' => 'online',
                     'kendaraan' => $request->kendaraan,
+                    'attendance' => 1,
                     'verification' => 1,
                 ];
 
