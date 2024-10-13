@@ -19,175 +19,157 @@
         <div class="container-xl">
           <div class="row row-deck row-cards">
             <div class="col-sm-6 col-lg-3">
-              <div class="card">
+              <div class="card position-relative overflow-hidden p-2">
+                <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="200" style="right: 0; bottom:0">
                 <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <div class="subheader">Jumlah Registrasi Partisipan</div>
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="subheader"style="font-size: 11px">Jumlah Registrasi</div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2">{{ $participantsCount ?? "0" }}</div>
+                    <div class="h1 me-2" style="font-size: 40px">{{ $participantsCount ?? "0" }}</div>
                   </div>
                   <div id="chart-new-clients" class="chart-sm"></div>
                 </div>
               </div>
             </div>
             <div class="col-sm-6 col-lg-3">
-              <div class="card">
+              <div class="card position-relative overflow-hidden p-2">
+                  <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="200" style="right: 0; bottom:0">
                   <div class="card-body">
-                      <div class="d-flex align-items-center">
+                      <div class="d-flex align-items-center mb-3">
                           <div class="subheader">Partisipan Terverifikasi</div>
                       </div>
                       <div class="d-flex align-items-baseline">
-                          <div class="h1 mb-3 me-2">{{ $participantsVerifiedCount ?? "0" }}</div>
+                          <div class="h1 me-2" style="font-size: 40px">{{ $participantsVerifiedCount ?? "0" }}</div>
                       </div>
                   <div id="chart-new-clients" class="chart-sm"></div>
                 </div>
             </div>
           </div>
             <div class="col-sm-6 col-lg-3">
-              <div class="card">
+              <div class="card position-relative overflow-hidden p-2">
+                <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="200" style="right: 0; bottom:0">
                 <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <div class="subheader">Partisipan Hadir Offline</div>
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="subheader">HADIR (Offline)</div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2">{{ $participantsVerifiedOfflineCount ?? "0" }}</div>
+                    <div class="h1 me-2" style="font-size: 40px">{{ $participantsVerifiedOfflineCountHadir ?? "0" }}</div>
                   </div>
                   <div id="chart-new-clients" class="chart-sm"></div>
                 </div>
               </div>
             </div>
             <div class="col-sm-6 col-lg-3">
-              <div class="card">
+              <div class="card position-relative overflow-hidden p-2">
+                <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="200" style="right: 0; bottom:0">
                 <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <div class="subheader">Partisipan Belum Hadir Offline</div>
+                  <div class="d-flex align-items-center mb-3">
+                    <div class="subheader">BELUM HADIR (Offline)</div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2">{{ $participantsVerifiedOnlineCount ?? "0" }}</div>
+                    <div class="h1 me-2" style="font-size: 40px">{{ $participantsVerifiedOfflineCountNotHadir ?? "0" }}</div>
                   </div>
                   <div id="chart-new-clients" class="chart-sm"></div>
                 </div>
               </div>
             </div>
             <div class="col-sm-6 col-lg-6">
-              <div class="card">
+              <div class="card position-relative overflow-hidden p-2">
+                <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="390" style="right: 0; bottom:0">
                 <div class="card-body">
-                  <div class="d-flex align-items-center">
+                  <div class="d-flex align-items-center mb-3">
                     <div class="subheader">Jumlah Partisipan Offline</div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2">{{ $participantsVerifiedOfflineCount ?? "0" }}</div>
+                    <div class="h1 me-2" style="font-size: 40px">{{ $participantsOfflineCount ?? "0" }}</div>
                   </div>
                   <div id="chart-new-clients" class="chart-sm"></div>
                 </div>
               </div>
             </div>
             <div class="col-sm-6 col-lg-6">
-              <div class="card">
+              <div class="card position-relative overflow-hidden p-2">
+                <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="390" style="right: 0; bottom:0">
                 <div class="card-body">
-                  <div class="d-flex align-items-center">
+                  <div class="d-flex align-items-center mb-3">
                     <div class="subheader">Jumlah Partisipan Online</div>
                   </div>
                   <div class="d-flex align-items-baseline">
-                    <div class="h1 mb-3 me-2">{{ $participantsVerifiedOnlineCount ?? "0" }}</div>
+                    <div class="h1 me-2" style="font-size: 40px">{{ $participantsOnlineCount ?? "0" }}</div>
                   </div>
                   <div id="chart-new-clients" class="chart-sm"></div>
                 </div>
               </div>
             </div>
             <div class="col-12">
+              @if(Session::get('success'))
+                <div class="alert alert-important alert-success" role="alert">
+                  {{ Session::get('success') }}
+                </div>
+              @endif
+              @if(Session::get('error'))
+                <div class="alert alert-important alert-danger" role="alert">
+                  {{ Session::get('error') }}
+                </div>
+              @endif
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">History Kehadiran</h3>
-                </div>
-                <div class="card-body border-bottom py-3">
-                  <div class="d-flex">
-                    <div class="text-secondary">
-                      Show
-                      <div class="mx-2 d-inline-block">
-                        <input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
+                  <div class="ms-auto">
+                    <form action="{{ route('admin.dashboard') }}" class="">
+                      <div class="d-flex gap-1">
+                        <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search">
+                        <button type="submit" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <a href="{{ route('admin.dashboard') }}" class="btn btn-icon btn-dark-outline"><i class="fa-solid fa-times"></i></a>
                       </div>
-                      entries
-                    </div>
-                    <div class="ms-auto text-secondary">
-                      Search:
-                      <div class="ms-2 d-inline-block">
-                        <input type="text" class="form-control form-control-sm" aria-label="Search invoice">
-                      </div>
-                    </div>
+                    </form>
                   </div>
                 </div>
                 <div class="table-responsive">
-                  <table class="table card-table table-vcenter text-nowrap datatable">
+                  <table class="table table-vcenter card-table table-striped">
                     <thead>
                       <tr>
-                        <th class="w-1">
-                          <input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices">
-                        </th>
-                        <th class="w-1">No.
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 15l6 -6l6 6" /></svg>
-                        </th>
-                        <th>Nama Partisipan</th>
+                        <th>No.</th>
+                        <th>Code</th>
+                        <th>Name</th>
                         <th>Instansi</th>
-                        <th>Status</th>
-                        <th>Hadir</th>
-                        <th></th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        {{-- <th>Action</th> --}}
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach ( $participants as $participant )
-                      <tr>
-                        <td>
-                          <input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice">
-                        </td>
-                        <td><span class="text-secondary">{{ $participant->qrcode }}</span></td>
-                        <td> {{ $participant->name }} </td>
-                        <td>
-                          <span class="flag flag-xs flag-country-us me-2"></span>
-                          {{ $participant->instansi->name }}
-                        </td>
-                        <td>
-                          {{ $participant->attendance ? 'Hadir' : 'Tidak Hadir' }}
-                        </td>
-                        <td>
-                          {{ $participant->updated_at }}
-                        </td>
-                        <td class="text-end">
-                          <span class="dropdown">
-                            <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions</button>
-                            <div class="dropdown-menu dropdown-menu-end">
-                              <a class="dropdown-item" href="#">Action</a>
-                              <a class="dropdown-item" href="#">Another action</a>
-                            </div>
-                          </span>
-                        </td>
-                      </tr>
+                      @foreach ($attendanceParticipants as $attendanceParticipant)
+                        <tr>
+                          <td>{{ ($attendanceParticipants->currentPage() - 1) * $attendanceParticipants->perPage() + $loop->iteration }}</td>
+                          <td>{{ $attendanceParticipant->qrcode }}</td>
+                          <td>{{ $attendanceParticipant->name }}</td>
+                          <td>{{ $attendanceParticipant->instansi->name }}</td>
+                          <td>{{ $attendanceParticipant->email }}</td>
+                          <td>{{ $attendanceParticipant->phone_number }}</td>
+                          {{-- <td>
+                            @if($attendanceParticipant->verification == 1)
+                              <span class="badge bg-primary text-white">Verified</span>
+                            @else
+                              <span class="badge bg-danger text-white">Not Verified</span>
+                            @endif
+                          </td> --}}
+                          {{-- <td>
+                            <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $attendanceParticipant->id }}"><i class="fa-solid fa-pen"></i></button>
+                            <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $attendanceParticipant->id }}"><i class="fa-solid fa-trash"></i></button>
+                          </td> --}}
+                        </tr>
                       @endforeach
                     </tbody>
-                </table>
+                  </table>
                 </div>
                 <div class="card-footer d-flex align-items-center">
-                  <p class="m-0 text-secondary">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
                   <ul class="pagination m-0 ms-auto">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>
-                        prev
-                      </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        next <!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>
-                      </a>
-                    </li>
+                    @if($attendanceParticipants->hasPages())
+                      {{ $attendanceParticipants->appends(request()->query())->links('pagination::bootstrap-4') }}
+                    @else
+                      <li class="page-item">No more records</li>
+                    @endif
                   </ul>
                 </div>
               </div>
