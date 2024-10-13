@@ -190,7 +190,7 @@
 </div>
 
 <div class="container-fluid h-auto" style="margin-bottom: 70px; background-color: #4298C5">
-    <div class="row m-auto gap-lg-0 gap-2 " style="max-width: 1130px; padding-top: 88px; padding-bottom: 87px">
+    <div class="row m-auto gap-lg-0 gap-4 " style="max-width: 1130px; padding-top: 88px; padding-bottom: 87px">
         <div class="col-md-4 d-flex align-items-center">
             <div>
                 <h1 style="color:white; font-size: 40px; font-weight: 800;">Registrasi</h1>
@@ -218,11 +218,11 @@
                 <img src="{{ asset('AKSEN.png')}}" alt="BUMN Learning Festival" class="position-absolute d-flex justify-content-center z-1" style="bottom: 0; right: -5%; width: 290px;">
                 <div class="p-lg-5 p-3 z-2">
                     <img src="{{ asset('bumn-logo-final.png') }}" width="160px" alt="" class="pb-3">
-                    <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: #0566AE;">Pendaftaran Peserta
+                    <h5 class="card-title font-weight-lighter text-success m-0" style="font-size: 20px;">Pendaftaran Peserta
                     </h5>
-                    <h6 class="card-subtitle mb-3" style="font-size: 30px; font-weight: 800; color: #0566AE;">OFFLINE</h6>
-                    <a href="{{ route('registration.index') }}" class="btn"
-                        style="background-color: #0566AE; color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Klik Disini
+                    <h6 class="card-subtitle mb-3 text-success" style="font-size: 30px; font-weight: 800;">OFFLINE</h6>
+                    <a href="{{ route('registration.index') }}" class="btn bg-success"
+                        style="color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Klik Disini
                     </a>
                 </div>
             </div>
