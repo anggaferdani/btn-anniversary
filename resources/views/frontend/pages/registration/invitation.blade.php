@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Kartu QR Code | BTN Festival 2024</title>
 
-    <link rel="icon" type="image/x-icon" href="{{ asset('bumn-logo-final.png') }}">
+    <link rel="icon" type="image/x-icon" href="/btn.png">
     <link href="/tabler/dist/css/tabler.min.css?1692870487" rel="stylesheet"/>
     <link href="/tabler/dist/css/tabler-flags.min.css?1692870487" rel="stylesheet"/>
     <link href="/tabler/dist/css/tabler-payments.min.css?1692870487" rel="stylesheet"/>

@@ -63,6 +63,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('resend-email-verification/{token}', [AuthenticationController::class, 'resendEmailVerification'])->name('resend-email-verification');
         Route::get('resend-digital-invitation/{token}', [AuthenticationController::class, 'resendDigitalInvitation'])->name('resend-digital-invitation');
         Route::resource('attendance-participant', AttendanceParticipantController::class);
+        Route::get('download/id/{token}', [ParticipantController::class, 'downloadId'])->name('download.id');
+        Route::get('download/qr/{token}', [ParticipantController::class, 'downloadQr'])->name('download.qr');
         Route::get('history', [UserParticipantController::class, 'history'])->name('history');
         Route::get('leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
         Route::get('leaderboard/quiz', [QuizController::class, 'leaderboard'])->name('leaderboard.quiz');
