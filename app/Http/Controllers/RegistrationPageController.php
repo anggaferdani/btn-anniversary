@@ -53,12 +53,12 @@ class RegistrationPageController extends Controller
 
     public function verify($token)
     {
-        $participant = Participant::with('instansi')->where('token', $token)->first();
+        $participant = Participant::with('instansi')->where('token', $token)->where('status', 1)->first();
 
         if (!empty($participant->qrcode)) {
             return view('frontend.pages.registration.invitation', compact('participant'));
         } else {
-            $existingQRCodes = Participant::whereNotNull('qrcode')
+            $existingQRCodes = Participant::whereNotNull('qrcode')->where('status', 1)
                 ->pluck('qrcode')
                 ->toArray();
 
@@ -112,7 +112,7 @@ class RegistrationPageController extends Controller
     }
 
     public function sendImage(Request $request, $token) {
-        $participant = Participant::where('token', $token)->first();
+        $participant = Participant::where('token', $token)->where('status', 1)->first();
 
         if (!$participant) {
             return response()->json(['error' => 'Participant not found.'], 404);
@@ -178,7 +178,7 @@ class RegistrationPageController extends Controller
     }
 
     public function downloadImage($token) {
-        $participant = Participant::where('token', $token)->first();
+        $participant = Participant::where('token', $token)->where('status', 1)->first();
 
         if (!$participant || !$participant->image) {
             return response()->json(['error' => 'Image not found.'], 404);
@@ -210,6 +210,7 @@ class RegistrationPageController extends Controller
             $participantOnlineCheck = Participant::where('email', $request->email)
                 ->where('kehadiran', 'online')
                 ->where('verification', 1)
+                ->where('status', 1)
                 ->first(); 
     
             if ($participantOnlineCheck) {
@@ -219,12 +220,14 @@ class RegistrationPageController extends Controller
             // Cek apakah peserta sudah memiliki QR code (berarti sudah pernah daftar onsite)
             $participantCheck = Participant::where('email', $request->email)
                 ->whereNotNull('qrcode')
+                ->where('status', 1)
                 ->first();
     
             if ($participantCheck) {
                 // Kirim ulang email verifikasi jika sudah terdaftar
                 $participant = Participant::where('qrcode', $participantCheck->qrcode)
                     ->where('verification', 1)
+                    ->where('status', 1)
                     ->first();
     
                 try {
@@ -252,7 +255,7 @@ class RegistrationPageController extends Controller
     
             // Cek kuota peserta untuk instansi
             $instansi = Instansi::find($request->instansi_id);
-            $participantCount = Participant::where('instansi_id', $request->instansi_id)->count();
+            $participantCount = Participant::where('instansi_id', $request->instansi_id)->where('status', 1)->count();
     
             if ($participantCount > $instansi->max_participant) {
                 return redirect()->back()->with('error', 'Kuota pendaftaran On Site untuk instansi ini sudah penuh. Anda Tetap Bisa Mendaftar Secara Online.');
@@ -307,6 +310,7 @@ class RegistrationPageController extends Controller
             $participantOnsiteCheck = Participant::where('email', $request->email)
                 ->where('kehadiran', 'onsite')
                 ->where('verification', 1)
+                ->where('status', 1)
                 ->first(); 
     
             if ($participantOnsiteCheck) {
@@ -316,6 +320,7 @@ class RegistrationPageController extends Controller
             $participantCheckZoom = Participant::where('email', $request->email)
             ->where('kehadiran', 'online')
             ->where('verification', 1)
+            ->where('status', 1)
             ->first();
 
             if ($participantCheckZoom) {

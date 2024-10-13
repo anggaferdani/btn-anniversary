@@ -2,38 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Instansi;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     public function index(Request $request) {
-        $participantsCount = Participant::count();
-        $participantsVerifiedCount = Participant::where('verification', 1)->count();
-        $participantsVerifiedOfflineCountHadir = Participant::where('verification', 1)->where('attendance', 1)->where('kehadiran', 'onsite')->count();
-        $participantsVerifiedOfflineCountNotHadir = Participant::where('verification', 1)->where('attendance', 2)->where('kehadiran', 'onsite')->count();
+        $participantsCount = Participant::where('status', 1)->count();
+        $participantsVerifiedCount = Participant::where('verification', 1)->where('status', 1)->count();
+        $participantsVerifiedOfflineCountHadir = Participant::where('verification', 1)->where('attendance', 1)->where('kehadiran', 'onsite')->where('status', 1)->count();
+        $participantsVerifiedOfflineCountNotHadir = Participant::where('verification', 1)->where('attendance', 2)->where('kehadiran', 'onsite')->where('status', 1)->count();
 
-        $participantsOnlineCount = Participant::where('verification', 1)->where('kehadiran', 'online')->count();
-        $participantsOfflineCount = Participant::where('verification', 1)->where('kehadiran', 'offline')->count();
+        $participantsOnlineCount = Participant::where('verification', 1)->where('kehadiran', 'online')->where('status', 1)->count();
+        $participantsOfflineCount = Participant::where('verification', 1)->where('kehadiran', 'onsite')->where('status', 1)->count();
 
-
-        $participants = Participant::where('attendance', 1)->with('instansi')->orderBy('updated_at', 'desc')->get();
-
-        $query = Participant::where('status', 1)->where('attendance', 1);
+        $query = Instansi::where('status', 1);
 
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
-                $q->where('qrcode', 'like', '%' . $search . '%');
-                $q->where('name', 'like', '%' . $search . '%');
-                $q->where('email', 'like', '%' . $search . '%');
-                $q->where('phone_number', 'like', '%' . $search . '%');
+                $q->orWhere('name', 'like', '%' . $search . '%')
+                  ->orWhereHas('participants', function ($q) use ($search) {
+                      $q->where('name', 'like', '%' . $search . '%')
+                        ->where('kehadiran', 'like', '%' . $search . '%');
+                  });
             });
         }
-
-        $attendanceParticipants = $query->with('instansi')->latest()->paginate(10);
         
-        $participantsOfflineCount = Participant::where('verification', 1)->where('kehadiran', 'offline')->count();
-        return view('backend.pages.dashboard', compact('participants', 'participantsCount', 'participantsVerifiedCount', 'participantsVerifiedOfflineCountHadir', 'participantsVerifiedOfflineCountNotHadir', 'attendanceParticipants', 'participantsOnlineCount', 'participantsOfflineCount'));
+        $instansis = $query->with('participants')->latest()->paginate(10);
+        
+        return view('backend.pages.dashboard', compact('participantsCount', 'participantsVerifiedCount', 'participantsVerifiedOfflineCountHadir', 'participantsVerifiedOfflineCountNotHadir', 'instansis', 'participantsOnlineCount', 'participantsOfflineCount'));
     }
 }
