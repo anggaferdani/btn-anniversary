@@ -1,173 +1,180 @@
-@extends('frontend.templates.registration')
-@section('title', 'Registration | BTN Anniversary')
+@extends('backend.templates.scan')
+@section('title', 'REGISTRASI BUMN LEARNING FESTIVAL 2024')
 @section('content')
-<div class="container container-sm py-4" style="max-width: 1092px; margin: auto; position: relative;">
-    <!-- Logo kiri -->
-    
-
-    <!-- Konten Form Registrasi -->
-    <div class="text-center mb-4">
-        <div class="d-flex align-items-center justify-content-center mb-4">
-            <a href="{{ route('index') }}" class="navbar-brand navbar-brand-autodark me-3">
-                <img src="{{ asset('bumn-logo-final.png') }}" class="responsive-logo" alt="btn">
-            </a>
-        </div>
-        
-        <style>
-            .responsive-logo {
-                margin-top: 40%; /* Default margin for large screens */
-                width: 223px;
-            }
-        
-            @media (max-width: 768px) {
-                .responsive-logo {
-                    margin-top: 20%; /* Margin-top for small screens */
-                    width: 137px;id
-                }
-            }
-        </style>
-        
-        <div class="d-flex align-items-center justify-content-center mb-0" style="color: #003E64; font-weight: 1000;">
-            <h1 class="responsive-title" style="color: #003E64; font-weight: 800;">REGISTRASI ONLINE</h1>
-
-            <style>
-                .responsive-title {
-                    font-size: 40px; /* Default size for large screens */
-                }
-
-                @media (max-width: 768px) {
-                    .responsive-title {
-                        font-size: 25px; /* Size for small screens */
-                    }
-                }
-            </style>
-        </div>
+<div class="container">
+  <div class="col-md-6 m-auto mb-3">
+    <div class="text-center">
+      <img src="{{ asset('assets/partner.png') }}" class="" width="200">
     </div>
-    
-    <!-- Form Registrasi -->
-    <form class="border-0 bg-transparent border" action="{{ route('registration.store.online') }}" method="POST" id="registrationForm" autocomplete="off" novalidate>
-        @csrf
+    <div class="text-center mb-3">
+      <img src="{{ asset('logobaru.png') }}" class="" width="150">
+    </div>
+    <form action="{{ route('registration.store') }}" method="POST" class="">
+      @csrf
+      <div class="card">
         <div class="card-body">
-            {{-- Notifikasi Sukses dan Error --}}
-            @if(Session::get('success'))
-                <div class="alert alert-important alert-success" role="alert">
-                    {{ Session::get('success') }}
-                </div>
-            @endif
-            @if(Session::get('error'))
-                <div class="alert alert-important alert-danger" role="alert">
-                    {{ Session::get('error') }}
-                </div>
-            @endif
-
-            <!-- Nama dan Nomor Telepon -->
-            <div class="row mb-1">
-                <div class="col-md-6 col-12 mb-1">
-                    <label class="form-label required" style="color:#005CA4; font-size: 18px;">Nama</label>
-                    <input type="text" class="form-control" name="name" placeholder="Masukkan nama lengkap anda" value="{{ old('name') }}" required>
-                    @error('name')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-                <div class="col-md-6 col-12">
-                    <label class="form-label required" style="color:#005CA4; font-size: 18px;">Nomor telepon</label>
-                    <input type="number" class="form-control" name="phone_number" placeholder="08xxxxxxxxxx" value="{{ old('phone_number') }}" required />
-                    @error('phone_number')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+          <div class="mb-3">
+            <label class="form-label required">Name</label>
+            <input type="text" class="form-control" name="name" placeholder="Name" autocomplete="off">
+            @error('name')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Instansi</label>
+            <select id="instansiSelect" class="selectpicker border rounded" data-live-search="true" name="instansi_id" style="width: 100% !important;">
+              <option disabled selected value="">Pilih</option>
+              @foreach($instansis as $instansi)
+                  @php
+                      $currentCount = $instansi->participants->where('verification', 1)->count();
+                      $maxCount = $instansi->max_participant;
+                      $isOnline = $instansi->status_kehadiran == 'online';
+                  @endphp
+                  <option value="{{ $instansi->id }}" data-status-kehadiran="{{ $instansi->status_kehadiran }}" 
+                      @if(!$isOnline && $currentCount >= $maxCount) 
+                          disabled 
+                      @endif
+                  >
+                      {{ $instansi->name }} 
+                      @if($isOnline)
+                          (Online)
+                      @else
+                          ({{ $currentCount }}/{{ $maxCount }})
+                      @endif
+                  </option>
+              @endforeach
+            </select>
+            @error('instansi_id')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Jabatan</label>
+            <input type="text" class="form-control" name="jabatan" placeholder="Jabatan" autocomplete="off">
+            @error('jabatan')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Email</label>
+            <input type="email" class="form-control" name="email" placeholder="Email" autocomplete="off">
+            @error('email')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Phone Number</label>
+            <input type="number" class="form-control" name="phone_number" placeholder="Phone Number" autocomplete="off">
+            @error('phone_number')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <div id="kehadiranDiv" style="display:none;" class="mb-3">
+            <label class="form-label required">Pilih metode kehadiran?</label>
+            <div class="form-selectgroup-boxes row g-1 mb-3">
+              <div class="col-lg-6">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="kehadiran" value="onsite" class="form-selectgroup-input" checked="">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3 border border-3 border-success">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1 text-success fw-bold">Offline</span>
+                      <span class="d-block text-secondary">Mengikuti kegiatan secara offline ditempat</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+              <div class="col-lg-6">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="kehadiran" value="online" class="form-selectgroup-input">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3 border border-3 border-primary">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1 text-primary fw-bold">Online</span>
+                      <span class="d-block text-secondary">Mengikuti kegiatan secara daring melalui zoom</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
             </div>
-
-            <!-- Instansi dan Jabatan -->
-            <div class="row mb-1">
-                <div class="col-md-6 col-12 mb-1">
-                    <label class="form-label required" style="color:#005CA4; font-size: 18px;">Instansi</label>
-                    <select class="form-control mb-2" name="instansi_id" required id="instansi_id" onchange="updateButtonVisibility()">
-                        <option value="">Pilih Instansi</option>
-                        @foreach ($instansis as $instansi)
-                            <option value="{{ $instansi->id }}" 
-                                    data-max="{{ $instansi->max_participant }}" 
-                                    data-current-participants="{{ $instansi->participants_count }}">
-                                {{ $instansi->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('instansi_id')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-
-                    <!-- Pesan jika kuota penuh -->
-                    <div id="quota-message" class="text-danger" style="display:none;">
-                        Kuota pendaftaran on-site Instansi Anda telah maksimal. Anda dapat melakukan pendaftaran Online
-                    </div>
-                </div>
-                <div class="col-md-6 col-12">
-                    <label class="form-label" style="color:#005CA4; font-size: 18px;">Jabatan <small class="text-muted">(optional)</small>:</label>
-                    <input type="text" class="form-control" name="jabatan" placeholder="Nama Jabatan" value="{{ old('jabatan') }}">
-                    @error('jabatan')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <!-- Email -->
-            <div class="mb-3">
-                <label class="form-label required" style="color:#005CA4; font-size: 18px;">Email address</label>
-                <input type="email" class="form-control" name="email" placeholder="Masukkan alamat email valid anda" value="{{ old('email') }}" required>
-                @error('email')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <!-- Tombol Submit -->
-            <div class="form-footer">
-                <button type="button" id="submit-button" class="btn w-100 rounded-full text-uppercase mb-2" style="background-color: #003E64; color: white;" onclick="submitForm('registration.store')">Submit</button>
-            </div>
+          </div>
+          <div id="kendaraanDiv" style="display:none;" class="mb-3">
+            <label class="form-label">Apakah membawa kendaraan pribadi?</label>
+            <select class="form-select" name="kendaraan">
+              <option disabled selected value="">Pilih</option>
+              <option value="mobil">Mobil</option>
+              <option value="motor">Motor</option>
+            </select>
+            @error('kendaraan')<div class="text-danger">{{ $message }}</div>@enderror
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Submit</button>
         </div>
+      </div>
     </form>
+  </div>
 </div>
-
-<script>
-    function updateButtonVisibility() {
-        const select = document.getElementById('instansi_id');
-        const selectedOption = select.options[select.selectedIndex];
-        const maxParticipants = parseInt(selectedOption.getAttribute('data-max'));
-        const currentParticipants = parseInt(selectedOption.getAttribute('data-current-participants') || '0');
-
-        const submitButton = document.getElementById('submit-button');
-        const quotaMessage = document.getElementById('quota-message');
-
-        if (currentParticipants >= maxParticipants) {
-            submitButton.style.display = 'none';
-            quotaMessage.style.display = 'block'; // Tampilkan pesan kuota penuh
-        } else {
-            submitButton.style.display = 'block';
-            quotaMessage.style.display = 'none'; // Sembunyikan pesan kuota penuh
-        }
-    }
-
-    // Call the function on page load to set the initial visibility
-    window.onload = updateButtonVisibility;
-
-</script>
-
-<style>
-    .form-control {
-        border-radius: 4px; /* Rounded corners */
-        border: 1px solid #ccc; /* Light border */
-        padding: 12px; /* Increased padding */
-        font-size: 16px; /* Increased font size */
-    }
-
-    .btn {
-        padding: 12px; /* Increase button padding */
-        font-size: 16px; /* Match font size */
-        border-radius: 4px; /* Match rounded corners */
-    }
-
-    .alert {
-        margin-bottom: 20px; /* Spacing for alerts */
-    }
-</style>
-
 @endsection
+@push('scripts')
+<script>
+  $(document).ready(function() {
+    @if(session('success'))
+      Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: "{{ session('success') }}",
+          confirmButtonText: 'OK',
+          showCancelButton: false,
+          allowOutsideClick: false
+      })
+    @endif
+
+    @if(session('error'))
+      Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: "{{ session('error') }}",
+          timer: 2000,
+          showConfirmButton: false
+      });
+    @endif
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    $('#instansiSelect').on('change', function() {
+        var statusKehadiran = $(this).find(':selected').data('status-kehadiran');
+
+        $('#kehadiranInput').val('');
+        $('input[name="kehadiran"]').prop('checked', false);
+        $('select[name="kendaraan"]').val('');
+        
+        $('#kehadiranInput').val(statusKehadiran);
+        
+        if (statusKehadiran === 'hybrid') {
+            $('#kehadiranDiv').show();
+            $('#kendaraanDiv').hide(); // hide by default
+            $('input[name="kehadiran"]').attr('required', true);
+        } else if (statusKehadiran === 'online') {
+            $('#kehadiranDiv').hide();
+            $('#kendaraanDiv').hide();
+            $('input[name="kehadiran"][value="online"]').prop('checked', true);
+            $('input[name="kehadiran"]').removeAttr('required');
+        } else {
+            $('#kehadiranDiv').hide();
+            $('#kendaraanDiv').hide();
+            $('input[name="kehadiran"]').removeAttr('required');
+        }
+    });
+
+    // Add event listener for the 'kehadiran' radio buttons
+    document.querySelectorAll('input[name="kehadiran"]').forEach(function (element) {
+        element.addEventListener('change', function () {
+            const kehadiran = this.value;
+
+            if (kehadiran === 'onsite') {
+                $('#kendaraanDiv').show(); // Show kendaraanDiv when onsite is selected
+                $('select[name="kendaraan"]').attr('required', true);
+            } else {
+                $('#kendaraanDiv').hide(); // Hide kendaraanDiv for other options
+                $('select[name="kendaraan"]').removeAttr('required');
+                $('select[name="kendaraan"]').val(''); // Clear selection
+            }
+        });
+    });
+});
+</script>
+@endpush
