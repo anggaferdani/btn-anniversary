@@ -14,7 +14,7 @@ class EventController extends Controller
 
     public function ajaxLeaderboard(Request $request)
     {
-        $participants = Participant::orderBy('point', 'desc')->take(50)->get();
+        $participants = Participant::where('verification', 1)->where('attendance', 1)->where('status', 1)->orderBy('point', 'desc')->take(50)->get();
 
         return response()->json($participants);
     }

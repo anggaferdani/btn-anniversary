@@ -61,7 +61,7 @@
           </div>
           <div id="kehadiranDiv" style="display:none;" class="mb-3">
             <label class="form-label required">Pilih metode kehadiran?</label>
-            <div class="form-selectgroup-boxes row g-1 mb-3">
+            <div class="form-selectgroup-boxes row g-2 mb-3">
               <div class="col-lg-6">
                 <label class="form-selectgroup-item">
                   <input type="radio" name="kehadiran" value="onsite" class="form-selectgroup-input" checked="">
