@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
                 'jawaban_b' => 'Bandung',
                 'jawaban_c' => 'Surabaya',
                 'jawaban_d' => 'Medan',
-                'jawaban' => 'a',
+                'jawaban' => 'Jakarta',
             ],
             [
                 'soal' => 'Siapa presiden pertama Indonesia?',
@@ -65,7 +65,7 @@ class DatabaseSeeder extends Seeder
                 'jawaban_b' => 'Soeharto',
                 'jawaban_c' => 'BJ Habibie',
                 'jawaban_d' => 'Jokowi',
-                'jawaban' => 'a',
+                'jawaban' => 'Soekarno',
             ],
             [
                 'soal' => 'Apa nama planet terdekat dengan Bumi?',
@@ -73,7 +73,7 @@ class DatabaseSeeder extends Seeder
                 'jawaban_b' => 'Venus',
                 'jawaban_c' => 'Merkurius',
                 'jawaban_d' => 'Jupiter',
-                'jawaban' => 'c',
+                'jawaban' => 'Merkurius',
             ],
             [
                 'soal' => 'Apa lambang kimia untuk air?',
@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
                 'jawaban_b' => 'H2O',
                 'jawaban_c' => 'CO2',
                 'jawaban_d' => 'NaCl',
-                'jawaban' => 'b',
+                'jawaban' => 'H2O',
             ],
             [
                 'soal' => 'Siapa penulis novel "Laskar Pelangi"?',
@@ -89,7 +89,7 @@ class DatabaseSeeder extends Seeder
                 'jawaban_b' => 'Habiburrahman El Shirazy',
                 'jawaban_c' => 'Tere Liye',
                 'jawaban_d' => 'Pramoedya Ananta Toer',
-                'jawaban' => 'a',
+                'jawaban' => 'Andrea Hirata',
             ],
             [
                 'soal' => 'Apa nama gunung tertinggi di Indonesia?',
@@ -97,7 +97,7 @@ class DatabaseSeeder extends Seeder
                 'jawaban_b' => 'Gunung Kerinci',
                 'jawaban_c' => 'Gunung Rinjani',
                 'jawaban_d' => 'Gunung Jayawijaya',
-                'jawaban' => 'd',
+                'jawaban' => 'Gunung Jayawijaya',
             ],
             [
                 'soal' => 'Apa ibu kota Jepang?',
@@ -105,15 +105,15 @@ class DatabaseSeeder extends Seeder
                 'jawaban_b' => 'Tokyo',
                 'jawaban_c' => 'Beijing',
                 'jawaban_d' => 'Bangkok',
-                'jawaban' => 'b',
+                'jawaban' => 'Tokyo',
             ],
             [
                 'soal' => 'Apa nama hewan terbesar di dunia?',
                 'jawaban_a' => 'Gajah',
-                'jawaban_b' => 'Biru Paus',
+                'jawaban_b' => 'Paus Biru',
                 'jawaban_c' => 'Jerapah',
                 'jawaban_d' => 'Singa',
-                'jawaban' => 'b',
+                'jawaban' => 'Paus Biru',
             ],
             [
                 'soal' => 'Siapa penemu lampu pijar?',
@@ -121,7 +121,7 @@ class DatabaseSeeder extends Seeder
                 'jawaban_b' => 'Thomas Edison',
                 'jawaban_c' => 'Alexander Graham Bell',
                 'jawaban_d' => 'Albert Einstein',
-                'jawaban' => 'b',
+                'jawaban' => 'Thomas Edison',
             ],
             [
                 'soal' => 'Apa nama mata uang Jepang?',
@@ -129,7 +129,7 @@ class DatabaseSeeder extends Seeder
                 'jawaban_b' => 'Won',
                 'jawaban_c' => 'Yen',
                 'jawaban_d' => 'Baht',
-                'jawaban' => 'c',
+                'jawaban' => 'Yen',
             ],
         ];
 
