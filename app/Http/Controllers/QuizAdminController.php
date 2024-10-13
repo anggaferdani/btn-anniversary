@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class QuizAdminController extends Controller
 {
     public function index(Request $request) {
-        $query = Quiz::where('role', 1)->where('status', 1);
+        $query = Quiz::where('status', 1);
 
         if ($request->has('search')) {
             $search = $request->input('search');

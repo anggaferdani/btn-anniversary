@@ -60,6 +60,7 @@
                 <th>QRCode</th>
                 <th>Token</th>
                 <th>Name</th>
+                <th>Instansi</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Kehadiran</th>
@@ -74,6 +75,7 @@
                   <td>{{ $participant->qrcode }}</td>
                   <td>{{ $participant->token }}</td>
                   <td>{{ $participant->name }}</td>
+                  <td>{{ $participant->instansi->name }}</td>
                   <td>{{ $participant->email }}</td>
                   <td>{{ $participant->phone_number }}</td>
                   <td>

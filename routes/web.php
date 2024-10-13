@@ -28,9 +28,11 @@ use App\Http\Controllers\AttendanceParticipantController;
 |
 */
 
-Route::get('/join', [QuizController::class, 'join'])->name('join');
+Route::get('/quiz', [QuizController::class, 'join'])->name('join');
 Route::post('/join/post', [QuizController::class, 'joinPost'])->name('join.post');
-Route::get('/quiz', [QuizController::class, 'quiz'])->name('quiz');
+Route::get('/quiz/{token}', [QuizController::class, 'quiz'])->name('quiz');
+Route::post('/quiz/{token}/post', [QuizController::class, 'quizPost'])->name('quiz.post');
+Route::get('/result/{token}', [QuizController::class, 'result'])->name('result');
 
 Route::get('/online-event', [EventController::class, 'onlineEvent'])->name('online-event');
 

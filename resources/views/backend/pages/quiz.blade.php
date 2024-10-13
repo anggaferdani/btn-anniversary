@@ -127,13 +127,13 @@
             </div>
           </div>
           <div class="mb-3">
-            <label class="form-label">Jawaban</label>
-            <select class="form-select required" name="jawaban">
+            <label class="form-label required">Jawaban</label>
+            <select class="form-select" name="jawaban">
               <option disabled selected value="">Pilih</option>
-              <option value="a">A</option>
-              <option value="b">B</option>
-              <option value="c">C</option>
-              <option value="d">D</option>
+              <option value="{{ $quiz->jawaban_a }}">A</option>
+              <option value="{{ $quiz->jawaban_b }}">B</option>
+              <option value="{{ $quiz->jawaban_c }}">C</option>
+              <option value="{{ $quiz->jawaban_d }}">D</option>
             </select>
             @error('jawaban')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
@@ -202,10 +202,10 @@
             <label class="form-label required">Jawaban</label>
             <select class="form-select" name="jawaban">
               <option disabled selected value="">Pilih</option>
-              <option value="a" @if($quiz->jawaban == 'a') @selected(true) @endif>A</option>
-              <option value="b" @if($quiz->jawaban == 'b') @selected(true) @endif>B</option>
-              <option value="c" @if($quiz->jawaban == 'c') @selected(true) @endif>C</option>
-              <option value="d" @if($quiz->jawaban == 'd') @selected(true) @endif>D</option>
+              <option value="{{ $quiz->jawaban_a }}" @if($quiz->jawaban == $quiz->jawaban_a) @selected(true) @endif>A</option>
+              <option value="{{ $quiz->jawaban_b }}" @if($quiz->jawaban == $quiz->jawaban_b) @selected(true) @endif>B</option>
+              <option value="{{ $quiz->jawaban_c }}" @if($quiz->jawaban == $quiz->jawaban_c) @selected(true) @endif>C</option>
+              <option value="{{ $quiz->jawaban_d }}" @if($quiz->jawaban == $quiz->jawaban_d) @selected(true) @endif>D</option>
             </select>
             @error('jawaban')<div class="text-danger">{{ $message }}</div>@enderror
           </div>
@@ -222,13 +222,13 @@
 </div>
 @endforeach
 
-@foreach ($quizzes as $quiz)
-<div class="modal modal-blur fade" id="delete{{ $quiz->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+@foreach ($quizzes as $admin)
+<div class="modal modal-blur fade" id="delete{{ $admin->id }}" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
     <div class="modal-content">
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-status bg-danger"></div>
-      <form action="{{ route('admin.quiz.destroy', $quiz->id) }}" method="POST">
+      <form action="{{ route('admin.admin.destroy', $admin->id) }}" method="POST">
         @csrf
         @method('Delete')
         <div class="modal-body text-center py-4">
