@@ -237,6 +237,7 @@
                     for (let i = pool.length - 1; i >= 0; i--) {
                         const box = document.createElement("div");
                         box.classList.add("box");
+                        box.classList.add("fw-bold");
                         box.style.width = door.clientWidth + "px";
                         box.style.height = door.clientHeight + "px";
                         box.textContent = pool[i];
