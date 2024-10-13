@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Zoom;
 use App\Models\Instansi;
 use App\Models\Participant;
+use App\Models\Setting;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 
@@ -49,6 +50,17 @@ class DatabaseSeeder extends Seeder
         ];
 
         Zoom::insert($zooms);
+
+        $settings = [
+            [
+                'jam_mulai' => '17:50:00',
+                'jam_selesai' => '17:53:00',
+                'max_waktu_pengerjaan' => '60',
+                'pin' => '123456',
+            ],
+        ];
+
+        Setting::insert($settings);
 
         $quizzes = [
             [

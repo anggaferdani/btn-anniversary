@@ -83,6 +83,24 @@ class ParticipantController extends Controller
                     });
             });
         }
+
+        if ($request->has('instansi') && !empty($request->input('instansi'))) {
+            $instansi = $request->input('instansi');
+            $query->whereHas('instansi', function ($q) use ($instansi) {
+                $q->where('id', $instansi);
+            });
+        }
+        
+
+        if ($request->has('kehadiran') && !empty($request->input('kehadiran'))) {
+            $kehadiran = $request->input('kehadiran');
+            $query->where('kehadiran', $kehadiran);
+        }
+    
+        if ($request->has('status') && !empty($request->input('status'))) {
+            $status = $request->input('status');
+            $query->where('verification', $status);
+        }
     
         $participants = $query->latest()->paginate(10);
     
@@ -197,16 +215,24 @@ class ParticipantController extends Controller
     public function destroy($id) {
         try {
             $participant = Participant::find($id);
-            $userPatricipant = UserParticipant::where('participant_id', $participant->id)->first();
-
+            if (!$participant) {
+                return back()->with('error', 'Participant not found.');
+            }
+    
+            $userParticipants = UserParticipant::where('participant_id', $participant->id)->get(); 
+    
+            if ($userParticipants->isNotEmpty()) {
+                foreach ($userParticipants as $userParticipant) {
+                    $userParticipant->update([
+                        'status' => 2,
+                    ]);
+                }
+            }
+    
             $participant->update([
                 'status' => 2,
             ]);
-
-            $userPatricipant->update([
-                'status' => 2,
-            ]);
-
+    
             return redirect()->back()->with('success', 'Success.');
         } catch (\Throwable $th) {
             return back()->with('error', $th->getMessage());
