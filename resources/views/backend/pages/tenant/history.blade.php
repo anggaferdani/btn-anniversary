@@ -79,7 +79,7 @@
                   <td>{{ $userParticipant->participant->name }}</td>
                   <td>{{ $userParticipant->participant->email }}</td>
                   <td>{{ $userParticipant->participant->phone_number }}</td>
-                  <td>+1</td>
+                  <td>1</td>
                   <td>{{ $userParticipant->participant->point }}</td>
                   <td>{{ $userParticipant->created_at }}</td>
                   {{-- <td>
