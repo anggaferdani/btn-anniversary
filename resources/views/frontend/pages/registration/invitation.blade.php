@@ -137,7 +137,7 @@
             });
             const image = canvas.toDataURL('image/png');
             const a = document.createElement('a');
-            a.setAttribute('download', '{{ $participant->token }}.png');
+            a.setAttribute('download', '{{ $participant->qrcode }}.png');
             a.setAttribute('href', image);
             a.click();
         }
