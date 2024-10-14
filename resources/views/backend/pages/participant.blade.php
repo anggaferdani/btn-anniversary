@@ -121,7 +121,7 @@
                           <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
                         @else
                           @if($participant->kehadiran == 'onsite')
-                            <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i> <span class="small">Download ID</span></a>
+                            {{-- <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i> <span class="small">Download ID</span></a> --}}
                           @endif
                         @endif
                         {{-- <form action="{{ route('registration.sendImage', $participant->token) }}" method="POST" class="" enctype="multipart/form-data">
