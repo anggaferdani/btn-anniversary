@@ -114,6 +114,7 @@
                   <td>
                     <div class="d-flex gap-1">
                       @if(auth()->user()->role == 1)
+                        <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-danger"><span class="small">Verify</span></a>
                         @if($participant->verification == 2)
                           <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
                         @else
@@ -125,7 +126,7 @@
                           <button type="submit" class="btn btn-success"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Invitation</span></button>
                         </form> --}}
                         <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $participant->id }}"><i class="fa-solid fa-pen"></i></button>
-                        {{-- <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $participant->id }}"><i class="fa-solid fa-trash"></i></button> --}}
+                        <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $participant->id }}"><i class="fa-solid fa-trash"></i></button>
                       @elseif(auth()->user()->role == 2)
                         @if($participant->verification == 2)
                           <a href="{{ route('receptionist.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
