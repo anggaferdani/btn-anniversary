@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Instansi;
 use App\Models\Participant;
 use Illuminate\Http\Request;
+use App\Exports\InstansiExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Response;
+
 
 class DashboardController extends Controller
 {
     public function index(Request $request) {
         $participantsCount = Participant::where('status', 1)->count();
+        $participantsCountOfflineRegister = Participant::where('status', 1)->where('kehadiran', 'onsite')->count();
+        $participantsCountOnlineRegister = Participant::where('status', 1)->where('kehadiran', 'online')->count();
         $participantsVerifiedCount = Participant::where('verification', 1)->where('status', 1)->count();
         $participantsUnverifiedCount = Participant::where('verification', 2)->where('status', 1)->count();
         $participantsVerifiedOfflineCountHadir = Participant::where('verification', 1)->where('attendance', 1)->where('kehadiran', 'onsite')->where('status', 1)->count();
@@ -32,7 +38,12 @@ class DashboardController extends Controller
         }
         
         $instansis = $query->with('participants')->latest()->paginate(10);
-        
-        return view('backend.pages.dashboard', compact('participantsCount', 'participantsVerifiedCount', 'participantsUnverifiedCount', 'participantsVerifiedOfflineCountHadir', 'participantsVerifiedOfflineCountNotHadir', 'instansis', 'participantsOnlineCount', 'participantsOfflineCount'));
+
+        return view('backend.pages.dashboard', compact('participantsCountOnlineRegister', 'participantsCountOfflineRegister' ,'participantsCount', 'participantsVerifiedCount', 'participantsUnverifiedCount', 'participantsVerifiedOfflineCountHadir', 'participantsVerifiedOfflineCountNotHadir', 'instansis', 'participantsOnlineCount', 'participantsOfflineCount'));
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new InstansiExport, 'data_kehadiran_instansi.xlsx');
     }
 }

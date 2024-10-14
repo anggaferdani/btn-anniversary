@@ -31,10 +31,40 @@
                                 </div>
                             </div>
                         </div>
+                      </div>
+
+                    <div class="col-sm-6 col-lg-4">
+                      <div class="card position-relative overflow-hidden p-2">
+                          <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="200" style="right: 0; bottom:0; opacity: 15%;">
+                          <img src="{{ asset('assets/backend/dashboard/edit.png') }}" alt="" class="position-absolute" width="60" style="right: 10%; bottom:25%;">
+                          <div class="card-body">
+                              <div class="d-flex align-items-center mb-3">
+                                  <div class="subheader" style="font-size: 11px">Jumlah Registrasi Offline</div>
+                              </div>
+                              <div class="d-flex align-items-baseline">
+                                  <div class="h1 me-2" style="font-size: 40px">{{ $participantsCountOfflineRegister ?? "0" }}</div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6 col-lg-4">
+                      <div class="card position-relative overflow-hidden p-2">
+                          <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="200" style="right: 0; bottom:0; opacity: 15%;">
+                          <img src="{{ asset('assets/backend/dashboard/edit.png') }}" alt="" class="position-absolute" width="60" style="right: 10%; bottom:25%;">
+                          <div class="card-body">
+                              <div class="d-flex align-items-center mb-3">
+                                  <div class="subheader" style="font-size: 11px">Jumlah Registrasi Online</div>
+                              </div>
+                              <div class="d-flex align-items-baseline">
+                                  <div class="h1 me-2" style="font-size: 40px">{{ $participantsCountOnlineRegister ?? "0" }}</div>
+                              </div>
+                          </div>
+                      </div>
                     </div>
                 
                     <!-- Partisipan Terverifikasi -->
-                    <div class="col-sm-6 col-lg-4">
+                    <div class="col-sm-6 col-lg-6">
                         <div class="card position-relative overflow-hidden p-2">
                             <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="200" style="right: 0; bottom:0; opacity: 15%;">
                             <img src="{{ asset('assets/backend/dashboard/verify.png') }}" alt="" class="position-absolute" width="60" style="right: 10%; bottom:25%;">
@@ -50,10 +80,10 @@
                     </div>
                 
                     <!-- Partisipan Belum Terverifikasi -->
-                    <div class="col-sm-6 col-lg-4">
+                    <div class="col-sm-6 col-lg-6">
                         <div class="card position-relative overflow-hidden p-2">
                             <img src="{{ asset('AKSEN.png') }}" alt="" class="position-absolute" width="200" style="right: 0; bottom:0; opacity: 15%;">
-                            <img src="{{ asset('assets/backend/dashboard/unverified.png') }}" alt="" class="position-absolute" width="60" style="right: 10%; bottom:25%;">
+                            <img src="{{ asset('assets/backend/dashboard/document.png') }}" alt="" class="position-absolute" width="60" style="right: 10%; bottom:25%;">
                             <div class="card-body">
                                 <div class="d-flex align-items-center mb-3">
                                     <div class="subheader">Partisipan Belum Terverifikasi</div>
@@ -143,7 +173,8 @@
                             <div class="card-header">
                                 <div class="ms-auto">
                                     <form action="{{ route('admin.dashboard') }}" class="">
-                                        <div class="d-flex gap-1">
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('admin.exportExcel') }}" class="py-1 px-5 btn btn-icon btn-success">Export</a>
                                             <input type="text" class="form-control" name="search"
                                                 value="{{ request('search') }}" placeholder="Search Nama Instansi">
                                             <button type="submit" class="btn btn-icon btn-dark-outline"><i
@@ -162,6 +193,8 @@
                                             <th>No.</th>
                                             <th>Nama Instansi</th>
                                             <th>Registrasi</th>
+                                            <th>Registrasi Offline</th>
+                                            <th>Registrasi Online</th>
                                             <th>Terverifikasi</th>
                                             <th>Belum Terverifikasi</th>
                                             <th>Partisipan Online</th>
@@ -198,7 +231,9 @@
                                             <td>{{ $instansi->name }}</td>
 
                                             <!-- Menampilkan jumlah peserta terkait instansi -->
-                                            <td>{{ $instansi->participants->count() }}</td>
+                                            <td>{{ $instansi->participants->where('status', 1)->count() }}</td>
+                                            <td>{{ $instansi->participants->where('kehadiran', 'onsite')->where('status', 1)->count() }}</td>
+                                            <td>{{ $instansi->participants->where('kehadiran', 'online')->where('status', 1)->count() }}</td>
                                             <td>{{ $instansi->participants->where('verification', 1)->where('status', 1)->count() }}
                                             </td>
                                             <td>{{ $instansi->participants->where('verification', 2)->where('status', 1)->count() }}

@@ -49,6 +49,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
     Route::middleware(['auth:web', 'disableBackButton', 'admin'])->group(function(){
         Route::get('ajax/leaderboard', [EventController::class, 'ajaxLeaderboard'])->name('ajax.leaderboard');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('/export-excel', [DashboardController::class, 'exportExcel'])->name('exportExcel');
         Route::resource('instansi', InstansiController::class);
         Route::resource('zoom', ZoomContoller::class);
         Route::resource('quiz', QuizAdminController::class);
