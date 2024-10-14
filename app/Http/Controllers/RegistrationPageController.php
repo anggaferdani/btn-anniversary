@@ -113,7 +113,7 @@ class RegistrationPageController extends Controller
 
     public function sendImage(Request $request, $token) {
         $participant = Participant::where('token', $token)->where('status', 1)->first();
-
+    
         if (!$participant) {
             return response()->json(['error' => 'Participant not found.'], 404);
         }
@@ -173,7 +173,6 @@ class RegistrationPageController extends Controller
             session()->flash('error', 'Invalid image data.');
         }
 
-        // Redirect to the invitation view
         return view('frontend.pages.registration.invitation', compact('participant'));
     }
 
