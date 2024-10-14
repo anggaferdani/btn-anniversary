@@ -129,7 +129,16 @@
           icon: 'error',
           title: 'Error',
           text: "{{ session('error') }}",
-          timer: 7000,
+          timer: 2000,
+          showConfirmButton: false
+      });
+    @endif
+
+    @if(session('warning'))
+      Swal.fire({
+          icon: 'warning',
+          title: 'Pemberitahuan',
+          text: "{{ session('warning') }}",
           confirmButtonText: 'OK',
           showCancelButton: false,
           allowOutsideClick: false
