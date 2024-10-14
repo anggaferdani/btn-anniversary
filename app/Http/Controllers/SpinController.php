@@ -25,4 +25,10 @@ class SpinController extends Controller
 //        dd();
         return view('spin.index', compact("result"));
     }
+
+    public function byKursi()
+    {
+        return view('spin.kursi');
+
+    }
 }

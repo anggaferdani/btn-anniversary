@@ -33,6 +33,7 @@ Route::get('/quiz', [QuizController::class, 'join'])->name('join');
 Route::post('/join/post', [QuizController::class, 'joinPost'])->name('join.post');
 Route::get('/quiz/{token}', [QuizController::class, 'quiz'])->name('quiz');
 Route::get('/spin', [SpinController::class, 'index'])->name('admin.spin.index');
+Route::get('/spin/kursi', [SpinController::class, 'byKursi'])->name('admin.spin.kursi');
 //admin.spin.index
 Route::post('/quiz/{token}/post', [QuizController::class, 'quizPost'])->name('quiz.post');
 Route::get('/result/{token}', [QuizController::class, 'result'])->name('result');
