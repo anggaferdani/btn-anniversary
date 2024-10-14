@@ -54,82 +54,83 @@ class RegistrationPageController extends Controller
     public function verify($token)
     {
         $participant = Participant::with('instansi')->where('token', $token)->where('status', 1)->first();
-        $instansi = Instansi::find($participant->instansi_id);
-
-        $participantCount = Participant::where('instansi_id', $instansi->id)
-            ->where('verification', 1)
-            ->where('kehadiran', 'onsite')
-            ->where('status', 1)->count();
-
-        if ($participantCount >= $instansi->max_participant) {
-            $participant->update([
-                'kehadiran' => 'online',
-                'verification' => 1,
-            ]);
-
-            $participant = Participant::where('email', $participant->email)->first();
-            $url = route('online-event');
-
-            $mail = [
-                'to' => $participant->email,
-                'name' => $participant->name,
-                'email' => 'bumnlearningfestival@gmail.com',
-                'from' => 'BUMN Learning Festival',
-                'subject' => 'Link Zoom | BUMN LEARNING FESTIVAL 2024',
-                'url' => $url,
-            ];
-
-            Mail::send('emails.linkzoom', $mail, function($message) use ($mail) {
-                $message->to($mail['to'])
-                    ->from($mail['email'], $mail['from'])
-                    ->subject($mail['subject']);
-            });
-
-            return redirect()->route('registration.index.online')->with('warning', 'Mohon maaf, Kuota untuk pendaftaran Offline yang sudah melakukan verifikasi untuk instansi ini sudah penuh. Anda tetap bisa mengikuti kegiatan ini secara online. Silakan check email anda untuk mendapatkan link kegiatan online.');
-        }
 
         if (!empty($participant->qrcode)) {
             return view('frontend.pages.registration.invitation', compact('participant'));
         } else {
-            $existingQRCodes = Participant::whereNotNull('qrcode')->where('status', 1)
-                ->pluck('qrcode')
-                ->toArray();
+            $instansi = Instansi::find($participant->instansi_id);
 
-            $qrcode = null;
+            $participantCount = Participant::where('instansi_id', $instansi->id)
+                ->where('verification', 1)
+                ->where('kehadiran', 'onsite')
+                ->where('status', 1)->count();
 
-            $qrcode = $this->findAvailableQRCode($existingQRCodes, 'B', 1, 100);
-            if (!$qrcode) {
-                $qrcode = $this->findAvailableQRCode($existingQRCodes, 'U', 1, 100);
+            if ($participantCount > $instansi->max_participant) {
+                $participant->update([
+                    'kehadiran' => 'online',
+                    'verification' => 1,
+                ]);
+
+                $participant = Participant::where('email', $participant->email)->first();
+                $url = route('online-event');
+
+                $mail = [
+                    'to' => $participant->email,
+                    'name' => $participant->name,
+                    'email' => 'bumnlearningfestival@gmail.com',
+                    'from' => 'BUMN Learning Festival',
+                    'subject' => 'Link Zoom | BUMN LEARNING FESTIVAL 2024',
+                    'url' => $url,
+                ];
+
+                Mail::send('emails.linkzoom', $mail, function($message) use ($mail) {
+                    $message->to($mail['to'])
+                        ->from($mail['email'], $mail['from'])
+                        ->subject($mail['subject']);
+                });
+
+                return redirect()->route('registration.index.online')->with('warning', 'Mohon maaf, Kuota untuk pendaftaran Offline yang sudah melakukan verifikasi untuk instansi ini sudah penuh. Anda tetap bisa mengikuti kegiatan ini secara online. Silakan check email anda untuk mendapatkan link kegiatan online.');
+            } else {
+                $existingQRCodes = Participant::whereNotNull('qrcode')->where('status', 1)
+                    ->pluck('qrcode')
+                    ->toArray();
+    
+                $qrcode = null;
+    
+                $qrcode = $this->findAvailableQRCode($existingQRCodes, 'B', 1, 100);
+                if (!$qrcode) {
+                    $qrcode = $this->findAvailableQRCode($existingQRCodes, 'U', 1, 100);
+                }
+                if (!$qrcode) {
+                    $qrcode = $this->findAvailableQRCode($existingQRCodes, 'M', 1, 100);
+                }
+                if (!$qrcode) {
+                    $participantCount = Participant::whereNotNull('qrcode')
+                        ->where('qrcode', 'like', 'N%')
+                        ->lockForUpdate()
+                        ->count();
+                    $qrcode = 'N' . str_pad($participantCount + 1, 3, '0', STR_PAD_LEFT);
+                }
+    
+                $participant->update([
+                    'qrcode' => $qrcode,
+                    'verification' => 1,
+                ]);
+    
+                $qrCodeData = $participant->qrcode;
+                $png = QrCode::format('png')->size(512)->generate($qrCodeData);
+                $base64Image = base64_encode($png);
+                $publicPath = public_path();
+                $directoryPath = $publicPath . '/qrcodes/';
+                if (!file_exists($directoryPath)) {
+                    mkdir($directoryPath, 0755, true);
+                }
+                $fileName = $participant->token . '.png';
+                $filePath = $directoryPath . $fileName;
+                file_put_contents($filePath, base64_decode($base64Image));
+    
+                return view('frontend.pages.registration.invitation', compact('participant'));
             }
-            if (!$qrcode) {
-                $qrcode = $this->findAvailableQRCode($existingQRCodes, 'M', 1, 100);
-            }
-            if (!$qrcode) {
-                $participantCount = Participant::whereNotNull('qrcode')
-                    ->where('qrcode', 'like', 'N%')
-                    ->lockForUpdate()
-                    ->count();
-                $qrcode = 'N' . str_pad($participantCount + 1, 3, '0', STR_PAD_LEFT);
-            }
-
-            $participant->update([
-                'qrcode' => $qrcode,
-                'verification' => 1,
-            ]);
-
-            $qrCodeData = $participant->qrcode;
-            $png = QrCode::format('png')->size(512)->generate($qrCodeData);
-            $base64Image = base64_encode($png);
-            $publicPath = public_path();
-            $directoryPath = $publicPath . '/qrcodes/';
-            if (!file_exists($directoryPath)) {
-                mkdir($directoryPath, 0755, true);
-            }
-            $fileName = $participant->token . '.png';
-            $filePath = $directoryPath . $fileName;
-            file_put_contents($filePath, base64_decode($base64Image));
-
-            return view('frontend.pages.registration.invitation', compact('participant'));
         }
     }
 
