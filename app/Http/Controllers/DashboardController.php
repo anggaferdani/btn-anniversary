@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InstansiExport;
+use App\Exports\ParticipantExport;
 use App\Models\Instansi;
 use App\Models\Participant;
 use Illuminate\Http\Request;
-use App\Exports\InstansiExport;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Response;
 
 
 class DashboardController extends Controller
@@ -36,7 +36,7 @@ class DashboardController extends Controller
                   });
             });
         }
-        
+
         $instansis = $query->with('participants')->latest()->paginate(10);
 
         return view('backend.pages.dashboard', compact('participantsCountOnlineRegister', 'participantsCountOfflineRegister' ,'participantsCount', 'participantsVerifiedCount', 'participantsUnverifiedCount', 'participantsVerifiedOfflineCountHadir', 'participantsVerifiedOfflineCountNotHadir', 'instansis', 'participantsOnlineCount', 'participantsOfflineCount'));
@@ -45,5 +45,13 @@ class DashboardController extends Controller
     public function exportExcel()
     {
         return Excel::download(new InstansiExport, 'data_kehadiran_instansi.xlsx');
+    }
+
+    public function participantExcel()
+    {
+
+        return Excel::download(new ParticipantExport, 'participant.xlsx');
+
+
     }
 }

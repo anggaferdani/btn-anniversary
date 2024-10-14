@@ -41,7 +41,7 @@ Route::middleware(['web', 'disableBackButton'])->group(function(){
         Route::get('login', [AuthenticationController::class, 'login'])->name('login');
         Route::post('post/login', [AuthenticationController::class, 'postLogin'])->name('post.login');
     });
-    
+
     Route::get('logout', [AuthenticationController::class, 'logout'])->name('logout');
 });
 
@@ -50,6 +50,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('ajax/leaderboard', [EventController::class, 'ajaxLeaderboard'])->name('ajax.leaderboard');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('/export-excel', [DashboardController::class, 'exportExcel'])->name('exportExcel');
+        Route::get('/export-participant', [DashboardController::class, 'participantExcel'])->name('participant-excel');
         Route::resource('instansi', InstansiController::class);
         Route::resource('zoom', ZoomContoller::class);
         Route::resource('quiz', QuizAdminController::class);
