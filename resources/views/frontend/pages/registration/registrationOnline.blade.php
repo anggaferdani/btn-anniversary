@@ -129,8 +129,10 @@
           icon: 'error',
           title: 'Error',
           text: "{{ session('error') }}",
-          timer: 2000,
-          showConfirmButton: false
+          timer: 7000,
+          confirmButtonText: 'OK',
+          showCancelButton: false,
+          allowOutsideClick: false
       });
     @endif
   });

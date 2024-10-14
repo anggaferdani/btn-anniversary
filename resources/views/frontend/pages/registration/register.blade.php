@@ -24,7 +24,7 @@
               <option disabled selected value="">Pilih</option>
               @foreach($instansis as $instansi)
                   @php
-                      $currentCount = $instansi->participants->where('verification', 1)->where('kehadiran', 'onsite')->count();
+                      $currentCount = $instansi->participants->where('kehadiran', 'onsite')->count();
                       $maxCount = $instansi->max_participant;
                       $isOnline = $instansi->status_kehadiran == 'online';
                   @endphp
