@@ -60,6 +60,7 @@
                   <th>Tenant</th>
                 @endif
                 <th>Participant</th>
+                <th>Instansi</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Point Earned</th>
@@ -77,6 +78,7 @@
                     <td>{{ $userParticipant->user->name }}</td>
                   @endif
                   <td>{{ $userParticipant->participant->name }}</td>
+                  <td>{{ $userParticipant->participant->instansi->name }}</td>
                   <td>{{ $userParticipant->participant->email }}</td>
                   <td>{{ $userParticipant->participant->phone_number }}</td>
                   <td>1</td>

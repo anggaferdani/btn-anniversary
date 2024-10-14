@@ -11,6 +11,8 @@
     </div>
 </div>
 @endsection
+@if(auth()->user()->role == 3)
+@else
 @section('content')
 <div class="container-xl">
     <div class="col-auto ms-auto d-print-none">
@@ -251,3 +253,4 @@
 
 </script>
 @endsection
+@endif
