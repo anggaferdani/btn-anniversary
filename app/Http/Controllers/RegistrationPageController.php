@@ -85,7 +85,7 @@ class RegistrationPageController extends Controller
                     ->subject($mail['subject']);
             });
 
-            return redirect()->route('registration.index.online')->with('error', 'Kuota pendaftaran On Site untuk instansi ini sudah penuh. Anda Tetap Bisa Mendaftar Secara Online.');
+            return redirect()->route('registration.index.online')->with('warning', 'Mohon maaf, Kuota untuk pendaftaran Offline yang sudah melakukan verifikasi untuk instansi ini sudah penuh. Anda tetap bisa mengikuti kegiatan ini secara online. Silakan check email anda untuk mendapatkan link kegiatan online.');
         }
 
         if (!empty($participant->qrcode)) {
