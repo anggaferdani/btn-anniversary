@@ -247,7 +247,7 @@ class RegistrationPageController extends Controller
                             ->subject($mail['subject']);
                     });
     
-                    return redirect()->back()->with('success', 'Pendaftaran ulang berhasil. Silahkan cek email ' . $participant->email);
+                    return redirect()->back()->with('success', 'Pendaftaran ulang berhasil. Silahkan cek inbox atau spam email ' . $participant->email);
                 } catch (\Throwable $th) {
                     return back()->with('error', 'Gagal mengirim email.');
                 }
@@ -298,7 +298,7 @@ class RegistrationPageController extends Controller
                 }
     
                 DB::commit();
-                return redirect()->back()->with('success', 'Registrasi berhasil. Silakan cek email ' . $participant->email . ' untuk verifikasi.');
+                return redirect()->back()->with('success', 'Registrasi berhasil. Silakan cek inbox atau spam email ' . $participant->email . ' untuk verifikasi.');
             } catch (\Throwable $th) {
                 DB::rollBack();
                 return back()->with('error', 'Gagal melakukan registrasi: ' . $th->getMessage());
@@ -343,7 +343,7 @@ class RegistrationPageController extends Controller
                         ->subject($mail['subject']);
                 });
 
-                return redirect()->back()->with('success', 'Resend link Zoom berhasil. Silahkan cek email ' . $participant->email);
+                return redirect()->back()->with('success', 'Resend link Zoom berhasil. Silahkan cek inbox atau spam email ' . $participant->email);
             }
 
             // Buat peserta baru untuk kehadiran online
