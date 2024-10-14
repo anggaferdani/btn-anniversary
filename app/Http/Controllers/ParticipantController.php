@@ -251,7 +251,25 @@ class ParticipantController extends Controller
                 }
             }
     
+            $existingQrcodes = Participant::where('qrcode', 'like', 'testing%')
+                ->orderByRaw('CAST(SUBSTRING(qrcode, 8) AS UNSIGNED) ASC')
+                ->pluck('qrcode')
+                ->toArray();
+    
+            $nextNumber = 1;
+            foreach ($existingQrcodes as $qrcode) {
+                $number = (int)substr($qrcode, 7);
+                if ($number != $nextNumber) {
+                    break;
+                }
+                $nextNumber++;
+            }
+    
+            $newQrcode = 'testing' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+    
             $participant->update([
+                'qrcode' => $newQrcode,
+                'kehadiran' => 'online',
                 'status' => 2,
             ]);
     

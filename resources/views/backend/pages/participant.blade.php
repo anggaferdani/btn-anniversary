@@ -115,17 +115,21 @@
                     <div class="d-flex gap-1">
                       @if(auth()->user()->role == 1)
                         @if($participant->verification == 2)
+                          @if($participant->kehadiran == 'onsite')
+                            <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-danger"><span class="small">Verify</span></a>
+                          @endif
                           <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
                         @else
-                          <a href="{{ route('admin.download.id', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i> <span class="small">Download ID</span></a>
-                          <a href="{{ route('admin.download.qr', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i> <span class="small">Download QR</span></a>
+                          @if($participant->kehadiran == 'onsite')
+                            {{-- <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i> <span class="small">Download ID</span></a> --}}
+                          @endif
                         @endif
                         {{-- <form action="{{ route('registration.sendImage', $participant->token) }}" method="POST" class="" enctype="multipart/form-data">
                           @csrf
                           <button type="submit" class="btn btn-success"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Invitation</span></button>
                         </form> --}}
                         <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $participant->id }}"><i class="fa-solid fa-pen"></i></button>
-                        {{-- <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $participant->id }}"><i class="fa-solid fa-trash"></i></button> --}}
+                        <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $participant->id }}"><i class="fa-solid fa-trash"></i></button>
                       @elseif(auth()->user()->role == 2)
                         @if($participant->verification == 2)
                           <a href="{{ route('receptionist.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>

@@ -133,6 +133,17 @@
           showConfirmButton: false
       });
     @endif
+
+    @if(session('warning'))
+      Swal.fire({
+          icon: 'warning',
+          title: 'Pemberitahuan',
+          text: "{{ session('warning') }}",
+          confirmButtonText: 'OK',
+          showCancelButton: false,
+          allowOutsideClick: false
+      });
+    @endif
   });
 </script>
 <script>
