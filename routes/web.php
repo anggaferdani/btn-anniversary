@@ -66,6 +66,7 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('download/id/{token}', [ParticipantController::class, 'downloadId'])->name('download.id');
         Route::get('download/qr/{token}', [ParticipantController::class, 'downloadQr'])->name('download.qr');
         Route::get('history', [UserParticipantController::class, 'history'])->name('history');
+        Route::get('spin', [EventController::class, 'spin'])->name('spin');
         Route::get('leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
         Route::get('leaderboard/quiz', [QuizController::class, 'leaderboard'])->name('leaderboard.quiz');
         Route::get('history/quiz', [QuizController::class, 'history'])->name('history.quiz');
@@ -78,6 +79,7 @@ Route::prefix('receptionist')->name('receptionist.')->group(function(){
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('scan', [ParticipantController::class, 'scan'])->name('scan');
         Route::get('attendance/{qrcode}', [ParticipantController::class, 'attendance'])->name('attendance');
+        Route::get('attendance/{qrcode}/ok', [ParticipantController::class, 'attendanceOk'])->name('attendance.ok');
         Route::resource('participant', ParticipantController::class);
         Route::get('resend-email-verification/{token}', [AuthenticationController::class, 'resendEmailVerification'])->name('resend-email-verification');
         Route::get('resend-digital-invitation/{token}', [AuthenticationController::class, 'resendDigitalInvitation'])->name('resend-digital-invitation');
@@ -91,6 +93,7 @@ Route::prefix('tenant')->name('tenant.')->group(function(){
         Route::get('scan', [UserParticipantController::class, 'scan'])->name('scan');
         Route::get('participant/autocomplete', [UserParticipantController::class, 'autocomplete'])->name('participant.autocomplete');
         Route::get('point/{qrcode}', [UserParticipantController::class, 'point'])->name('point');
+        Route::get('point/{qrcode}/ok', [UserParticipantController::class, 'pointOk'])->name('point.ok');
         Route::get('history', [UserParticipantController::class, 'history'])->name('history');
     });
 });

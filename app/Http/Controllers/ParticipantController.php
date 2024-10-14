@@ -13,7 +13,7 @@ class ParticipantController extends Controller
 {
     public function autocomplete(Request $request)
     {
-        $query = Participant::where('verification', 1)->where('attendance', 2)->where('kehadiran', 'offline')->where('status', 1);
+        $query = Participant::where('verification', 1)->where('attendance', 2)->where('kehadiran', 'onsite')->where('status', 1);
 
         $search = $request->input('search');
         $query->where(function ($q) use ($search) {
@@ -62,6 +62,32 @@ class ParticipantController extends Controller
     }
 
     public function attendance($qrcode)
+    {
+        $participant = Participant::where('verification', 1)->where('qrcode', $qrcode)->first();
+
+        if ($participant) {
+            if ($participant->status == 2) {
+                return response()->json(['error' => 'Participant tidak aktif'], 400);
+            }
+
+            if ($participant->attendance == 1) {
+                return response()->json(['error' => 'Participant sudah absen kehadiran'], 400);
+            }
+
+            return response()->json([
+                'success' => 'Participant',
+                'name' => $participant->name,
+                'qrcode' => $participant->qrcode,
+                'email' => $participant->email,
+                'phone_number' => $participant->phone_number,
+                'point' => $participant->point,
+            ]);
+        }
+
+        return response()->json(['error' => 'Participant not found'], 404);
+    }
+
+    public function attendanceOk($qrcode)
     {
         $participant = Participant::where('verification', 1)->where('qrcode', $qrcode)->first();
 

@@ -66,6 +66,40 @@ class UserParticipantController extends Controller
                                             ->first();
 
             if ($userParticipant) {
+                return response()->json(['error' => 'Total point anda ' . $participant->point], 400);
+            }
+
+            return response()->json([
+                'success' => 'Point berhasil ditambahkan',
+                'name' => $participant->name,
+                'qrcode' => $participant->qrcode,
+            ]);
+        }
+
+        return response()->json(['error' => 'Participant not found'], 404);
+    }
+
+    public function pointOk($qrcode)
+    {
+        $participant = Participant::where('verification', 1)->where('qrcode', $qrcode)->first();
+
+        if ($participant) {
+            if ($participant->status == 2) {
+                return response()->json(['error' => 'Participant tidak aktif'], 400);
+            }
+
+            if ($participant->attendance == 2) {
+                return response()->json(['error' => 'Participant belum absen kehadiran'], 400);
+            }
+
+            $userId = Auth::id();
+            $userParticipant = UserParticipant::where('user_id', $userId)
+                                            ->where('participant_id', $participant->id)
+                                            ->where('point', 1)
+                                            ->where('status', 1)
+                                            ->first();
+
+            if ($userParticipant) {
                 return response()->json(['error' => 'Total point anda: {$participant->point}'], 400);
             }
 

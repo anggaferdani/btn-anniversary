@@ -12,6 +12,10 @@ class EventController extends Controller
         return view('backend.pages.leaderboard');
     }
 
+    public function spin() {
+        return view('kursi');
+    }
+
     public function ajaxLeaderboard(Request $request)
     {
         $participants = Participant::where('verification', 1)->where('attendance', 1)->where('status', 1)->orderBy('point', 'desc')->take(50)->get();

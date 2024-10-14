@@ -10,9 +10,9 @@
     </div>
     <div class="col-auto">
       <div class="btn-list">
-        @if(auth()->user()->role == 1)
+        {{-- @if(auth()->user()->role == 1)
           <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Create</a>
-        @endif
+        @endif --}}
       </div>
     </div>
   </div>
@@ -128,7 +128,7 @@
                           @csrf
                           <button type="submit" class="btn btn-success"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Invitation</span></button>
                         </form> --}}
-                        <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $participant->id }}"><i class="fa-solid fa-pen"></i></button>
+                        {{-- <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $participant->id }}"><i class="fa-solid fa-pen"></i></button> --}}
                         <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $participant->id }}"><i class="fa-solid fa-trash"></i></button>
                       @elseif(auth()->user()->role == 2)
                         @if($participant->verification == 2)
