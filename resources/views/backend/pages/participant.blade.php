@@ -115,10 +115,12 @@
                     <div class="d-flex gap-1">
                       @if(auth()->user()->role == 1)
                         @if($participant->verification == 2)
+                          @if($participant->kehadiran == 'onsite')
+                            <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-danger"><span class="small">Verify</span></a>
+                          @endif
                           <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
                         @else
                           @if($participant->kehadiran == 'onsite')
-                          <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-danger"><span class="small">Verify</span></a>
                             <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i> <span class="small">Download ID</span></a>
                           @endif
                         @endif
