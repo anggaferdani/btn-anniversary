@@ -43,7 +43,7 @@
             background: #fafafa;
             box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.4) inset;
 
-            width: 150px; /* Increased width */
+            width: 350px; /* Increased width */
             height: 200px; /* Increased height */
             overflow: hidden;
 
@@ -57,11 +57,12 @@
         }
 
         .box {
+            /*font-size: 40px;*/
             display: flex;
             justify-content: center;
             align-items: center;
-
-            font-size: 3rem;
+            letter-spacing: 20px;
+            font-size: 5rem;
         }
 
         .buttons {
@@ -131,13 +132,10 @@
             });
 
             async function spin() {
-                if (spinCount === 0) {
+                // if (spinCount === 0) {
                     await initSingleDoor(door, false);
-                    spinCount++;
-                } else if (spinCount === 1) {
-                    const jsConfetti = new JSConfetti();
-                    jsConfetti.addConfetti();
-                }
+                // spinCount++;
+
             }
 
             function reset() {
@@ -176,6 +174,8 @@
                             box.style.filter = "blur(0)";
                             if (index > 0) this.removeChild(box);
                         });
+                        const jsConfetti = new JSConfetti();
+                        jsConfetti.addConfetti();
                     },
                     {once: true}
                 );
