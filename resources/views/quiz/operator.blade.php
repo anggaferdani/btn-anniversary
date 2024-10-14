@@ -9,7 +9,7 @@
         {{--        </div>--}}
         {{--        --}}
         <div id="start-text" class="text-center mb-3" style="font-size: 60px;">
-            Mulai!!
+            Menunggu Peserta
         </div>
         <div>
             <div id="quiz-container" class="mb-3">
@@ -20,7 +20,7 @@
 @endsection
 @push('scripts')
     <script>
-        let quizIndex = 0;
+        let quizIndex = -1;
         const quizzes = @json($quizzes);
         const quizContainer = document.getElementById('quiz-container');
         const startText = document.getElementById('start-text');
@@ -33,9 +33,28 @@
 
         function handleKeyDown(event) {
             if (event.key === 'ArrowRight') {
+                if (quizIndex == -1) {
+                    quizIndex = 0;
+                } else {
+                    quizIndex += 1;
+                }
+
                 changeQuizIndex();
             } else if (event.key === ' ') {
+                if (quizIndex == -1) {
+                    quizIndex = 0;
+                } else {
+                    quizIndex += 1;
+                }
+
                 startQuiz();
+                changeQuizIndex();
+            } else if (event.key === 'ArrowLeft') {
+                if (!(quizIndex < 0)) {
+                    quizIndex -= 1;
+                }
+                changeQuizIndex();
+
 
             }
 
@@ -44,10 +63,13 @@
         function startQuiz() {
             startText.style.display = 'none';
             quizContainer.style.display = 'block';
-            displayQuiz(quizIndex);
+
+            // changeQuizIndex();
+
         }
 
         function changeQuizIndex() {
+
             $.ajax({
                 url: '{{ route('admin.quiz.changeIndex') }}',
                 method: 'POST',
@@ -61,7 +83,8 @@
         }
 
         function updateQuizIndex(data) {
-            quizIndex += 1;
+
+
             if (quizIndex < quizzes.length) {
                 displayQuiz(quizIndex);
             } else {

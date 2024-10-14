@@ -20,52 +20,11 @@
 
         <input type="hidden" name="waktu_pengerjaan" id="waktuPengerjaan" value="">
 
-          {{--        @foreach($quizzes as $quiz)--}}
-          {{--          <div class="mb-3">--}}
-          {{--            <label class="form-label">{{ $loop->iteration }}. {{ $quiz->soal }}</label>--}}
-          {{--            <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">--}}
-          {{--              <label class="form-selectgroup-item flex-fill">--}}
-          {{--                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_a }}" class="form-selectgroup-input">--}}
-          {{--                <div class="form-selectgroup-label d-flex align-items-center p-3">--}}
-          {{--                  <div class="me-3">--}}
-          {{--                    <span class="form-selectgroup-check"></span>--}}
-          {{--                  </div>--}}
-          {{--                  <div>{{ $quiz->jawaban_a }}</div>--}}
-          {{--                </div>--}}
-          {{--              </label>--}}
-          {{--              <label class="form-selectgroup-item flex-fill">--}}
-          {{--                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_b }}" class="form-selectgroup-input">--}}
-          {{--                <div class="form-selectgroup-label d-flex align-items-center p-3">--}}
-          {{--                  <div class="me-3">--}}
-          {{--                    <span class="form-selectgroup-check"></span>--}}
-          {{--                  </div>--}}
-          {{--                  <div>{{ $quiz->jawaban_b }}</div>--}}
-          {{--                </div>--}}
-          {{--              </label>--}}
-          {{--              <label class="form-selectgroup-item flex-fill">--}}
-          {{--                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_c }}" class="form-selectgroup-input">--}}
-          {{--                <div class="form-selectgroup-label d-flex align-items-center p-3">--}}
-          {{--                  <div class="me-3">--}}
-          {{--                    <span class="form-selectgroup-check"></span>--}}
-          {{--                  </div>--}}
-          {{--                  <div>{{ $quiz->jawaban_c }}</div>--}}
-          {{--                </div>--}}
-          {{--              </label>--}}
-          {{--              <label class="form-selectgroup-item flex-fill">--}}
-          {{--                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_d }}" class="form-selectgroup-input">--}}
-          {{--                <div class="form-selectgroup-label d-flex align-items-center p-3">--}}
-          {{--                  <div class="me-3">--}}
-          {{--                    <span class="form-selectgroup-check"></span>--}}
-          {{--                  </div>--}}
-          {{--                  <div>{{ $quiz->jawaban_d }}</div>--}}
-          {{--                </div>--}}
-          {{--              </label>--}}
-          {{--            </div>--}}
-          {{--          </div>--}}
-
+          <div id="start-text" class="text-center mb-3" style="font-size: 60px;">
+              Menunggu Peserta
+          </div>
           <div id="quiz-container" class="mb-3">
           </div>
-
 
         <div class="form-footer">
           <button type="submit" class="btn btn-primary w-100" @if($existsInScores) disabled @endif>Submit</button>
@@ -81,9 +40,12 @@
   $(document).ready(function() {
       const quizzes = @json($quizzes);
       const quizContainer = document.getElementById('quiz-container');
+      const startText = document.getElementById('start-text');
+      const countdownTimer = document.getElementById('countdownTimer');
       const pusherKey = "{{ env('PUSHER_APP_KEY') }}";
       const pusherCluster = "{{ env('PUSHER_APP_CLUSTER') }}";
       let quizIndex = 0;
+      let timeRemaining = {{ $setting->max_waktu_pengerjaan }};
 
       function displayQuiz(index) {
           if (index < quizzes.length) {
@@ -153,9 +115,40 @@
           @endif
       }
 
-      if (quizzes.length > 0) {
+      function startQuiz() {
+          startText.style.display = 'none';
+          quizContainer.style.display = 'block';
           displayQuiz(quizIndex);
       }
+
+      function updateCountdown() {
+          if (timeRemaining > 0) {
+              timeRemaining--;
+              countdownTimer.textContent = new Date(timeRemaining * 1000).toISOString().substr(14, 5);
+          } else {
+              clearInterval(countdownInterval);
+              showAlert('error', 'Time\'s up!', 'The quiz time has ended.');
+          }
+      }
+
+      // const countdownInterval = setInterval(updateCountdown, 1000);
+
+      if (quizzes.length > 0) {
+          displayStartText();
+      }
+
+      function displayStartText() {
+          startText.style.display = 'block';
+          quizContainer.style.display = 'none';
+      }
+
+      document.addEventListener('keydown', function (event) {
+          if (event.key === 'ArrowRight') {
+              changeQuizIndex();
+          } else if (event.key === ' ') {
+              startQuiz();
+          }
+      });
 
       initializePusher();
       checkSessionMessages();
