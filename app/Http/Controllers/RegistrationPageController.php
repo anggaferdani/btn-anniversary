@@ -254,7 +254,10 @@ class RegistrationPageController extends Controller
     
             // Cek kuota peserta untuk instansi
             $instansi = Instansi::find($request->instansi_id);
-            $participantCount = Participant::where('instansi_id', $request->instansi_id)->where('status', 1)->count();
+            $participantCount = Participant::where('instansi_id', $request->instansi_id)
+            ->where('kehadiran', 'onsite')
+            ->where('verification', 1)
+            ->where('status', 1)->count();
     
             if ($participantCount > $instansi->max_participant) {
                 return redirect()->back()->with('error', 'Kuota pendaftaran On Site untuk instansi ini sudah penuh. Anda Tetap Bisa Mendaftar Secara Online.');
