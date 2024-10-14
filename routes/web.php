@@ -67,6 +67,9 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::get('leaderboard', [EventController::class, 'leaderboard'])->name('leaderboard');
         Route::get('leaderboard/quiz', [QuizController::class, 'leaderboard'])->name('leaderboard.quiz');
         Route::get('history/quiz', [QuizController::class, 'history'])->name('history.quiz');
+        Route::get('operator/quiz', [QuizController::class, 'operatorQuiz'])->name('operator.quiz');
+        Route::post('operator/quiz/changeIndex', [QuizController::class, 'changeIndex'])->name('quiz.changeIndex');
+
     });
 });
 

@@ -2,17 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Events\PernyataanSesi2;
+use App\Events\QuizIndex;
+use App\Models\Participant;
 use App\Models\Quiz;
 use App\Models\Score;
 use App\Models\Setting;
-use App\Models\Participant;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
     public function leaderboard() {
         return view('quiz.leaderboard');
+    }
+
+    public function operatorQuiz()
+    {
+        $token = "9c026c8b3a0f";
+        $quizzes = Quiz::where('status', 1)->get();
+        $setting = Setting::first();
+        $participant = Participant::where('token', $token)->first();
+        $existsInScores = Score::where('participant_id', $participant->id)->first();
+
+        return view('quiz.operator', compact(
+            'token',
+            'quizzes',
+            'setting',
+            'existsInScores',
+        ));
+    }
+
+    public function changeIndex(Request $request)
+    {
+
+        event(new QuizIndex($request->quizIndex));
+        return "oke";
     }
 
     public function ajaxLeaderboard(Request $request)
@@ -45,7 +70,7 @@ class QuizController extends Controller
         $currentTime = Carbon::now();
         $startTime = Carbon::createFromTimeString($setting->jam_mulai);
         $endTime = Carbon::createFromTimeString($setting->jam_selesai);
-        
+
         $canJoin = $currentTime->between($startTime, $endTime);
 
         return view('quiz.join', compact('canJoin'));
@@ -74,11 +99,11 @@ class QuizController extends Controller
     }
 
     public function quiz($token) {
-        $quizzes = Quiz::where('status', 1)->inRandomOrder()->get();
+        $quizzes = Quiz::where('status', 1)->get();
         $setting = Setting::first();
         $participant = Participant::where('token', $token)->first();
         $existsInScores = Score::where('participant_id', $participant->id)->first();
-        
+
         return view('quiz.quiz', compact(
             'token',
             'quizzes',
@@ -91,39 +116,39 @@ class QuizController extends Controller
         $request->validate([
             'waktu_pengerjaan' => 'required',
         ]);
-    
-        
+
+
         $participant = Participant::where('token', $token)->first();
 
         try {
             $existsInScores = Score::where('participant_id', $participant->id)->first();
-    
+
             if ($existsInScores) {
                 return back()->with('error', 'Anda sudah mengikuti kuis ini.');
             } else {
                 $waktuPengerjaan = $request->input('waktu_pengerjaan');
-        
+
                 $correctAnswers = 0;
-        
+
                 $quizzes = Quiz::where('status', 1)->get();
-        
+
                 foreach ($quizzes as $quiz) {
                     $userAnswer = $request->input("jawaban")[$quiz->id] ?? null;
                     if ($userAnswer == $quiz->jawaban) {
                         $correctAnswers++;
                     }
                 }
-        
+
                 $score = $correctAnswers * 10;
-        
+
                 $array = [
                     'participant_id' => $participant->id,
                     'score' => $score,
                     'waktu_pengerjaan' => $waktuPengerjaan,
                 ];
-        
+
                 Score::create($array);
-        
+
                 return redirect()->route('result', ['token' => $participant->token]);
             }
 
@@ -135,7 +160,7 @@ class QuizController extends Controller
     public function result($token) {
         $participant = Participant::where('verification', 1)->where('attendance', 1)->where('status', 1)->where('token', $token)->first();
         $score = Score::where('status', 1)->where('participant_id', $participant->id)->first();
-        
+
         return view('quiz.result', compact(
             'participant',
             'score',

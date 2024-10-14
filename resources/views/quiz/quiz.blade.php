@@ -17,52 +17,55 @@
 
       <form action="{{ route('quiz.post', ['token' => $token]) }}" method="post">
         @csrf
-        
+
         <input type="hidden" name="waktu_pengerjaan" id="waktuPengerjaan" value="">
-        
-        @foreach($quizzes as $quiz)
-          <div class="mb-3">
-            <label class="form-label">{{ $loop->iteration }}. {{ $quiz->soal }}</label>
-            <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
-              <label class="form-selectgroup-item flex-fill">
-                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_a }}" class="form-selectgroup-input">
-                <div class="form-selectgroup-label d-flex align-items-center p-3">
-                  <div class="me-3">
-                    <span class="form-selectgroup-check"></span>
-                  </div>
-                  <div>{{ $quiz->jawaban_a }}</div>
-                </div>
-              </label>
-              <label class="form-selectgroup-item flex-fill">
-                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_b }}" class="form-selectgroup-input">
-                <div class="form-selectgroup-label d-flex align-items-center p-3">
-                  <div class="me-3">
-                    <span class="form-selectgroup-check"></span>
-                  </div>
-                  <div>{{ $quiz->jawaban_b }}</div>
-                </div>
-              </label>
-              <label class="form-selectgroup-item flex-fill">
-                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_c }}" class="form-selectgroup-input">
-                <div class="form-selectgroup-label d-flex align-items-center p-3">
-                  <div class="me-3">
-                    <span class="form-selectgroup-check"></span>
-                  </div>
-                  <div>{{ $quiz->jawaban_c }}</div>
-                </div>
-              </label>
-              <label class="form-selectgroup-item flex-fill">
-                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_d }}" class="form-selectgroup-input">
-                <div class="form-selectgroup-label d-flex align-items-center p-3">
-                  <div class="me-3">
-                    <span class="form-selectgroup-check"></span>
-                  </div>
-                  <div>{{ $quiz->jawaban_d }}</div>
-                </div>
-              </label>
-            </div>
+
+          {{--        @foreach($quizzes as $quiz)--}}
+          {{--          <div class="mb-3">--}}
+          {{--            <label class="form-label">{{ $loop->iteration }}. {{ $quiz->soal }}</label>--}}
+          {{--            <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">--}}
+          {{--              <label class="form-selectgroup-item flex-fill">--}}
+          {{--                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_a }}" class="form-selectgroup-input">--}}
+          {{--                <div class="form-selectgroup-label d-flex align-items-center p-3">--}}
+          {{--                  <div class="me-3">--}}
+          {{--                    <span class="form-selectgroup-check"></span>--}}
+          {{--                  </div>--}}
+          {{--                  <div>{{ $quiz->jawaban_a }}</div>--}}
+          {{--                </div>--}}
+          {{--              </label>--}}
+          {{--              <label class="form-selectgroup-item flex-fill">--}}
+          {{--                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_b }}" class="form-selectgroup-input">--}}
+          {{--                <div class="form-selectgroup-label d-flex align-items-center p-3">--}}
+          {{--                  <div class="me-3">--}}
+          {{--                    <span class="form-selectgroup-check"></span>--}}
+          {{--                  </div>--}}
+          {{--                  <div>{{ $quiz->jawaban_b }}</div>--}}
+          {{--                </div>--}}
+          {{--              </label>--}}
+          {{--              <label class="form-selectgroup-item flex-fill">--}}
+          {{--                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_c }}" class="form-selectgroup-input">--}}
+          {{--                <div class="form-selectgroup-label d-flex align-items-center p-3">--}}
+          {{--                  <div class="me-3">--}}
+          {{--                    <span class="form-selectgroup-check"></span>--}}
+          {{--                  </div>--}}
+          {{--                  <div>{{ $quiz->jawaban_c }}</div>--}}
+          {{--                </div>--}}
+          {{--              </label>--}}
+          {{--              <label class="form-selectgroup-item flex-fill">--}}
+          {{--                <input type="radio" name="jawaban[{{ $quiz->id }}]" value="{{ $quiz->jawaban_d }}" class="form-selectgroup-input">--}}
+          {{--                <div class="form-selectgroup-label d-flex align-items-center p-3">--}}
+          {{--                  <div class="me-3">--}}
+          {{--                    <span class="form-selectgroup-check"></span>--}}
+          {{--                  </div>--}}
+          {{--                  <div>{{ $quiz->jawaban_d }}</div>--}}
+          {{--                </div>--}}
+          {{--              </label>--}}
+          {{--            </div>--}}
+          {{--          </div>--}}
+
+          <div id="quiz-container" class="mb-3">
           </div>
-        @endforeach
+
 
         <div class="form-footer">
           <button type="submit" class="btn btn-primary w-100" @if($existsInScores) disabled @endif>Submit</button>
@@ -73,66 +76,89 @@
 </div>
 @endsection
 @push('scripts')
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
   $(document).ready(function() {
-    @if(session('success'))
-      Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: "{{ session('success') }}",
-          confirmButtonText: 'OK',
-          showCancelButton: false,
-          allowOutsideClick: false
-      })
-    @endif
+      const quizzes = @json($quizzes);
+      const quizContainer = document.getElementById('quiz-container');
+      const pusherKey = "{{ env('PUSHER_APP_KEY') }}";
+      const pusherCluster = "{{ env('PUSHER_APP_CLUSTER') }}";
+      let quizIndex = 0;
 
-    @if(session('error'))
-      Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: "{{ session('error') }}",
-          timer: 2000,
-          showConfirmButton: false
-      });
-    @endif
-  });
+      function displayQuiz(index) {
+          if (index < quizzes.length) {
+              const quiz = quizzes[index];
+              let answersHtml = '';
+              ['a', 'b', 'c', 'd'].forEach(option => {
+                  const answer = quiz[`jawaban_${option}`];
+                  if (answer) {
+                      answersHtml += `
+                    <label class="form-selectgroup-item flex-fill">
+                        <input type="radio" name="jawaban[${quiz.id}]" value="${answer}" class="form-selectgroup-input">
+                        <div class="form-selectgroup-label d-flex align-items-center p-3">
+                            <div class="me-3">
+                                <span class="form-selectgroup-check"></span>
+                            </div>
+                            <div>${answer}</div>
+                        </div>
+                    </label>
+                `;
+                  }
+              });
 
-  @if(! $existsInScores)
-    let totalDuration = {{ $setting->max_waktu_pengerjaan }};
-    let timeLeft = totalDuration;
-    let countdownElement = document.getElementById('countdownTimer');
+              quizContainer.innerHTML = `
+            <label class="form-label fs-2">${quiz.id}. ${quiz.soal}</label>
+            <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+                ${answersHtml}
+            </div>
+        `;
+          } else {
+              quizContainer.innerHTML = `<label class="form-label fs-2">No more quizzes available.</label>`;
+          }
+      }
 
-    const updateCountdown = () => {
-        let minutes = Math.floor(timeLeft / 60);
-        let seconds = timeLeft % 60;
+      function initializePusher() {
+          const pusher = new Pusher(pusherKey, {
+              cluster: pusherCluster,
+              encrypted: true,
+          });
 
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        seconds = seconds < 10 ? '0' + seconds : seconds;
+          const changeQuiz = pusher.subscribe('quiz-index');
+          changeQuiz.bind('quiz-index', function (data) {
+              quizIndex = data.quizIndex;
+              displayQuiz(quizIndex);
+          });
+      }
 
-        countdownElement.innerHTML = `${minutes}:${seconds}`;
-        
-        timeLeft--;
-
-        if (timeLeft < 0) {
-            clearInterval(countdownInterval);
-            Swal.fire({
-              icon: 'success',
-              title: 'Waktu habis',
-              timer: 3000,
+      function showAlert(type, title, text, timer = null) {
+          Swal.fire({
+              icon: type,
+              title: title,
+              text: text,
+              timer: timer,
               confirmButtonText: 'OK',
               showCancelButton: false,
               allowOutsideClick: false,
-              willClose: () => {
-                  document.getElementById('waktuPengerjaan').value = totalDuration;
-                  document.querySelector('form').submit();
-              }
-            });
-        } else {
-            document.getElementById('waktuPengerjaan').value = totalDuration - timeLeft;
-        }
-    };
-  @endif
+              showConfirmButton: !timer
+          });
+      }
 
-let countdownInterval = setInterval(updateCountdown, 1000);
+      function checkSessionMessages() {
+          @if(session('success'))
+          showAlert('success', 'Success', "{{ session('success') }}");
+          @endif
+
+          @if(session('error'))
+          showAlert('error', 'Error', "{{ session('error') }}", 2000);
+          @endif
+      }
+
+      if (quizzes.length > 0) {
+          displayQuiz(quizIndex);
+      }
+
+      initializePusher();
+      checkSessionMessages();
+  });
 </script>
 @endpush
