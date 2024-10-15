@@ -25,7 +25,7 @@ class HadirController extends Controller
             $array = [
                 'qrcode' => $request['qrcode'],
                 'nama' => $request['nama'],
-                'instansi_id' => $request['instansi_id'],
+                'instansi' => $request['instansi'],
             ];
 
             Hadir::create($array);

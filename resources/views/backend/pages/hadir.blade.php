@@ -35,14 +35,14 @@
           @error('nama')<div class="text-danger">{{ $message }}</div>@enderror
         </div>
         <div class="mb-3">
-          <label class="form-label required">Instansi</label>
-          <select class="selectpicker border rounded" data-live-search="true" name="instansi_id" style="width: 100% !important;">
+          <label class="form-label">Instansi</label>
+          <select class="selectpicker border rounded" data-live-search="true" name="instansi" style="width: 100% !important;">
             <option disabled selected value="">Pilih</option>
             @foreach($instansis as $instansi)
-                <option value="{{ $instansi->id }}" {{ old('instansi_id') == $instansi->id ? 'selected' : '' }}>{{ $instansi->name }}</option>
+                <option value="{{ $instansi->name }}" {{ old('instansi') == $instansi->name ? 'selected' : '' }}>{{ $instansi->name }}</option>
             @endforeach
           </select>
-          @error('instansi_id')<div class="text-danger">{{ $message }}</div>@enderror
+          @error('instansi')<div class="text-danger">{{ $message }}</div>@enderror
         </div>
         <div class="form-footer">
           <button type="submit" class="btn btn-primary w-100">Hadir</button>

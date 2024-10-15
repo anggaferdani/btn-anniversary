@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('qrcode');
             $table->string('nama')->nullable();
-            $table->unsignedInteger('instansi_id')->nullable();
+            $table->string('instansi')->nullable();
             $table->timestamps();
         });
     }
