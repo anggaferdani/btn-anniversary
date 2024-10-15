@@ -11,10 +11,6 @@
     <div class="card-body">
       <h2 class="h2 text-center mb-4">Participant</h2>
 
-      <div class="d-flex justify-content-center">
-        <div id="reader" style="width: 310px;" class=""></div>
-      </div>
-
       @if(Session::get('success'))
         <div class="alert alert-important alert-success" role="alert">
           {{ Session::get('success') }}
@@ -25,6 +21,10 @@
           {{ Session::get('error') }}
         </div>
       @endif
+
+      <div class="d-flex justify-content-center mb-3">
+        <div id="reader" style="width: 310px;" class=""></div>
+      </div>
 
       <form action="{{ route('post.hadir') }}" method="post">
         @csrf
