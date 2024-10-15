@@ -1,22 +1,23 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AttendanceParticipantController;
-use App\Http\Controllers\AuthenticationController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\EventController;
-use App\Http\Controllers\IndexPageController;
-use App\Http\Controllers\InstansiController;
-use App\Http\Controllers\ParticipantController;
-use App\Http\Controllers\QuizAdminController;
-use App\Http\Controllers\QuizController;
-use App\Http\Controllers\ReceptionistController;
-use App\Http\Controllers\RegistrationPageController;
-use App\Http\Controllers\SpinController;
-use App\Http\Controllers\TenantController;
-use App\Http\Controllers\UserParticipantController;
-use App\Http\Controllers\ZoomContoller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ZoomContoller;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\SpinController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\HadirController;
+use App\Http\Controllers\TenantController;
+use App\Http\Controllers\InstansiController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IndexPageController;
+use App\Http\Controllers\QuizAdminController;
+use App\Http\Controllers\ParticipantController;
+use App\Http\Controllers\ReceptionistController;
+use App\Http\Controllers\AuthenticationController;
+use App\Http\Controllers\UserParticipantController;
+use App\Http\Controllers\RegistrationPageController;
+use App\Http\Controllers\AttendanceParticipantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('hadir', [HadirController::class, 'hadir'])->name('hadir');
+Route::post('post/hadir', [HadirController::class, 'postHadir'])->name('post.hadir');
 
 Route::get('/quiz', [QuizController::class, 'join'])->name('join');
 Route::post('/join/post', [QuizController::class, 'joinPost'])->name('join.post');
