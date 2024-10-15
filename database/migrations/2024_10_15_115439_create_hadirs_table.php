@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hadirs', function (Blueprint $table) {
             $table->id();
-            $table->string('qrcode');
+            $table->string('qrcode')->nullable();
             $table->string('nama')->nullable();
             $table->string('instansi')->nullable();
             $table->timestamps();

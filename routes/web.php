@@ -32,6 +32,8 @@ use App\Http\Controllers\AttendanceParticipantController;
 
 Route::get('hadir', [HadirController::class, 'hadir'])->name('hadir');
 Route::post('post/hadir', [HadirController::class, 'postHadir'])->name('post.hadir');
+Route::get('check/{qrcode}', [HadirController::class, 'check'])->name('check');
+Route::get('check/{qrcode}/ok', [HadirController::class, 'checkOk'])->name('check.ok');
 
 Route::get('/quiz', [QuizController::class, 'join'])->name('join');
 Route::post('/join/post', [QuizController::class, 'joinPost'])->name('join.post');
