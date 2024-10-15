@@ -11,6 +11,10 @@
     <div class="card-body">
       <h2 class="h2 text-center mb-4">Participant</h2>
 
+      <div class="d-flex justify-content-center">
+        <div id="reader" style="width: 310px;" class=""></div>
+      </div>
+
       @if(Session::get('success'))
         <div class="alert alert-important alert-success" role="alert">
           {{ Session::get('success') }}
@@ -52,3 +56,119 @@
   </div>
 </div>
 @endsection
+@push('scripts')
+<script type="text/javascript">
+  $(document).ready(function() {
+    var html5QrCode = new Html5Qrcode("reader");
+    var isScanning = false;
+    var scannedDataBuffer = "";
+
+    function onScanSuccess(decodedText, decodedResult) {
+        if (!isScanning) {
+            isScanning = true;
+            showParticipantAlert(decodedText);
+            
+            setTimeout(function() {
+                isScanning = false;
+            }, 3000);
+        }
+    }
+
+    function showParticipantAlert(qrcode) {
+        $.ajax({
+            url: "{{ route('check', ':qrcode') }}".replace(':qrcode', qrcode),
+            method: 'GET',
+            success: function(response) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Participant',
+                    html: `
+                        <b>ID :</b> ${response.qrcode}<br>
+                        <b>Nama :</b> ${response.nama}<br>
+                        <b>Instansi :</b> ${response.instansi}
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Hadir',
+                    cancelButtonText: 'Cancel',
+                    allowOutsideClick: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        checkOk(qrcode);
+                    } else {
+                        $('#search').val('');
+                        $('#result').html('');
+                    }
+                });
+            },
+            error: function(xhr) {
+                var errorMsg = xhr.responseJSON ? xhr.responseJSON.error : 'Error';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMsg,
+                    timer: 2000,
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                });
+            }
+        });
+    }
+
+    function checkOk(qrcode) {
+        $.ajax({
+            url: "{{ route('check.ok', ':qrcode') }}".replace(':qrcode', qrcode),
+            method: 'GET',
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: response.success,
+                    confirmButtonText: 'OK',
+                    allowOutsideClick: false,
+                }).then(() => {
+                    $('#search').val('');
+                    $('#result').html('');
+                });
+            },
+            error: function(xhr) {
+                var errorMsg = xhr.responseJSON ? xhr.responseJSON.error : 'An error occurred';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: errorMsg,
+                    timer: 2000,
+                    showConfirmButton: true,
+                    allowOutsideClick: false,
+                });
+            }
+        });
+    }
+
+    html5QrCode.start(
+        { facingMode: "environment" },
+        {
+            fps: 10,
+            qrbox: { width: 210, height: 210 }
+        },
+        onScanSuccess)
+        .catch(err => {
+            console.error(err);
+        });
+
+    $(document).on('click', '.hadirButton', function() {
+        var qrcode = $(this).data('id');
+        showParticipantAlert(qrcode);
+    });
+
+    $(document).on('keypress', function(e) {
+        if (e.which === 13 && scannedDataBuffer.length > 0) {
+            e.preventDefault();
+            onScanSuccess(scannedDataBuffer);
+            scannedDataBuffer = "";
+        } else {
+            scannedDataBuffer += String.fromCharCode(e.which);
+        }
+    });
+});
+</script>
+@endpush
