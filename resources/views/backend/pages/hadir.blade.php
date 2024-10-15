@@ -39,8 +39,13 @@
           @error('nama')<div class="text-danger">{{ $message }}</div>@enderror
         </div>
         <div class="mb-3">
-          <label class="form-label required">Instansi</label>
-          <input type="text" class="form-control" name="instansi" placeholder="Instansi" value="{{ old('instansi') }}">
+          <label class="form-label">Instansi</label>
+          <select class="selectpicker border rounded" data-live-search="true" name="instansi" style="width: 100% !important;">
+            <option disabled selected value="">Pilih</option>
+            @foreach($instansis as $instansi)
+                <option value="{{ $instansi->name }}" {{ old('instansi') == $instansi->name ? 'selected' : '' }}>{{ $instansi->name }}</option>
+            @endforeach
+          </select>
           @error('instansi')<div class="text-danger">{{ $message }}</div>@enderror
         </div>
         <div class="form-footer">
