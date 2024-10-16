@@ -10,6 +10,7 @@
     </div>
     <div class="col-auto">
       <div class="btn-list">
+        <a href="{{ route('admin.participant.index', array_merge(request()->query(), ['export' => 'excel'])) }}" class="btn btn-success">Export Excel</a>
         {{-- @if(auth()->user()->role == 1)
           <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Create</a>
         @endif --}}

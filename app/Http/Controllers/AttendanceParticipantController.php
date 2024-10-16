@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Participant;
 use Illuminate\Http\Request;
+use App\Exports\ParticipantExport;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AttendanceParticipantController extends Controller
 {
@@ -23,6 +26,11 @@ class AttendanceParticipantController extends Controller
                         $query->where('name', 'like', '%' . $search . '%');
                     });
             });
+        }
+
+        if ($request->has('export') && $request->export == 'excel') {
+            $fileName = 'participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
+            return Excel::download(new ParticipantExport($query->get()), $fileName);
         }
 
         $attendanceParticipants = $query->latest()->paginate(10);
