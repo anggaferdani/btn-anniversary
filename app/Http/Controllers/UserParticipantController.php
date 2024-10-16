@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Participant;
+use Illuminate\Http\Request;
 use App\Models\UserParticipant;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UserParticipantExport;
 
 class UserParticipantController extends Controller
 {
@@ -15,7 +18,7 @@ class UserParticipantController extends Controller
 
     public function autocomplete(Request $request)
     {
-        $query = Participant::where('verification', 1)->where('attendance', 1)->where('status', 1);
+        $query = Participant::with('instansi')->where('verification', 1)->where('attendance', 1)->where('status', 1);
 
         $search = $request->input('search');
         $query->where(function ($q) use ($search) {
@@ -40,6 +43,7 @@ class UserParticipantController extends Controller
                                               ->first();
     
             $participant->disableButton = $userParticipant ? true : false;
+            $participant->instansi = $participant->instansi ? $participant->instansi->name : 'Null';
         }
 
         return response()->json(['participants' => $participants]);
@@ -149,6 +153,11 @@ class UserParticipantController extends Controller
             })
             ->latest()
             ->paginate(10);
+
+            if ($request->has('export') && $request->export == 'excel') {
+                $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
+                return Excel::download(new UserParticipantExport($userParticipants->items()), $fileName);
+            }
 
         return view('backend.pages.tenant.history', compact('userParticipants', 'search'));
     }
