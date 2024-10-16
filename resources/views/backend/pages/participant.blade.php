@@ -82,6 +82,7 @@
                 <th>Instansi</th>
                 <th>Email</th>
                 <th>Phone Number</th>
+                <th>Attendance</th>
                 <th>Kehadiran</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -97,6 +98,13 @@
                   <td>{{ $participant->instansi->name }}</td>
                   <td>{{ $participant->email }}</td>
                   <td>{{ $participant->phone_number }}</td>
+                  <td>
+                    @if($participant->attendance == 1)
+                      <span class="badge bg-success text-white">Hadir</span>
+                    @else
+                      <span class="badge bg-danger text-white">Tidak Hadir</span>
+                    @endif
+                  </td>
                   <td>
                     @if($participant->kehadiran == 'onsite')
                       <span class="badge bg-success text-white">Offline</span>
