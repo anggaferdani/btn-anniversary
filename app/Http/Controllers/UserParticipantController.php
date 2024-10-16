@@ -137,6 +137,11 @@ class UserParticipantController extends Controller
             ->when($user->role == 1, function ($query) use ($user) {
                 return $query->where('point', 1)
                              ->where('status', 1);
+
+                            if ($request->has('export') && $request->export == 'excel') {
+                                $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
+                                return Excel::download(new UserParticipantExport($query->get()), $fileName);
+                            }
             })
             ->when($user->role == 3, function ($query) use ($user) {
                 return $query->where('user_id', $user->id)
@@ -152,11 +157,6 @@ class UserParticipantController extends Controller
             })
             ->latest()
             ->paginate(10);
-
-            if ($request->has('export') && $request->export == 'excel') {
-                $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
-                return Excel::download(new UserParticipantExport($userParticipants->items()), $fileName);
-            }
 
         return view('backend.pages.tenant.history', compact('userParticipants', 'search'));
     }
