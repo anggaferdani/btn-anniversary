@@ -43,7 +43,6 @@ class UserParticipantController extends Controller
                                               ->first();
     
             $participant->disableButton = $userParticipant ? true : false;
-            $participant->instansi = $participant->instansi->name;
         }
 
         return response()->json(['participants' => $participants]);
