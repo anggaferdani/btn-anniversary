@@ -122,14 +122,21 @@
                   <td>
                     <div class="d-flex gap-1">
                       @if(auth()->user()->role == 1)
+                        @if($participant->attendance == 2)
+                          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#hadir{{ $participant->id }}">Hadir</button>
+                        @endif
                         @if($participant->verification == 2)
                           @if($participant->kehadiran == 'onsite')
-                            <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-danger"><span class="small">Verify</span></a>
+                            {{-- <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-danger"><span class="small">Verify</span></a> --}}
+                          @else
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#onsite{{ $participant->id }}">Onsite</button>
                           @endif
-                          <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a>
+                          {{-- <a href="{{ route('admin.resend-email-verification', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-share me-1"></i> <span class="small">Email Verification</span></a> --}}
                         @else
                           @if($participant->kehadiran == 'onsite')
-                            <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i> <span class="small">Download ID</span></a>
+                            {{-- <a href="{{ route('registration.verify', $participant->token) }}" class="btn btn-primary"><i class="fa-solid fa-download me-1"></i> <span class="small">Download ID</span></a> --}}
+                          @else
+                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#onsite{{ $participant->id }}">Onsite</button>
                           @endif
                         @endif
                         {{-- <form action="{{ route('registration.sendImage', $participant->token) }}" method="POST" class="" enctype="multipart/form-data">
@@ -163,6 +170,66 @@
     </div>
   </div>
 </div>
+
+@foreach ($participants as $participant)
+<div class="modal modal-blur fade" id="hadir{{ $participant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-status bg-danger"></div>
+      <form action="{{ route('admin.participant.hadir', $participant->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="modal-body text-center py-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+          <h3>Are you sure? Change to hadir</h3>
+          <div>ID : {{ $participant->qrcode }}</div>
+          <div>Name : {{ $participant->name }}</div>
+          <div>Instansi : {{ $participant->instansi->name }}</div>
+        </div>
+        <div class="modal-footer">
+          <div class="w-100">
+            <div class="row">
+              <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">Cancel</a></div>
+              <div class="col"><button type="submit" class="btn btn-warning w-100" data-bs-dismiss="modal">Update</button></div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endforeach
+
+@foreach ($participants as $participant)
+<div class="modal modal-blur fade" id="onsite{{ $participant->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-status bg-danger"></div>
+      <form action="{{ route('admin.participant.onsite', $participant->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="modal-body text-center py-4">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10.24 3.957l-8.422 14.06a1.989 1.989 0 0 0 1.7 2.983h16.845a1.989 1.989 0 0 0 1.7 -2.983l-8.423 -14.06a1.989 1.989 0 0 0 -3.4 0z"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+          <h3>Are you sure? Change to onsite</h3>
+          <div>ID : {{ $participant->qrcode }}</div>
+          <div>Name : {{ $participant->name }}</div>
+          <div>Instansi : {{ $participant->instansi->name }}</div>
+        </div>
+        <div class="modal-footer">
+          <div class="w-100">
+            <div class="row">
+              <div class="col"><a href="#" class="btn w-100" data-bs-dismiss="modal">Cancel</a></div>
+              <div class="col"><button type="submit" class="btn btn-warning w-100" data-bs-dismiss="modal">Update</button></div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+@endforeach
 
 <div class="modal modal-blur fade" id="createModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">

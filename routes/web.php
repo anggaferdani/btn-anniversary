@@ -18,6 +18,7 @@ use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\UserParticipantController;
 use App\Http\Controllers\RegistrationPageController;
 use App\Http\Controllers\AttendanceParticipantController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,9 @@ use App\Http\Controllers\AttendanceParticipantController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('register', [RegisterController::class, 'register'])->name('register');
+Route::post('post/register', [RegisterController::class, 'postRegister'])->name('post.register');
 
 Route::get('hadir', [HadirController::class, 'hadir'])->name('hadir');
 Route::post('post/hadir', [HadirController::class, 'postHadir'])->name('post.hadir');
@@ -66,6 +70,8 @@ Route::prefix('admin')->name('admin.')->group(function(){
         Route::resource('receptionist', ReceptionistController::class);
         Route::resource('tenant', TenantController::class);
         Route::resource('participant', ParticipantController::class);
+        Route::put('participant/hadir/{id}', [ParticipantController::class, 'hadir'])->name('participant.hadir');
+        Route::put('participant/onsite/{id}', [ParticipantController::class, 'onsite'])->name('participant.onsite');
         Route::get('resend-email-verification/{token}', [AuthenticationController::class, 'resendEmailVerification'])->name('resend-email-verification');
         Route::get('resend-digital-invitation/{token}', [AuthenticationController::class, 'resendDigitalInvitation'])->name('resend-digital-invitation');
         Route::resource('attendance-participant', AttendanceParticipantController::class);

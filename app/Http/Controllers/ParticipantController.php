@@ -115,6 +115,36 @@ class ParticipantController extends Controller
         return response()->json(['error' => 'Participant not found'], 404);
     }
 
+    public function hadir($id) {
+        try {
+            $participant = Participant::find($id);
+
+            $participant->update([
+                'verification' => 1,
+                'attendance' => 1,
+            ]);
+
+            return redirect()->back()->with('success', 'Success.');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function onsite($id) {
+        try {
+            $participant = Participant::find($id);
+
+            $participant->update([
+                'kehadiran' => 'onsite',
+                'attendance' => 1,
+            ]);
+
+            return redirect()->back()->with('success', 'Success.');
+        } catch (\Throwable $th) {
+            return back()->with('error', $th->getMessage());
+        }
+    }
+
     public function index(Request $request) {
         $query = Participant::where('status', 1);
     
