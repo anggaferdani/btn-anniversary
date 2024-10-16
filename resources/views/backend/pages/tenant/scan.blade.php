@@ -51,14 +51,14 @@
                 $('#result').html('');
 
                 if (data.participants.length > 0) {
-                    var table = '<div class="table-responsive mt-3"><table class="table table-bordered"><thead><tr><th>QR Code</th><th>Name</th><th>Email</th><th>Phone Number</th><th>Action</th></tr></thead><tbody>';
+                    var table = '<div class="table-responsive mt-3"><table class="table table-bordered"><thead><tr><th>QR Code</th><th>Name</th><th>Instansi</th><th>Points</th><th>Action</th></tr></thead><tbody>';
 
                     data.participants.forEach(function(participant) {
                         table += '<tr>';
                         table += '<td class="align-middle">' + participant.qrcode + '</td>';
                         table += '<td class="align-middle">' + participant.name + '</td>';
-                        table += '<td class="align-middle">' + participant.email + '</td>';
-                        table += '<td class="align-middle">' + participant.phone_number + '</td>';
+                        table += '<td class="align-middle">' + participant.instansi + '</td>';
+                        table += '<td class="align-middle">' + participant.points + '</td>';
                         if (participant.disableButton) {
                             table += '<td class="align-middle"><button class="btn btn-success hadirButton" data-id="' + participant.qrcode + '" disabled>Tambah</button></td>';
                         } else {
