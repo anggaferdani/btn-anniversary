@@ -9,15 +9,19 @@ use Illuminate\Support\Facades\DB;
 class AttendanceParticipantController extends Controller
 {
     public function index(Request $request) {
-        $query = Participant::where('status', 1)->where('attendance', 1);
+        $query = Participant::where('status', 1)->where('verification', 1)->where('kehadiran', 'onsite')->where('attendance', 1);
 
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
-                $q->where('qrcode', 'like', '%' . $search . '%');
-                $q->where('name', 'like', '%' . $search . '%');
-                $q->where('email', 'like', '%' . $search . '%');
-                $q->where('phone_number', 'like', '%' . $search . '%');
+                $q->where('qrcode', 'like', '%' . $search . '%')
+                  ->orWhere('name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%')
+                  ->orWhere('phone_number', 'like', '%' . $search . '%')
+                  ->orWhere('kehadiran', 'like', '%' . $search . '%')
+                  ->orWhereHas('instansi', function($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%');
+                    });
             });
         }
 
