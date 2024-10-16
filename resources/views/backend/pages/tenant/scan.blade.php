@@ -51,7 +51,7 @@
                 $('#result').html('');
 
                 if (data.participants.length > 0) {
-                    var table = '<div class="table-responsive mt-3"><table class="table table-bordered"><thead><tr><th>QR Code</th><th>Name</th><th>Instansi</th><th>Points</th><th>Action</th></tr></thead><tbody>';
+                    var table = '<div class="table-responsive mt-3"><table class="table table-bordered"><thead><tr><th>QR Code</th><th>Name</th><th>Point</th><th>Action</th></tr></thead><tbody>';
 
                     data.participants.forEach(function(participant) {
                         table += '<tr>';
