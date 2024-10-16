@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Instansi;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 use App\Models\UserParticipant;
+use App\Exports\ParticipantExport;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ParticipantController extends Controller
 {
@@ -178,6 +181,11 @@ class ParticipantController extends Controller
         if ($request->has('status') && !empty($request->input('status'))) {
             $status = $request->input('status');
             $query->where('verification', $status);
+        }
+
+        if ($request->has('export') && $request->export == 'excel') {
+            $fileName = 'participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
+            return Excel::download(new ParticipantExport($query->get()), $fileName);
         }
     
         $participants = $query->latest()->paginate(10);

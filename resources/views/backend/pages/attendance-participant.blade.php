@@ -10,7 +10,7 @@
     </div>
     <div class="col-auto">
       <div class="btn-list">
-        {{-- <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Create</a> --}}
+        <a href="{{ route('admin.attendance-participant.index', array_merge(request()->query(), ['export' => 'excel'])) }}" class="btn btn-success">Export Excel</a>
       </div>
     </div>
   </div>
@@ -53,7 +53,6 @@
                 <th>Phone Number</th>
                 <th>Point</th>
                 <th>Status</th>
-                {{-- <th>Action</th> --}}
               </tr>
             </thead>
             <tbody>
@@ -72,10 +71,6 @@
                       <span class="badge bg-danger text-white">Not Verified</span>
                     @endif
                   </td>
-                  {{-- <td>
-                    <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $attendanceParticipant->id }}"><i class="fa-solid fa-pen"></i></button>
-                    <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $attendanceParticipant->id }}"><i class="fa-solid fa-trash"></i></button>
-                  </td> --}}
                 </tr>
               @endforeach
             </tbody>
