@@ -57,7 +57,6 @@
                         table += '<tr>';
                         table += '<td class="align-middle">' + participant.qrcode + '</td>';
                         table += '<td class="align-middle">' + participant.name + '</td>';
-                        table += '<td class="align-middle">' + participant.instansi + '</td>';
                         table += '<td class="align-middle">' + participant.point + '</td>';
                         if (participant.disableButton) {
                             table += '<td class="align-middle"><button class="btn btn-success hadirButton" data-id="' + participant.qrcode + '" disabled>Tambah</button></td>';
