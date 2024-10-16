@@ -24,14 +24,18 @@ class RegisterController extends Controller
         ]);
 
         try {
-            $existingParticipant = Participant::where('qrcode', $request->qrcode)->first();
-
-            if (!$existingParticipant || empty($request->qrcode)) {
-                $qrcode = $request->qrcode;
-            } else {
+            if (empty($request->qrcode)) {
                 $qrcode = $this->generateQrcode();
+            } else {
+                $existingParticipant = Participant::where('qrcode', $request->qrcode)->first();
+    
+                if (!$existingParticipant || empty($request->qrcode)) {
+                    $qrcode = $request->qrcode;
+                } else {
+                    $qrcode = $this->generateQrcode();
+                }
             }
-
+            
             $token = $this->generateUniqueToken(12);
 
             $array = [
