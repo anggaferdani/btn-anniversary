@@ -133,17 +133,15 @@ class UserParticipantController extends Controller
         $search = $request->input('search');
         $user = Auth::user();
     
-        // Query untuk UserParticipant
-        $queryUserParticipant = UserParticipant::query()
-            ->select('participant_id', DB::raw('SUM(point) as total_points'), DB::raw('MAX(created_at) as latest_created_at'))  // Mengambil total point dan created_at terbaru
+        $userParticipants = UserParticipant::query()
             ->when($user->role == 1, function ($query) use ($user) {
                 return $query->where('status', 1)
-                             ->groupBy('participant_id');  // Group by participant_id
+                             ->groupBy('participant_id');
             })
             ->when($user->role == 3, function ($query) use ($user) {
                 return $query->where('user_id', $user->id)
                              ->where('status', 1)
-                             ->groupBy('participant_id');  // Group by participant_id
+                             ->groupBy('participant_id');
             })
             ->when($search, function ($query, $search) {
                 return $query->whereHas('participant', function ($q) use ($search) {
@@ -152,12 +150,12 @@ class UserParticipantController extends Controller
                       ->orWhere('phone_number', 'like', '%' . $search . '%');
                 });
             })
-            ->orderBy('participant_id') // Mengurutkan berdasarkan participant_id
-            ->paginate(10); // Menambahkan pagination di sini
+            ->orderBy('participant_id')
+            ->paginate(10);
     
         if ($request->has('export') && $request->export == 'excel') {
             $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
-            return Excel::download(new UserParticipantExport($queryUserParticipant->get()), $fileName);
+            return Excel::download(new UserParticipantExport($userParticipants), $fileName);
         }
     
         return view('backend.pages.tenant.history', compact('userParticipants', 'search'));
