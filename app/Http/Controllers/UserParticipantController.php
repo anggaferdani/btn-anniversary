@@ -150,7 +150,7 @@ class UserParticipantController extends Controller
                       ->orWhere('phone_number', 'like', '%' . $search . '%');
                 });
             })
-            ->groupBy('participant_id');
+            ->groupBy('participant_id', 'participant.name', 'participant.email', 'participant.phone_number', 'participant.qrcode', 'participant.token', 'participant.jabatan', 'participant.instansi.name', 'participant.point', 'participant.kehadiran', 'participant.kendaraan');
 
             if ($request->has('export') && $request->export == 'excel') {
                 $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
