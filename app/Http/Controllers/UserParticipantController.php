@@ -132,38 +132,33 @@ class UserParticipantController extends Controller
         $search = $request->input('search');
     
         $user = Auth::user();
-    
+        
         $queryUserParticipant = UserParticipant::query()
-        ->when($user->role == 1, function ($query) use ($user) {
-            return $query->where('point', 1)
-                        ->where('status', 1);
-        })
-        ->when($user->role == 3, function ($query) use ($user) {
-            return $query->where('user_id', $user->id)
-                        ->where('point', 1)
-                        ->where('status', 1);
-        })
-        ->when($search, function ($query, $search) {
-            return $query->whereHas('participant', function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%')
-                ->orWhere('phone_number', 'like', '%' . $search . '%');
-            });
-        })
-        ->groupBy('participant_id')
-        ->selectRaw('participant_id, count(*) as total_participants, sum(point) as total_points, MAX(created_at) as latest_created_at')
-        ->with('participant')
-        ->orderBy('latest_created_at', 'desc');
+            ->when($user->role == 1, function ($query) use ($user) {
+                return $query->where('point', 1)
+                             ->where('status', 1);
+            })
+            ->when($user->role == 3, function ($query) use ($user) {
+                return $query->where('user_id', $user->id)
+                             ->where('point', 1)
+                             ->where('status', 1);
+            })
+            ->when($search, function ($query, $search) {
+                return $query->whereHas('participant', function ($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%')
+                      ->orWhere('email', 'like', '%' . $search . '%')
+                      ->orWhere('phone_number', 'like', '%' . $search . '%');
+                });
+            })
+            ->groupBy('participant_id');
 
-    
-    
-        if ($request->has('export') && $request->export == 'excel') {
-            $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
-            return Excel::download(new UserParticipantExport($queryUserParticipant->get()), $fileName);
-        }
-    
-        $userParticipants = $queryUserParticipant->latest()->paginate(10);
-    
+            if ($request->has('export') && $request->export == 'excel') {
+                $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
+                return Excel::download(new UserParticipantExport($queryUserParticipant->get()), $fileName);
+            }
+
+            $userParticipants = $queryUserParticipant->latest()->paginate(10);
+
         return view('backend.pages.tenant.history', compact('userParticipants', 'search'));
     }
 }
