@@ -151,11 +151,6 @@ class UserParticipantController extends Controller
                 });
             });
 
-            $queryUserParticipant = $queryUserParticipant
-            ->select('participant_id')
-            ->selectRaw('SUM(point) as total_points')
-            ->groupBy('participant_id');
-
             if ($request->has('export') && $request->export == 'excel') {
                 $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
                 return Excel::download(new UserParticipantExport($queryUserParticipant->get()), $fileName);
