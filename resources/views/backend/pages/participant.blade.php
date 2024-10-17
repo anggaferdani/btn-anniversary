@@ -52,9 +52,14 @@
                   @endforeach
                 </select>
                 <select class="form-select" name="kehadiran">
-                    <option disabled selected value="">Kehadiran</option>
-                    <option value="onsite" {{ request('kehadiran') == 'onsite' ? 'selected' : '' }}>Offline</option>
-                    <option value="online" {{ request('kehadiran') == 'online' ? 'selected' : '' }}>Online</option>
+                  <option disabled selected value="">Online/Offline</option>
+                  <option value="onsite" {{ request('kehadiran') == 'onsite' ? 'selected' : '' }}>Offline</option>
+                  <option value="online" {{ request('kehadiran') == 'online' ? 'selected' : '' }}>Online</option>
+                </select>
+                <select class="form-select" name="attendance">
+                  <option disabled selected value="">Kehadiran</option>
+                  <option value="1" {{ request('attendance') == 1 ? 'selected' : '' }}>Hadir</option>
+                  <option value="2" {{ request('attendance') == 2 ? 'selected' : '' }}>Tidak Hadir</option>
                 </select>
                 <select class="form-select" name="status">
                     <option disabled selected value="">Status</option>
