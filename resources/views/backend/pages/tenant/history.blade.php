@@ -83,7 +83,7 @@
                   <td>{{ $userParticipant->participant->email }}</td>
                   <td>{{ $userParticipant->participant->phone_number }}</td>
                   <td>1</td>
-                  <td>{{ $userParticipant->participant->point }}</td>
+                  <td>{{ $userParticipant->total_points }}</td>
                   <td>{{ $userParticipant->created_at }}</td>
                   {{-- <td>
                     <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $userParticipant->id }}"><i class="fa-solid fa-pen"></i></button>
