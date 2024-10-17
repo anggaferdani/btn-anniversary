@@ -76,7 +76,7 @@
               @endphp
               @foreach ($userParticipants as $participantId => $group)
                 @php
-                    $totalPoints = $group->sum('points');
+                    $totalPoints = $group->sum('point');
                     $firstUserParticipant = $group->first();
                 @endphp
                 <tr>
