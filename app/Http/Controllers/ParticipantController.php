@@ -177,6 +177,11 @@ class ParticipantController extends Controller
             $kehadiran = $request->input('kehadiran');
             $query->where('kehadiran', $kehadiran);
         }
+
+        if ($request->has('attendance') && !empty($request->input('attendance'))) {
+            $attendance = $request->input('attendance');
+            $query->where('attendance', $attendance);
+        }
     
         if ($request->has('status') && !empty($request->input('status'))) {
             $status = $request->input('status');
