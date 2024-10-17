@@ -71,30 +71,23 @@
               </tr>
             </thead>
             <tbody>
-              @php
-                  $groupedParticipants = $userParticipants->groupBy('participant_id');
-              @endphp
-              @foreach ($groupedParticipants as $participantId => $group)
-                @php
-                    $totalPoints = $group->sum('point');
-                    $firstUserParticipant = $group->first();
-                @endphp
+              @foreach ($userParticipants as $userParticipant)
                 <tr>
                   <td>{{ ($userParticipants->currentPage() - 1) * $userParticipants->perPage() + $loop->iteration }}</td>
-                  <td>{{ $firstUserParticipant->participant->qrcode }}</td>
+                  <td>{{ $userParticipant->participant->qrcode }}</td>
                   @if (auth()->user()->role == 1)
-                    <td>{{ $firstUserParticipant->user->name }}</td>
+                    <td>{{ $userParticipant->user->name }}</td>
                   @endif
-                  <td>{{ $firstUserParticipant->participant->name }}</td>
-                  <td>{{ $firstUserParticipant->participant->instansi->name }}</td>
-                  <td>{{ $firstUserParticipant->participant->email }}</td>
-                  <td>{{ $firstUserParticipant->participant->phone_number }}</td>
+                  <td>{{ $userParticipant->participant->name }}</td>
+                  <td>{{ $userParticipant->participant->instansi->name }}</td>
+                  <td>{{ $userParticipant->participant->email }}</td>
+                  <td>{{ $userParticipant->participant->phone_number }}</td>
                   <td>1</td>
-                  <td>{{ $totalPoints }}</td>
-                  <td>{{ $firstUserParticipant->created_at }}</td>
+                  <td>{{ $userParticipant->participant->point }}</td>
+                  <td>{{ $userParticipant->created_at }}</td>
                   {{-- <td>
-                    <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $firstUserParticipant->id }}"><i class="fa-solid fa-pen"></i></button>
-                    <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $firstUserParticipant->id }}"><i class="fa-solid fa-trash"></i></button>
+                    <button type="button" class="btn btn-icon btn-primary" data-bs-toggle="modal" data-bs-target="#edit{{ $userParticipant->id }}"><i class="fa-solid fa-pen"></i></button>
+                    <button type="button" class="btn btn-icon btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{ $userParticipant->id }}"><i class="fa-solid fa-trash"></i></button>
                   </td> --}}
                 </tr>
               @endforeach

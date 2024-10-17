@@ -23,7 +23,7 @@
           <td style="border: 1px black solid; text-align: center;">{{ $userParticipant->participant->jabatan ?? '' }}</td>
           <td style="border: 1px black solid; text-align: center;">{{ $userParticipant->participant->email ?? '' }}</td>
           <td style="border: 1px black solid; text-align: center;">{{ $userParticipant->participant->phone_number ?? '' }}</td>
-          <td style="border: 1px black solid; text-align: center;">{{ $userParticipant->total_points ?? '' }}</td>
+          <td style="border: 1px black solid; text-align: center;">{{ $userParticipant->participant->point ?? '' }}</td>
           <td style="border: 1px black solid; text-align: center;">{{ $userParticipant->participant->kehadiran ?? '' }}</td>
           <td style="border: 1px black solid; text-align: center;">{{ $userParticipant->participant->kendaraan ?? '' }}</td>
       </tr>
