@@ -153,7 +153,7 @@ class UserParticipantController extends Controller
 
             $queryUserParticipant = $queryUserParticipant
             ->select('participant_id')
-            ->selectRaw('SUM(points) as total_points')
+            ->selectRaw('SUM(point) as total_points')
             ->groupBy('participant_id');
 
             if ($request->has('export') && $request->export == 'excel') {
