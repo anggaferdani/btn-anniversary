@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 use App\Models\UserParticipant;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UserParticipantExport;
@@ -131,17 +130,18 @@ class UserParticipantController extends Controller
 
     public function history(Request $request) {
         $search = $request->input('search');
-        $user = Auth::user();
     
-        $userParticipants = UserParticipant::query()
+        $user = Auth::user();
+        
+        $queryUserParticipant = UserParticipant::query()
             ->when($user->role == 1, function ($query) use ($user) {
-                return $query->where('status', 1)
-                             ->groupBy('participant_id');
+                return $query->where('point', 1)
+                             ->where('status', 1);
             })
             ->when($user->role == 3, function ($query) use ($user) {
                 return $query->where('user_id', $user->id)
-                             ->where('status', 1)
-                             ->groupBy('participant_id');
+                             ->where('point', 1)
+                             ->where('status', 1);
             })
             ->when($search, function ($query, $search) {
                 return $query->whereHas('participant', function ($q) use ($search) {
@@ -149,15 +149,15 @@ class UserParticipantController extends Controller
                       ->orWhere('email', 'like', '%' . $search . '%')
                       ->orWhere('phone_number', 'like', '%' . $search . '%');
                 });
-            })
-            ->orderBy('participant_id')
-            ->paginate(10);
-    
-        if ($request->has('export') && $request->export == 'excel') {
-            $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
-            return Excel::download(new UserParticipantExport($userParticipants), $fileName);
-        }
-    
+            });
+
+            if ($request->has('export') && $request->export == 'excel') {
+                $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
+                return Excel::download(new UserParticipantExport($queryUserParticipant->get()), $fileName);
+            }
+
+            $userParticipants = $queryUserParticipant->latest()->paginate(10);
+
         return view('backend.pages.tenant.history', compact('userParticipants', 'search'));
     }
 }
