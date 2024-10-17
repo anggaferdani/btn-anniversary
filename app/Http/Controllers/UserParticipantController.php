@@ -135,7 +135,7 @@ class UserParticipantController extends Controller
     
         // Query untuk UserParticipant
         $queryUserParticipant = UserParticipant::query()
-            ->select('participant_id', DB::raw('SUM(point) as total_points'), DB::raw('MAX(created_at) as latest_created_at'))  // Agregasi point dan ambil waktu terbaru
+            ->select('participant_id', DB::raw('SUM(point) as total_points'), DB::raw('MAX(created_at) as latest_created_at'))  // Mengambil total point dan created_at terbaru
             ->when($user->role == 1, function ($query) use ($user) {
                 return $query->where('status', 1)
                              ->groupBy('participant_id');  // Group by participant_id
@@ -151,14 +151,14 @@ class UserParticipantController extends Controller
                       ->orWhere('email', 'like', '%' . $search . '%')
                       ->orWhere('phone_number', 'like', '%' . $search . '%');
                 });
-            });
+            })
+            ->orderBy('participant_id') // Mengurutkan berdasarkan participant_id
+            ->paginate(10); // Menambahkan pagination di sini
     
         if ($request->has('export') && $request->export == 'excel') {
             $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
             return Excel::download(new UserParticipantExport($queryUserParticipant->get()), $fileName);
         }
-    
-        $userParticipants = $queryUserParticipant->latest()->paginate(10);
     
         return view('backend.pages.tenant.history', compact('userParticipants', 'search'));
     }
