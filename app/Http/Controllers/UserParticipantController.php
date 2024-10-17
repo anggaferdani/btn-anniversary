@@ -132,7 +132,7 @@ class UserParticipantController extends Controller
         $search = $request->input('search');
     
         $user = Auth::user();
-        
+    
         $queryUserParticipant = UserParticipant::query()
             ->when($user->role == 1, function ($query) use ($user) {
                 return $query->where('point', 1)
@@ -149,15 +149,18 @@ class UserParticipantController extends Controller
                       ->orWhere('email', 'like', '%' . $search . '%')
                       ->orWhere('phone_number', 'like', '%' . $search . '%');
                 });
-            });
-
-            if ($request->has('export') && $request->export == 'excel') {
-                $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
-                return Excel::download(new UserParticipantExport($queryUserParticipant->get()), $fileName);
-            }
-
-            $userParticipants = $queryUserParticipant->latest()->paginate(10);
-
+            })
+            ->groupBy('participant_id')
+            ->selectRaw('participant_id, count(*) as total_participants, sum(point) as total_points')
+            ->with('participant');
+    
+        if ($request->has('export') && $request->export == 'excel') {
+            $fileName = 'user-participant-' . Carbon::now()->format('Y-m-d') . '.xlsx';
+            return Excel::download(new UserParticipantExport($queryUserParticipant->get()), $fileName);
+        }
+    
+        $userParticipants = $queryUserParticipant->latest()->paginate(10);
+    
         return view('backend.pages.tenant.history', compact('userParticipants', 'search'));
     }
 }
