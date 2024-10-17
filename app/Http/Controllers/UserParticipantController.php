@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\Participant;
 use Illuminate\Http\Request;
 use App\Models\UserParticipant;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UserParticipantExport;
@@ -133,16 +132,17 @@ class UserParticipantController extends Controller
         $search = $request->input('search');
         $user = Auth::user();
     
+        // Query untuk UserParticipant
         $queryUserParticipant = UserParticipant::query()
-            ->select('participant_id', DB::raw('SUM(point) as total_points'))
+            ->select('participant_id', DB::raw('SUM(point) as total_points'), DB::raw('MAX(created_at) as latest_created_at'))  // Agregasi point dan ambil waktu terbaru
             ->when($user->role == 1, function ($query) use ($user) {
                 return $query->where('status', 1)
-                             ->groupBy('participant_id');
+                             ->groupBy('participant_id');  // Group by participant_id
             })
             ->when($user->role == 3, function ($query) use ($user) {
                 return $query->where('user_id', $user->id)
                              ->where('status', 1)
-                             ->groupBy('participant_id');
+                             ->groupBy('participant_id');  // Group by participant_id
             })
             ->when($search, function ($query, $search) {
                 return $query->whereHas('participant', function ($q) use ($search) {
