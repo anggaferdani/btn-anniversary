@@ -31,10 +31,10 @@ use App\Http\Controllers\RegisterController;
 |
 */
 
-Route::get('register', [RegisterController::class, 'register'])->name('register');
+// Route::get('register', [RegisterController::class, 'register'])->name('register');
 Route::post('post/register', [RegisterController::class, 'postRegister'])->name('post.register');
 
-Route::get('hadir', [HadirController::class, 'hadir'])->name('hadir');
+// Route::get('hadir', [HadirController::class, 'hadir'])->name('hadir');
 Route::post('post/hadir', [HadirController::class, 'postHadir'])->name('post.hadir');
 Route::get('check/{qrcode}', [HadirController::class, 'check'])->name('check');
 Route::get('check/{qrcode}/ok', [HadirController::class, 'checkOk'])->name('check.ok');
@@ -193,8 +193,8 @@ Route::get('/', [IndexPageController::class, 'index'])->name('index');
 Route::get('/index', [IndexPageController::class, 'index'])->name('index');
 
 // Registration
-Route::get('/registration', [RegistrationPageController::class, 'index'])->name('registration.index');
-Route::get('/registration/online', [RegistrationPageController::class, 'indexOnline'])->name('registration.index.online');
+// Route::get('/registration', [RegistrationPageController::class, 'index'])->name('registration.index');
+// Route::get('/registration/online', [RegistrationPageController::class, 'indexOnline'])->name('registration.index.online');
 Route::post('/registration/store', [RegistrationPageController::class, 'store'])->name('registration.store');
 Route::post('/registration/store/online', [RegistrationPageController::class, 'storeOnline'])->name('registration.store.online');
 
