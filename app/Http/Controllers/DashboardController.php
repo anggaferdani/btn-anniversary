@@ -12,15 +12,15 @@ class DashboardController extends Controller
         if (auth()->user()->role == 3) {
             return view('backend.pages.dashboard');
         } else {
-            $participantsCount = Participant::where('status', 1)->count();
-            $participantsVerifiedCount = Participant::where('verification', 1)->where('status', 1)->count();
-            $participantsUnverifiedCount = Participant::where('verification', 2)->where('status', 1)->count();
-            $participantsVerifiedOfflineCountHadir = Participant::where('verification', 1)->whereNotNull('qrcode')->where('attendance', 1)->where('kehadiran', 'onsite')->where('status', 1)->count();
-            $participantsVerifiedOfflineCountNotHadir = Participant::where('verification', 1)->where('attendance', 2)->where('kehadiran', 'onsite')->where('status', 1)->count();
+            $participantsCount = Participant::whereNotNull('qrcode')->where('status', 1)->count();
+            $participantsVerifiedCount = Participant::whereNotNull('qrcode')->where('verification', 1)->where('status', 1)->count();
+            $participantsUnverifiedCount = Participant::whereNotNull('qrcode')->where('verification', 2)->where('status', 1)->count();
+            $participantsVerifiedOfflineCountHadir = Participant::whereNotNull('qrcode')->where('verification', 1)->where('attendance', 1)->where('kehadiran', 'onsite')->where('status', 1)->count();
+            $participantsVerifiedOfflineCountNotHadir = Participant::whereNotNull('qrcode')->where('verification', 1)->where('attendance', 2)->where('kehadiran', 'onsite')->where('status', 1)->count();
     
             // New: Count online and offline participants based on verification
-            $participantsOnlineCount = Participant::where('verification', 1)->where('kehadiran', 'online')->where('status', 1)->count();
-            $participantsOfflineCount = Participant::where('verification', 1)->where('kehadiran', 'onsite')->where('status', 1)->count();
+            $participantsOnlineCount = Participant::whereNotNull('qrcode')->where('verification', 1)->where('kehadiran', 'online')->where('status', 1)->count();
+            $participantsOfflineCount = Participant::whereNotNull('qrcode')->where('verification', 1)->where('kehadiran', 'onsite')->where('status', 1)->count();
     
             // Calculate percentages of offline and online participants from total registration
             $percentageOnline = $participantsCount > 0 ? ($participantsOnlineCount / $participantsVerifiedCount) * 100 : 0;
