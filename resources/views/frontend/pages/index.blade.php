@@ -207,9 +207,9 @@
                     <h5 class="card-title font-weight-lighter m-0" style="font-size: 20px; color: #003E64;">Pendaftaran Peserta
                     </h5>
                     <h6 class="card-subtitle mb-3" style="font-size: 30px; font-weight: 800; color: #003E64;">ONLINE</h6>
-                    <a href="{{ route('registration.index.online') }}" class="btn"
+                    {{-- <a href="{{ route('registration.index.online') }}" class="btn"
                         style="background-color: #003E64; color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Klik Disini
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>
@@ -221,9 +221,9 @@
                     <h5 class="card-title font-weight-lighter text-success m-0" style="font-size: 20px;">Pendaftaran Peserta
                     </h5>
                     <h6 class="card-subtitle mb-3 text-success" style="font-size: 30px; font-weight: 800;">OFFLINE</h6>
-                    <a href="{{ route('registration.index') }}" class="btn bg-success"
+                    {{-- <a href="{{ route('registration.index') }}" class="btn bg-success"
                         style="color: white; font-weight: bold; border-radius: 5px; padding: 10px 20px; font-size: 20px;">Klik Disini
-                    </a>
+                    </a> --}}
                 </div>
             </div>
         </div>
