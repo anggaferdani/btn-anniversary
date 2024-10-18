@@ -16,7 +16,7 @@ class DashboardController extends Controller
             $participantsVerifiedCount = Participant::where('verification', 1)->where('status', 1)->count();
             $participantsUnverifiedCount = Participant::where('verification', 2)->where('status', 1)->count();
             $participantsVerifiedOfflineCountHadir = Participant::where('verification', 1)->whereNotNull('qrcode')->where('attendance', 1)->where('kehadiran', 'onsite')->where('status', 1)->count();
-            $participantsVerifiedOfflineCountNotHadir = Participant::where('verification', 1)->whereNotNull('qrcode')->where('attendance', 2)->where('kehadiran', 'onsite')->where('status', 1)->count();
+            $participantsVerifiedOfflineCountNotHadir = Participant::where('verification', 1)->where('attendance', 2)->where('kehadiran', 'onsite')->where('status', 1)->count();
     
             // New: Count online and offline participants based on verification
             $participantsOnlineCount = Participant::where('verification', 1)->where('kehadiran', 'online')->where('status', 1)->count();
